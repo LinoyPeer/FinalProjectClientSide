@@ -1,37 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PageHeader from '../../components/pageHeader';
-import Posts from '../components/Posts';
-import axios from 'axios';
+import PostFeedback from '../components/PostFeedback';
+import usePosts from '../hooks/usePosts';
+import usePostsAction from '../hooks/usePostsActions';
 
 export default function PostsPage() {
-    const [posts, setPosts] = useState([]);
+    const { posts, isLoading, error, getAllPosts } = usePosts();
 
-    const apiUrl = "http://localhost:8181/posts";
-
-    const getAllCardsApi = async () => {
-        try {
-            let response = await axios.get(apiUrl);
-            return response.data;
-        } catch (err) {
-            console.log(err.message);
-        }
-    };
-
-    const getAllPosts = useCallback(async () => {
-        try {
-            const cardsData = await getAllCardsApi();
-            if (cardsData) {
-                console.log(cardsData);
-                setPosts(cardsData);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }, []);
+    const { handleLike, handleComment } = usePostsAction();
 
     useEffect(() => {
         getAllPosts();
-    }, [getAllPosts]);
+    }, []);
 
     return (
         <>
@@ -39,7 +19,12 @@ export default function PostsPage() {
                 title="What's new?!"
                 subtitle="Upload your post"
             />
-            <Posts posts={posts} />
+            <PostFeedback
+                posts={posts}
+                handleLike={handleLike}
+                handleComment={handleComment}
+                isLoading={isLoading}
+                error={error} />
         </>
     );
 }

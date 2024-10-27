@@ -4,7 +4,7 @@ import PostHeaderComponent from './PostHeaderComponent';
 import PostBodyComponent from './PostBodyComponent';
 import PostFooterComponent from './PostFooterComponent';
 
-export default function PostComponent({ post }) {
+export default function PostComponent({ post, handleLike, handleComment }) {
 
     return (
         <Card
@@ -12,13 +12,17 @@ export default function PostComponent({ post }) {
         >
             <PostHeaderComponent
                 title={post.title}
-                description={post.description}
+                postStatus={post.postStatus}
             />
             <PostBodyComponent
                 imageSrc={post.image.url}
                 imageAlt={post.image.alt}
             />
-            <PostFooterComponent />
+            <PostFooterComponent
+                postId={post._id}
+                handleLike={handleLike}
+                handleComment={handleComment}
+            />
         </Card>
     );
 }
