@@ -7,7 +7,7 @@ import usePostsAction from '../hooks/usePostsActions';
 export default function PostsPage() {
     const { posts, isLoading, error, getAllPosts } = usePosts();
 
-    const { handleLike, handleComment } = usePostsAction();
+    const { handleLike, handleComment, isLiked } = usePostsAction();
 
     useEffect(() => {
         getAllPosts();
@@ -24,7 +24,9 @@ export default function PostsPage() {
                 handleLike={handleLike}
                 handleComment={handleComment}
                 isLoading={isLoading}
-                error={error} />
+                error={error}
+                isLiked={isLiked}
+            />
         </>
     );
 }

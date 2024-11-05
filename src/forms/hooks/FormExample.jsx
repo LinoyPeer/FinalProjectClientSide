@@ -1,20 +1,19 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Card, Checkbox, Form, Typography } from 'antd';
-import Joi from 'joi';
+import { Card, Form, Typography } from 'antd';
 import React from 'react';
 import useForm from './useForm';
 import CustomedInput from '../components/CustomedInput';
 import CustomedBottom from '../components/CustomedBottom';
 
-const initialData = {
-    username: "",
-    password: "",
-};
+// const initialData = {
+//     username: "",
+//     password: "",
+// };
 
-const schema = {
-    username: Joi.string().min(6).required().label("Username"),
-    password: Joi.string().min(2).required().label("Password"),
-};
+// const schema = {
+//     username: Joi.string().min(6).required().label("Username"),
+//     password: Joi.string().min(2).required().label("Password"),
+// };
 
 export default function FormExample({ children }) {
     const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialData, schema, () => {

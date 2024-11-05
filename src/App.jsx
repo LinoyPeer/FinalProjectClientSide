@@ -5,10 +5,11 @@ import UserProvider from "./users/providers/userProvider"
 import ThemeProvider from "./providers/ThemeProvider"
 import NotificationProvider from "./providers/NotificationProvider"
 import { App as AntApp } from 'antd'
-import FormExample from "./forms/hooks/FormExample"
 import AuthProvider from "./providers/AuthProvider"
+import ProfilePage from "./pages/ProfilePage"
 
 function App() {
+
   return (
     <BrowserRouter>
       <AntApp>
@@ -25,7 +26,6 @@ function App() {
         </ThemeProvider>
       </AntApp>
     </BrowserRouter>
-    // <FormExample />
   )
 }
 

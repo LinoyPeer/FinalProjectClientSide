@@ -2,7 +2,6 @@ import Joi from "joi";
 import { useCallback, useState } from "react";
 
 export default function useForm(initialData, schema, handleSubmit) {
-
     const [data, setData] = useState(initialData);
     const [errors, setErrors] = useState({});
 

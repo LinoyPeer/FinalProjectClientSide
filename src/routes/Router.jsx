@@ -8,6 +8,7 @@ import ErrorPage from '../pages/ErrorPage'
 import LoginPage from '../users/pages/LoginPage'
 import MyFavoritePosts from '../posts/pages/MyFavoritePosts'
 import SignupForm from '../forms/pages/SignupForm'
+import ProfilePage from '../pages/ProfilePage'
 
 
 export default function Router() {
@@ -21,6 +22,7 @@ export default function Router() {
                 <Route path={ROUTES.MY_POSTS} element={<MyPosts />} />
                 <Route path={ROUTES.LOGIN} element={<LoginPage />} />
                 <Route path={ROUTES.SIGNUP} element={<SignupForm />} />
+                <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
                 <Route path='/*' element={<ErrorPage />} />
 
 

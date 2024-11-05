@@ -3,25 +3,15 @@ import CustomedForm from '../components/CustomedForm';
 import CustomedInput from '../components/CustomedInput';
 import { LockOutlined, MailOutlined, PhoneOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import useForm from '../hooks/useForm';
-import Joi from 'joi';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes/routes';
-import { useAuth } from '../../providers/AuthProvider';
 import initialSignupForm from '../../users/helpers/initialForms/initialSignupForm';
+import signupSchema from '../../users/models/signupSchema';
 
-const schema = {
-    fullName: Joi.string().required().label("Full Name"),
-    username: Joi.string().min(6).required().label("Username"),
-    email: Joi.string().email({ tlds: { allow: false } }).required().label("Email"),
-    phone: Joi.string().required().label("Phone"),
-    password: Joi.string().min(2).required().label("Password"),
-};
 
 export default function SignupForm() {
-    const { login } = useAuth();
-    const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialSignupForm, schema, (formData) => {
+    const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialSignupForm, signupSchema, (formData) => {
         console.log("Form submitted successfully!", formData);
-        login();
     });
 
     const navigate = useNavigate();
@@ -29,7 +19,7 @@ export default function SignupForm() {
     return (
         <CustomedForm
             onSubmit={(e) => {
-                e.preventDefault(); // מונע רענון של העמוד
+                e.preventDefault();
                 onSubmit();
             }}
             onClear={handleReset}
@@ -37,7 +27,8 @@ export default function SignupForm() {
                 checkboxText: "Remember me",
                 submitText: "Register",
                 linkHrefTextOptinial2: "Log in",
-                onLinkClick: () => navigate(ROUTES.LOGIN)
+                onLinkClick: () => navigate(ROUTES.LOGIN),
+                submitDisabled: Object.keys(errors).length > 0
             }}
         >
             <CustomedInput

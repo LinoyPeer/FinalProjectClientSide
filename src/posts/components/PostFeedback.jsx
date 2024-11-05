@@ -4,7 +4,7 @@ import Posts from './Posts';
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
 
-export default function PostFeedback({ posts, isLoading, error, handleLike, handleComment }) {
+export default function PostFeedback({ posts, isLoading, error, handleLike, handleComment, isLiked }) {
 
     if (isLoading) return <Loading />
     if (error) return <Error errorMeassage={error} />
@@ -15,6 +15,7 @@ export default function PostFeedback({ posts, isLoading, error, handleLike, hand
                 posts={posts}
                 handleLike={handleLike}
                 handleComment={handleComment}
+                isLiked={isLiked}
             />
         )
     }

@@ -1,20 +1,18 @@
 import CustomedInput from "../components/CustomedInput";
 import CustomedForm from "../components/CustomedForm";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import Joi from "joi";
 import ROUTES from "../../routes/routes";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import useForm from "../hooks/useForm";
 import initialLoginForm from "../../users/helpers/initialForms/initialLoginForm";
 import loginSchema from "../../users/models/loginSchema";
+import useUsers from "../../users/hooks/useUsers";
+
 
 export default function LoginForm() {
-    const { login } = useAuth();
-    const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialLoginForm, loginSchema, () => {
-        console.log("Form submitted successfully!");
-        login();
-    });
+    const { handleLogin } = useUsers();
+    const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialLoginForm, loginSchema, handleLogin);
     const navigate = useNavigate();
 
     return (

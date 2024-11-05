@@ -1,24 +1,44 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
+import { getTokenFromLocalStorage, getUserDatailsFromLocalStorage } from '../users/services/localStorageService';
 
 const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(getTokenFromLocalStorage());
+
     const navigate = useNavigate();
 
-    const login = () => {
+    useEffect(() => {
+        if (user === null) {
+            const userFromLocalStorage = getUserDatailsFromLocalStorage();
+            console.log(userFromLocalStorage);
+            setUser(userFromLocalStorage);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (!isLoggedIn && token) {
+            setIsLoggedIn(true);
+        }
+    }, [isLoggedIn, token]);
+
+    const login = (newToken) => {
+        setToken(newToken);
         setIsLoggedIn(true);
         navigate(ROUTES.POSTS);
-    }
+    };
     const logout = () => {
         setIsLoggedIn(false);
+        setToken(null);
         navigate(ROUTES.ROOT);
-    }
+    };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, token, user, setToken, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
@@ -26,6 +46,6 @@ export default function AuthProvider({ children }) {
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (!context) throw new Error('useNotification must be used within NotificationProvider');
+    if (!context) throw new Error('useAuth must be used within AuthProvider');
     return context;
 };

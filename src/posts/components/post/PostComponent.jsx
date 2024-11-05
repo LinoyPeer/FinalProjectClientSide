@@ -4,12 +4,9 @@ import PostHeaderComponent from './PostHeaderComponent';
 import PostBodyComponent from './PostBodyComponent';
 import PostFooterComponent from './PostFooterComponent';
 
-export default function PostComponent({ post, handleLike, handleComment }) {
-
+export default function PostComponent({ post, handleLike, handleComment, isLiked }) {
     return (
-        <Card
-            style={{ width: 300, textAlign: 'center' }}
-        >
+        <Card style={{ width: 300, textAlign: 'center' }}>
             <PostHeaderComponent
                 title={post.title}
                 postStatus={post.postStatus}
@@ -22,6 +19,7 @@ export default function PostComponent({ post, handleLike, handleComment }) {
                 postId={post._id}
                 handleLike={handleLike}
                 handleComment={handleComment}
+                isLiked={isLiked}
             />
         </Card>
     );

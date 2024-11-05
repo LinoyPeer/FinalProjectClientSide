@@ -3,6 +3,7 @@ import React from 'react';
 import CustomedBottom from './CustomedBottom';
 
 export default function CustomedForm({ onSubmit, onClear, bottomProps, children, ...rest }) {
+
     return (
         <Card
             style={{

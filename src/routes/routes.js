@@ -5,7 +5,8 @@ const ROUTES = {
     FAVORITES: '/favorites',
     MY_POSTS: '/my-posts',
     LOGIN: '/login',
-    SIGNUP: '/signup'
+    SIGNUP: '/signup',
+    PROFILE: '/profile'
 };
 
 export default ROUTES;

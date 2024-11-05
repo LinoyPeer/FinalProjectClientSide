@@ -1,5 +1,4 @@
 import { Layout, Row } from 'antd';
-import { Content } from 'antd/es/layout/layout';
 import React from 'react';
 import { useTheme } from '../../providers/ThemeProvider';
 import { darkTheme, lightTheme } from '../../themes/accessibilityTheme';
@@ -33,8 +32,12 @@ export default function Footer() {
                 <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
                 <SearchOutlined />
                 <FileAddOutlined />
-                <HeartOutlined onClick={() => navigate(ROUTES.FAVORITES)} />
-                <UserOutlined />
+                <HeartOutlined onClick={() => {
+                    navigate(ROUTES.FAVORITES)
+                }} />
+                <UserOutlined onClick={() => {
+                    navigate(ROUTES.PROFILE)
+                }} />
             </Row>
         </Footer>
 
