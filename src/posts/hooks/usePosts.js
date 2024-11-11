@@ -6,7 +6,8 @@ import {
     createPostApi,
     editPostApi,
     deletePostByIdApi,
-    likePostByIdApi
+    likePostByIdApi,
+    getMyPostsApi
 } from "../services/postsApiService";
 import { useAuth } from "../../providers/AuthProvider";
 
@@ -15,7 +16,6 @@ export default function usePosts() {
     const [post, setPost] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState();
-
     const { token, user } = useAuth();
     const setNotification = useNotification();
 
@@ -33,6 +33,26 @@ export default function usePosts() {
             setIsLoading(false);
         }
     }, []);
+
+
+    const getMyPosts = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const myPostsData = await getMyPostsApi(token);
+            if (myPostsData) {
+                setPosts(myPostsData);
+                console.log('Updated posts:', myPostsData);
+                setNotification("green", "All my cards are here!");
+            }
+        } catch (error) {
+            console.error(error);
+            setNotification("red", "Failed to load cards.");
+            setError(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [setNotification, token]);
+
 
     const getPostById = useCallback(async (id) => {
         setIsLoading(true);
@@ -77,19 +97,16 @@ export default function usePosts() {
         async (id) => {
             setIsLoading(true);
             try {
-                // ודא ש-user לא null לפני גישה ל-user._id
                 if (!user) {
                     throw new Error("User is not authenticated");
                 }
-
                 const data = await likePostByIdApi(id, token);
                 setPost(data);
+                console.log(data._id);
                 setPosts(prev => prev.map(post => {
                     if (post._id !== id) { return post; }
                     return data;
                 }));
-
-                // בדוק אם data.likes כולל את user._id
                 if (data.likes.includes(user._id)) {
                     setNotification('green', `You liked the post: ${data.title}`);
                 } else {
@@ -103,7 +120,7 @@ export default function usePosts() {
                 setIsLoading(false);
             }
         },
-        [user] // הוספת user לתלותות
+        [user]
     );
 
 
@@ -115,6 +132,7 @@ export default function usePosts() {
         isLoading,
         error,
         getAllPosts,
+        getMyPosts,
         getPostById,
         createPost,
         editPost,

@@ -1,17 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import { getLikedPostsFromLocalStorage, setLikedPostsInLocalStorage } from "../../users/services/localStorageService";
 import usePosts from "./usePosts";
 
 export default function usePostsAction() {
     const { likePostById, posts } = usePosts();
-    const [isLiked, setIsLiked] = useState(() => {
-        const savedLikes = JSON.parse(localStorage.getItem("likedPosts") || "{}");
-        return savedLikes;
-    });
+    const [favoritePosts, setFavoritePosts] = useState([]);
+    const [isLiked, setIsLiked] = useState(() => getLikedPostsFromLocalStorage());
 
     const toggleLikeIcon = useCallback((postId) => {
         setIsLiked((prev) => {
             const updatedLikes = { ...prev, [postId]: !prev[postId] };
-            localStorage.setItem("likedPosts", JSON.stringify(updatedLikes));
+            setLikedPostsInLocalStorage(updatedLikes);
             return updatedLikes;
         });
     }, []);
@@ -25,7 +24,11 @@ export default function usePostsAction() {
     );
 
     const getFavoritePosts = useCallback(() => {
-        return posts.filter((post) => isLiked[post._id]);
+        console.log('posts', posts);
+        const postsLikedByUser = posts.filter((post) => isLiked[post._id]);
+        setFavoritePosts(postsLikedByUser);
+        console.log(postsLikedByUser);
+        return postsLikedByUser;
     }, [posts, isLiked]);
 
     const handleComment = (id) => {
@@ -40,6 +43,5 @@ export default function usePostsAction() {
         console.log(id + " Saved");
     };
 
-    return { handleLike, handleComment, handleShare, handleSave, getFavoritePosts, isLiked };
+    return { handleLike, handleComment, handleShare, handleSave, getFavoritePosts, isLiked, favoritePosts };
 }
-

@@ -1,14 +1,17 @@
-import { Avatar, Col, Row } from 'antd'
-import React from 'react'
-import { useAuth } from '../providers/AuthProvider'
 
-export default function ProfilePage({ posts = [], handleLike, handleComment, isLiked }) {
-    const { user } = useAuth();
-    console.log(JSON.stringify(user, null, 2));
-    console.log('posts: ', posts);
-    const userPosts = posts.filter(post => post.user_id === user._id);
-    console.log("User Posts:", userPosts);
+import { Avatar, Col, Row } from 'antd';
+import React, { useEffect } from 'react';
+import PostComponent from '../posts/components/post/PostComponent';
+import usePostsAction from '../posts/hooks/usePostsActions';
+import usePosts from '../posts/hooks/usePosts';
 
+export default function ProfilePage() {
+    const { posts, getMyPosts } = usePosts();
+    const { handleLike, handleComment, isLiked } = usePostsAction();
+
+    useEffect(() => {
+        getMyPosts();
+    }, [getMyPosts]);
 
     return (
         <>
@@ -20,8 +23,8 @@ export default function ProfilePage({ posts = [], handleLike, handleComment, isL
                 style={{ marginBottom: '20px', marginTop: '100px', width: '80%', margin: '0 auto' }}
                 gutter={20}
             >
-                {Array.isArray(userPosts) && userPosts.length > 0 ? (
-                    userPosts.map((post) => (
+                {Array.isArray(posts) && posts.length > 0 ? (
+                    posts.map((post) => (
                         <Col
                             key={post._id}
                             xs={24} sm={12} md={8} lg={6}
@@ -31,7 +34,7 @@ export default function ProfilePage({ posts = [], handleLike, handleComment, isL
                                 post={post}
                                 handleLike={handleLike}
                                 handleComment={handleComment}
-                                isLiked={isLiked[post._id]}
+                                isLiked={isLiked[post._id]} // מקבל את מצב הלייק עבור הפוסט הספציפי
                             />
                         </Col>
                     ))
@@ -40,5 +43,5 @@ export default function ProfilePage({ posts = [], handleLike, handleComment, isL
                 )}
             </Row>
         </>
-    )
+    );
 }

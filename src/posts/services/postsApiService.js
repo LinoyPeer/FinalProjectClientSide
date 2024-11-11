@@ -11,6 +11,26 @@ export const getAllPostsApi = async () => {
     }
 };
 
+// קבלת הפוסטים של משתמש ספציפי
+export const getMyPostsApi = async (token) => {
+    try {
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `${apiUrl}/my-posts`,
+            headers: {
+                'x-auth-token': `${token}`
+            }
+        };
+        const response = await axios.request(config);
+        return response.data;
+    } catch (error) {
+        console.error('Error in getMyPostsApi:', error);
+        throw new Error(error.message);
+    }
+};
+
+
 // קבלת פוסט לפי ID
 export const getPostByIdApi = async (id) => {
     try {

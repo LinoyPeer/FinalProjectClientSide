@@ -15,7 +15,6 @@ export default function AuthProvider({ children }) {
     useEffect(() => {
         if (user === null) {
             const userFromLocalStorage = getUserDatailsFromLocalStorage();
-            console.log(userFromLocalStorage);
             setUser(userFromLocalStorage);
         }
     }, [user]);

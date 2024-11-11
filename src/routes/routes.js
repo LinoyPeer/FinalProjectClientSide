@@ -3,10 +3,10 @@ const ROUTES = {
     POSTS: '/posts',
     ABOUT: '/about',
     FAVORITES: '/favorites',
-    MY_POSTS: '/my-posts',
+    // MY_POSTS: '/my-posts',
     LOGIN: '/login',
     SIGNUP: '/signup',
-    PROFILE: '/profile'
+    PROFILE: '/my-posts'
 };
 
 export default ROUTES;
