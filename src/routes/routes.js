@@ -6,7 +6,8 @@ const ROUTES = {
     // MY_POSTS: '/my-posts',
     LOGIN: '/login',
     SIGNUP: '/signup',
-    PROFILE: '/my-posts'
+    PROFILE: '/my-posts',
+    COMMUNICATION: '/communication',
 };
 
 export default ROUTES;

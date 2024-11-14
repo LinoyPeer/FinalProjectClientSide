@@ -9,6 +9,7 @@ import LoginPage from '../users/pages/LoginPage'
 import MyFavoritePosts from '../posts/pages/MyFavoritePosts'
 import SignupForm from '../forms/pages/SignupForm'
 import ProfilePage from '../pages/ProfilePage'
+import ChatSocket from '../sockets/ChatSocket'
 
 
 export default function Router() {
@@ -23,9 +24,8 @@ export default function Router() {
                 <Route path={ROUTES.LOGIN} element={<LoginPage />} />
                 <Route path={ROUTES.SIGNUP} element={<SignupForm />} />
                 <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+                <Route path={ROUTES.COMMUNICATION} element={<ChatSocket />} />
                 <Route path='/*' element={<ErrorPage />} />
-
-
             </Routes>
         </>
     )

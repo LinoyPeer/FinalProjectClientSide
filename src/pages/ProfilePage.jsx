@@ -7,7 +7,7 @@ import usePosts from '../posts/hooks/usePosts';
 
 export default function ProfilePage() {
     const { posts, getMyPosts } = usePosts();
-    const { handleLike, handleComment, isLiked } = usePostsAction();
+    const { handleLike, handleComment } = usePostsAction();
 
     useEffect(() => {
         getMyPosts();
@@ -34,7 +34,6 @@ export default function ProfilePage() {
                                 post={post}
                                 handleLike={handleLike}
                                 handleComment={handleComment}
-                                isLiked={isLiked[post._id]} // מקבל את מצב הלייק עבור הפוסט הספציפי
                             />
                         </Col>
                     ))

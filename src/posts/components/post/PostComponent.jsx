@@ -17,6 +17,7 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
             />
             <PostFooterComponent
                 postId={post._id}
+                post={post}
                 handleLike={handleLike}
                 handleComment={handleComment}
                 isLiked={isLiked}
