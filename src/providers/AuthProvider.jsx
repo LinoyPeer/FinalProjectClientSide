@@ -1,16 +1,41 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
 import { getTokenFromLocalStorage, getUserDatailsFromLocalStorage } from '../users/services/localStorageService';
+import axios from 'axios';
 
 const AuthContext = createContext();
 
 export default function AuthProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userDetails, setUserDetails] = useState(null);
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(getTokenFromLocalStorage());
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user && token) {
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: `http://localhost:8181/users/${user._id}`,
+                headers: {
+                    'x-auth-token': `${token}`
+                }
+            };
+
+            axios.request(config)
+                .then((response) => {
+                    console.log(JSON.stringify(response.data));
+                    setUserDetails(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [user, token]);
+
 
     useEffect(() => {
         if (user === null) {
@@ -37,7 +62,7 @@ export default function AuthProvider({ children }) {
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, token, user, setToken, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, token, user, setToken, login, logout, userDetails }}>
             {children}
         </AuthContext.Provider>
     );

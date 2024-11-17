@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export default function PostFooterComponent({ post, handleLike, handleComment }) {
     const { setPosts } = usePostsActions();
     const { user } = useAuth();
-    const [isLiked, setIsLiked] = useState(post.likes.includes(user._id));
+    const [isLiked, setIsLiked] = useState(post.likes.includes(user && user._id));
 
     const handleLikeClick = async () => {
 

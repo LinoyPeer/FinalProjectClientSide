@@ -1,258 +1,113 @@
-
-// import { SendOutlined } from '@ant-design/icons';
-// import { Avatar, Button, Input, List } from 'antd';
-// import React, { useEffect, useState } from 'react';
-// import { io } from 'socket.io-client';
-// import { useAuth } from '../providers/AuthProvider';
-
-// export default function ChatSocket() {
-//     const SOCKET_SERVER_URL = 'http://localhost:8181';
-//     const [socket, setSocket] = useState(null);
-//     const [messages, setMessages] = useState([]);
-//     const [message, setMessage] = useState("");
-//     // const [userConnected, setUserConnected] = useState(null);
-//     const [isSending, setIsSending] = useState(false); // מצב לשליחת הודעה
-//     const { user } = useAuth();
-
-//     // useEffect(() => {
-//     //     if (user) {
-//     //         setUserConnected(user);
-//     //     }
-//     // }, [user]);
-
-//     const userInfo = {
-//         id: user ? user._id : Math.random().toString(36),
-//         name: "Anonymous",
-//         avatar: "https://i.pravatar.cc/150?img=3",
-//     };
-
-//     useEffect(() => {
-//         const newSocket = io(SOCKET_SERVER_URL, { autoConnect: false });
-//         newSocket.connect();
-//         setSocket(newSocket);
-
-//         newSocket.on('connect', () => {
-//             console.log('Connected to socket server');
-//         });
-
-//         newSocket.on('message received', (newMessage) => {
-//             console.log(newMessage);
-
-//             if (user && user._id === newMessage.userInfo.id) return;
-//             setMessages((prevMessages) => [...prevMessages, newMessage]);
-//         });
-
-//         newSocket.on('recoverHistory', (history) => {
-//             setMessages(history);
-//         });
-
-//         return () => {
-//             newSocket.disconnect();
-//         };
-//     }, []);
-
-//     const handleSendMessage = (e) => {
-//         // if (messages.includes(message)) return;
-//         e.preventDefault(); // מונע שליחה כפולה אם הגעת לכאן עם Enter
-//         if (message.trim() && socket && !isSending) {  // רק אם אין שליחה בתהליך
-//             setIsSending(true);  // סימן שההודעה בתהליך שליחה
-//             const newMessage = { userInfo, message, timestamp: new Date() };
-//             socket.emit('message sent', newMessage);
-//             setMessages((prevMessages) => [...prevMessages, newMessage]);
-//             setMessage(""); // מנקה את השדה אחרי שליחה
-//             setTimeout(() => {
-//                 setIsSending(false); // אחרי חצי שנייה, מאפשר שליחה חדשה
-//             }, 500);  // זמן המתנה לפני שמאפשרים לשלוח הודעה נוספת
-//         }
-//     };
-
-//     console.log('Messages:', messages);
-
-//     return (
-//         <div style={{
-//             width: '100%',
-//             height: 500,
-//             border: "1px solid #ddd",
-//             borderRadius: 8,
-//             display: 'flex',
-//             flexDirection: 'column',
-//             backgroundColor: "#f9f9f9"
-//         }}>
-//             <h2 style={{ textAlign: "center" }}>Chat</h2>
-//             <List
-//                 style={{ flex: 1, overflowY: "auto", marginBottom: "16px" }}
-//                 dataSource={messages}
-//                 renderItem={(item, index) => (
-//                     <List.Item
-//                         key={index}
-//                         style={{
-//                             justifyContent: user && user._id === userInfo.id ? 'flex-end' : 'flex-start'
-//                         }}
-//                     >
-//                         <List.Item.Meta
-//                             avatar={<Avatar src={item.user ? item.user.avatar : "https://i.pravatar.cc/150?img=3"} />}
-//                             title={item.user ? item.user.name : "Anonymous"}
-//                             description={item.message}
-//                             style={{
-//                                 textAlign: user && user._id === userInfo.id ? 'left' : 'right'
-//                             }}
-//                         />
-//                     </List.Item>
-//                 )}
-//             />
-//             <form onSubmit={handleSendMessage}>  {/* הוספנו את ה-form */}
-//                 <div style={{ display: 'flex', gap: '8px' }}>
-//                     <Input
-//                         value={message}
-//                         onChange={(e) => setMessage(e.target.value)}
-//                         placeholder="Type a message"
-//                         style={{ flex: 1 }}
-//                     />
-//                     <Button
-//                         type="primary"
-//                         icon={<SendOutlined />}
-//                         htmlType="submit"  // הפעלת שליחה דרך ה-form
-//                         disabled={!message.trim() || isSending}  // אם יש שליחה בתהליך, לא ניתן לשלוח הודעה
-//                     >
-//                         Send
-//                     </Button>
-//                 </div>
-//             </form>
-//         </div>
-//     );
-// }
-
-
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { io } from 'socket.io-client';
 import { SendOutlined } from '@ant-design/icons';
 import { Avatar, Button, Input, List } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
 import { useAuth } from '../providers/AuthProvider';
 
 export default function ChatSocket() {
-    const SOCKET_SERVER_URL = 'http://localhost:8181';
-    const [socket, setSocket] = useState(null);
+    const socketRef = useRef(null);
     const [messages, setMessages] = useState([]);
-    const [message, setMessage] = useState("");
-    // const [userConnected, setUserConnected] = useState(null);
-    const [isSending, setIsSending] = useState(false); // מצב לשליחת הודעה
-    const { user } = useAuth();
-
-    // useEffect(() => {
-    //     if (user) {
-    //         setUserConnected(user);
-    //     }
-    // }, [user]);
-
-    const userInfo = {
-        id: user ? user._id : Math.random().toString(36),
-        // id: user && user._id,
-        name: "Anonymous",
-        avatar: "https://i.pravatar.cc/150?img=3",
-    };
+    const [message, setMessage] = useState('');
+    const [isSending, setIsSending] = useState(false);
+    const { userDetails } = useAuth();
+    const SOCKET_IO_SERVER = 'http://localhost:8181/chat';
+    const messagesEndRef = useRef(null);
 
     useEffect(() => {
-        const newSocket = io(SOCKET_SERVER_URL, { autoConnect: false });
-        newSocket.connect();
-        setSocket(newSocket);
+        socketRef.current = io(SOCKET_IO_SERVER);
 
-        newSocket.on('connection', () => {
-            console.log('Connected to socket server');
-        });
-
-        newSocket.on('recoverHistory', (history) => {
+        socketRef.current.on('chatHistory', (history) => {
             setMessages(history);
         });
 
-        newSocket.on('message received', (newMessage) => {
-            console.log(newMessage);
-
-            if (user && user._id === newMessage.userInfo.id) return;
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
+        socketRef.current.on('chatMessage', (newMessage) => {
+            setMessages(prevMessages => [...prevMessages, newMessage]);
         });
 
-
         return () => {
-            newSocket.disconnect();
+            socketRef.current.disconnect();
         };
     }, []);
 
-    const handleSendMessage = useCallback((e) => {
-        // if (messages.includes(message)) return;
-        e.preventDefault();
-        if (message.trim() && socket && !isSending) {
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    const handleSendMessage = useCallback(() => {
+        if (message.trim()) {
             setIsSending(true);
-            const newMessage = { userInfo, message, timestamp: new Date() };
-            socket.emit('message sent', newMessage, (ack) => {
-                if (ack.success) {
-                    console.log('Message was acknowledged by the server');
+            socketRef.current.emit('sendMessage', {
+                content: message,
+                timestamp: new Date().toISOString(),
+                sender: {
+                    first: userDetails.name.first,
+                    last: userDetails.name.last,
+                    _id: userDetails._id,
                 }
             });
-
-            // socket.emit('message sent', newMessage);
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
-            setMessage("");
-            setTimeout(() => {
-                setIsSending(false);
-            }, 500);
+            setMessage('');
+            setIsSending(false);
         }
-    }, [user, message]);
-
-    console.log('Messages:', messages);
+    }, [message, userDetails]);
 
     return (
-        <div style={{
-            width: '100%',
-            height: 500,
-            border: "1px solid #ddd",
-            borderRadius: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: "#f9f9f9"
-        }}>
-            <h2 style={{ textAlign: "center" }}>Chat</h2>
+        <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto', display: 'flex', flexDirection: 'column', height: '100vh' }}>
             <List
-                style={{ flex: 1, overflowY: "auto", marginBottom: "16px" }}
                 dataSource={messages}
-                renderItem={(item, index) => (
-                    <List.Item
-                        key={index}
-                        style={{
-                            justifyContent: user && user._id === item.userInfo.id ? 'flex-end' : 'flex-start',
-                            borderRadius: '8px',
-                        }}
-                    >
-                        <List.Item.Meta
-                            avatar={<Avatar src={item.user ? item.user.avatar : "https://i.pravatar.cc/150?img=3"} />}
-                            // title={item.user ? item.user.name : "Anonymous"}
-                            title={user && user._id === item.userInfo.id ? 'left' : 'right'}
-                            description={item.message}
+                renderItem={(item, index) => {
+                    const isCurrentUser = userDetails && (item.sender._id === userDetails._id);
+                    return (
+                        <List.Item
+                            key={index}
                             style={{
-                                textAlign: user && user._id === item.userInfo.id ? 'left' : 'right'
+                                display: 'flex',
+                                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
                             }}
-                        />
-                    </List.Item>
-                )}
+                        >
+                            <div
+                                style={{
+                                    backgroundColor: isCurrentUser ? '#d1e7dd' : '#f8d7da',
+                                    padding: '10px',
+                                    borderRadius: '10px',
+                                    width: '100%',
+                                    textAlign: isCurrentUser ? 'right' : 'left',
+                                    wordWrap: 'break-word',
+                                }}
+                            >
+                                <List.Item.Meta
+                                    avatar={<Avatar style={{
+                                        direction: isCurrentUser ? 'rtl' : 'ltr',
+                                    }}>{item.sender.first[0]}</Avatar>}
+                                    title={`${item.sender.first} ${item.sender.last}`}
+                                    description={item.content}
+
+                                />
+                                <div style={{ fontSize: '0.75rem', color: 'gray', }}>
+                                    {new Date(item.timestamp).toLocaleString()}
+                                </div>
+                            </div>
+                        </List.Item>
+                    );
+                }}
             />
-            <form onSubmit={handleSendMessage}>  {/* הוספנו את ה-form */}
-                <div style={{ display: 'flex', gap: '8px' }}>
-                    <Input
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        placeholder="Type a message"
-                        style={{ flex: 1 }}
-                    />
-                    <Button
-                        type="primary"
-                        icon={<SendOutlined />}
-                        htmlType="submit"  // הפעלת שליחה דרך ה-form
-                        disabled={!message.trim() || isSending}  // אם יש שליחה בתהליך, לא ניתן לשלוח הודעה
-                    >
-                        Send
-                    </Button>
-                </div>
-            </form>
+            <div ref={messagesEndRef} />
+
+            <div style={{ position: 'fixed', bottom: '60px', left: '20px', right: '20px' }}>
+                <Input
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onPressEnter={handleSendMessage}
+                    placeholder="Type a message..."
+                    suffix={
+                        <Button
+                            type="primary"
+                            onClick={handleSendMessage}
+                            disabled={isSending}
+                            icon={<SendOutlined />}
+                        />
+                    }
+                />
+            </div>
         </div>
     );
 }
-
