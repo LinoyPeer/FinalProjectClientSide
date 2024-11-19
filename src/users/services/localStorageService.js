@@ -13,7 +13,7 @@
 //     return localStorage.getItem(TOKEN);
 // };
 
-// export const getUserDatailsFromLocalStorage = () => {
+// export const getuserDetailsFromLocalStorage = () => {
 //     try {
 //         const loginToken = getTokenFromLocalStorage()
 //         return jwtDecode(loginToken);
@@ -39,7 +39,7 @@ export const getTokenFromLocalStorage = () => {
     return localStorage.getItem(TOKEN);
 };
 
-export const getUserDatailsFromLocalStorage = () => {
+export const getuserDetailsFromLocalStorage = () => {
     try {
         const loginToken = getTokenFromLocalStorage();
         return jwtDecode(loginToken);

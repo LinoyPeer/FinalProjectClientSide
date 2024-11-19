@@ -2,7 +2,7 @@ import { Layout, Row } from 'antd';
 import React from 'react';
 import { useTheme } from '../../providers/ThemeProvider';
 import { darkTheme, lightTheme } from '../../themes/accessibilityTheme';
-import { FileAddOutlined, HeartOutlined, HomeOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { FileAddOutlined, HeartOutlined, HomeOutlined, MessageOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes/routes';
 
@@ -30,7 +30,7 @@ export default function Footer() {
                 style={{ textAlign: 'center', display: 'inline-flex', gap: '3em', fontSize: '19px' }}
             >
                 <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
-                <SearchOutlined />
+                <MessageOutlined onClick={() => navigate(ROUTES.COMMUNICATION)} />
                 <FileAddOutlined />
                 <HeartOutlined onClick={() => {
                     navigate(ROUTES.FAVORITES)

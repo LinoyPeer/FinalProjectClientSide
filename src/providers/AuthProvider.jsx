@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
-import { getTokenFromLocalStorage, getUserDatailsFromLocalStorage } from '../users/services/localStorageService';
+import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage } from '../users/services/localStorageService';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -39,7 +39,7 @@ export default function AuthProvider({ children }) {
 
     useEffect(() => {
         if (user === null) {
-            const userFromLocalStorage = getUserDatailsFromLocalStorage();
+            const userFromLocalStorage = getuserDetailsFromLocalStorage();
             setUser(userFromLocalStorage);
         }
     }, [user]);
@@ -73,3 +73,67 @@ export const useAuth = () => {
     if (!context) throw new Error('useAuth must be used within AuthProvider');
     return context;
 };
+
+// import React, { createContext, useContext, useEffect, useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import ROUTES from '../routes/routes';
+// import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage } from '../users/services/localStorageService';
+// import useUsers from '../users/hooks/useUsers';
+
+// const AuthContext = createContext();
+
+// export default function AuthProvider({ children }) {
+//     const [isLoggedIn, setIsLoggedIn] = useState(false);
+//     // const [userDetails, setUserDetails] = useState(null);
+//     const [user, setUser] = useState(null);
+//     const { getUserDetails } = useUsers();
+//     const [token, setToken] = useState(getTokenFromLocalStorage());
+
+//     const navigate = useNavigate();
+
+//     useEffect(() => {
+//         if (user && token) {
+//             getUserDetails();
+//             // setUserDetails(userDetails)
+//             console.log(data);
+//         }
+//     }, [user, token]);
+
+
+//     useEffect(() => {
+//         if (user === null) {
+//             const userFromLocalStorage = getuserDetailsFromLocalStorage();
+//             setUser(userFromLocalStorage);
+//         }
+//     }, [user]);
+
+//     useEffect(() => {
+//         if (!isLoggedIn && token) {
+//             setIsLoggedIn(true);
+//         }
+//     }, [isLoggedIn, token]);
+
+//     const login = (newToken) => {
+//         setToken(newToken);
+//         setIsLoggedIn(true);
+//         navigate(ROUTES.POSTS);
+//     };
+//     const logout = () => {
+//         setIsLoggedIn(false);
+//         setToken(null);
+//         navigate(ROUTES.ROOT);
+//     };
+
+//     return (
+//         <AuthContext.Provider value={{ isLoggedIn, token, user, setToken, login, logout, userDetails }}>
+//             {children}
+//         </AuthContext.Provider>
+//     );
+// }
+
+// export const useAuth = () => {
+//     const context = useContext(AuthContext);
+//     if (!context) throw new Error('useAuth must be used within AuthProvider');
+//     return context;
+// };
+

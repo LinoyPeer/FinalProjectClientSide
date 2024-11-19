@@ -42,6 +42,7 @@ export default function ChatSocket() {
                 sender: {
                     first: userDetails.name.first,
                     last: userDetails.name.last,
+                    image: userDetails.image.url,
                     _id: userDetails._id,
                 }
             });
@@ -75,13 +76,11 @@ export default function ChatSocket() {
                                 }}
                             >
                                 <List.Item.Meta
-                                    avatar={<Avatar style={{
-                                        direction: isCurrentUser ? 'rtl' : 'ltr',
-                                    }}>{item.sender.first[0]}</Avatar>}
+                                    avatar={<Avatar>{item.sender.first[0]}</Avatar>}
                                     title={`${item.sender.first} ${item.sender.last}`}
                                     description={item.content}
-
                                 />
+
                                 <div style={{ fontSize: '0.75rem', color: 'gray', }}>
                                     {new Date(item.timestamp).toLocaleString()}
                                 </div>
@@ -90,7 +89,7 @@ export default function ChatSocket() {
                     );
                 }}
             />
-            <div ref={messagesEndRef} />
+            < div ref={messagesEndRef} />
 
             <div style={{ position: 'fixed', bottom: '60px', left: '20px', right: '20px' }}>
                 <Input
@@ -108,6 +107,6 @@ export default function ChatSocket() {
                     }
                 />
             </div>
-        </div>
+        </div >
     );
 }
