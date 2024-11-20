@@ -11,6 +11,7 @@ import SignupForm from '../forms/pages/SignupForm'
 import ProfilePage from '../pages/ProfilePage'
 import ChatSocket from '../sockets/ChatSocket'
 import ChatsViewPage from '../pages/ChatsViewPage'
+import StartChat from '../sockets/StartChat'
 
 
 export default function Router() {
@@ -27,6 +28,7 @@ export default function Router() {
                 <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
                 <Route path={ROUTES.COMMUNICATION} element={<ChatSocket />} />
                 <Route path={ROUTES.CHATS} element={<ChatsViewPage />} />
+                <Route path={ROUTES.START_CHAT} element={<StartChat />} />
                 <Route path='/*' element={<ErrorPage />} />
             </Routes>
         </>

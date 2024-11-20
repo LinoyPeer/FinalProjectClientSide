@@ -8,6 +8,7 @@ const ROUTES = {
     PROFILE: '/my-posts',
     CHATS: '/chats_view',
     COMMUNICATION: '/communication',
+    START_CHAT: '/chat/:roomId'
 };
 
 export default ROUTES;
