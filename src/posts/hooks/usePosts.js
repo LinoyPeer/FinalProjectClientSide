@@ -209,15 +209,16 @@ export default function usePosts() {
 
     const createPost = useCallback(async (postData) => {
         try {
-            const data = await createPostApi(postData);
-            setNotification('green', 'Post created successfully!');
-            setPosts(prevPosts => [...prevPosts, data]);
-        } catch (e) {
-            console.error(e);
-            setNotification('red', 'Failed to create post.');
-            setError(e.message);
+            const data = await createPostApi(postData, token);
+            console.log('Server response:', data); // הדפס את התגובה מהשרת
+            setPosts((prevPosts) => [...prevPosts, data]);
+        } catch (err) {
+            console.error('Failed to create post:', err.message);
+            setError(err.message);
         }
     }, []);
+
+
 
     const editPost = useCallback(async (id, postData) => {
         try {

@@ -3,7 +3,6 @@ import CustomedForm from "../components/CustomedForm";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import ROUTES from "../../routes/routes";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../providers/AuthProvider";
 import useForm from "../hooks/useForm";
 import initialLoginForm from "../../users/helpers/initialForms/initialLoginForm";
 import loginSchema from "../../users/models/loginSchema";

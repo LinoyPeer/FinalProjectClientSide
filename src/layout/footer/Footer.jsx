@@ -30,8 +30,8 @@ export default function Footer() {
                 style={{ textAlign: 'center', display: 'inline-flex', gap: '3em', fontSize: '19px' }}
             >
                 <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
-                <MessageOutlined onClick={() => navigate(ROUTES.COMMUNICATION)} />
-                <FileAddOutlined />
+                <MessageOutlined onClick={() => navigate(ROUTES.CHATS)} />
+                <FileAddOutlined onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
                 <HeartOutlined onClick={() => {
                     navigate(ROUTES.FAVORITES)
                 }} />

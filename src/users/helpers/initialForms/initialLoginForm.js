@@ -1,5 +1,5 @@
 const initialLoginForm = {
-    username: "fefef",
+    username: "",
     password: "",
 };
 
