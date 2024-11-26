@@ -39,11 +39,25 @@ export const getPostByIdApi = async (id) => {
     }
 };
 
-export const createPostApi = async (postData) => {
+export const createPostApi = async (data, token) => {
+    console.log(data);
     try {
-        const { data } = await axios.post(apiUrl, postData);
-        return data;
+        const headers = {
+            'x-auth-token': `${token}`,
+            'Content-Type': 'multipart/form-data',
+        };
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `${apiUrl}`,
+            headers: headers,
+            data: data,
+        };
+        const response = await axios.request(config);
+        console.log("Server response:", JSON.stringify(response.data));
+        return response.data;
     } catch (e) {
+        console.error("Error while creating post:", e.message);
         throw new Error(e.message);
     }
 };

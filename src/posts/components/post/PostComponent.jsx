@@ -5,6 +5,7 @@ import PostBodyComponent from './PostBodyComponent';
 import PostFooterComponent from './PostFooterComponent';
 
 export default function PostComponent({ post, handleLike, handleComment, isLiked }) {
+
     return (
         <Card style={{ width: 300, textAlign: 'center' }}>
             <PostHeaderComponent
@@ -12,7 +13,7 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
                 postStatus={post.postStatus}
             />
             <PostBodyComponent
-                imageSrc={post.image.url}
+                imageSrc={post.image.path}
                 imageAlt={post.image.alt}
             />
             <PostFooterComponent

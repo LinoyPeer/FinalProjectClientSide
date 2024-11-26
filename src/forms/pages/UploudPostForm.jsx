@@ -6,35 +6,75 @@ import CustomedInput from "../components/CustomedInput";
 import initialUploudForm from "../helpers/initialUploudForm";
 import uploudSchema from "../models/uploudSchema";
 import { BorderlessTableOutlined, SignatureOutlined, UploadOutlined } from "@ant-design/icons";
-
+import { createPostApi } from "../../posts/services/postsApiService";
+import { useAuth } from "../../providers/AuthProvider";
 
 export default function UploudPostForm() {
     const [imagePreview, setImagePreview] = useState(null);
-    const { createPost } = usePosts();
+    const [altText, setAltText] = useState("Default alt");
 
+    const { createPost } = usePosts();
+    const { token } = useAuth();
     const { handleChange, onSubmit, handleReset, data, errors } = useForm(
         initialUploudForm,
         uploudSchema,
         createPost
     );
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
         if (file) {
-            setImagePreview(URL.createObjectURL(file));
-            handleChange({ target: { name: 'image', value: file } });
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+
+            handleChange({
+                target: {
+                    name: 'image',
+                    value: {
+                        file: file,
+                        alt: altText,
+                    },
+                },
+            });
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        // e.preventDefault();
+
+        try {
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('postStatus', data.postStatus);
+            console.log(data);
+            if (data.image?.file) {
+                formData.append('image', data.image.file);
+            } else {
+                return alert('Image is required');
+            }
+
+            formData.append('imageAlt', data.image?.alt || '');
+
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+
+            const response = await createPostApi(formData, token);
+            console.log('Post created:', response);
+        } catch (error) {
+            console.error('Error:', error);
         }
     };
 
     return (
         <CustomedForm
-            onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit(e);
-            }}
+            onSubmit={handleSubmit}
             onClear={handleReset}
             bottomProps={{
-                submitText: 'Uploud Post',
+                submitText: 'Upload Post',
                 submitDisabled: Object.keys(errors).length > 0,
             }}
         >
@@ -54,31 +94,28 @@ export default function UploudPostForm() {
                 value={data.postStatus || ''}
                 error={errors.postStatus}
             />
-            <div className="image-upload">
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    id="image-upload"
-                    style={{ display: 'none' }}
-                />
-                <button
-                    type="button"
-                    onClick={() => document.getElementById('image-upload').click()}
-                >
-                    <UploadOutlined /> Uploud Photo
-                </button>
-                {imagePreview && (
-                    <div>
-                        <img
-                            src={imagePreview}
-                            alt="Preview"
-                            style={{ maxWidth: '200px', marginTop: '10px' }}
-                        />
-                    </div>
-                )}
-                {errors.image && <div className="error">{errors.image}</div>}
-            </div>
+            <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                id="image-upload"
+                style={{ display: 'none' }}
+            />
+            <button
+                type="button"
+                onClick={() => document.getElementById('image-upload').click()}
+            >
+                Upload Photo
+            </button>
+            {imagePreview && (
+                <div>
+                    <img
+                        src={imagePreview}
+                        alt="Preview"
+                        style={{ maxWidth: '200px', marginTop: '10px' }}
+                    />
+                </div>
+            )}
         </CustomedForm>
     );
 }
