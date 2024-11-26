@@ -42,8 +42,7 @@ export default function UploudPostForm() {
         }
     };
 
-    const handleSubmit = async (e) => {
-        // e.preventDefault();
+    const handleSubmit = async () => {
 
         try {
             const formData = new FormData();
