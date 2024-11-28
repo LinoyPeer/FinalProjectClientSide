@@ -91,11 +91,50 @@ export const likePostByIdApi = async (id, token) => {
     }
 };
 
+export const commentPostByIdApi = async (id, data, token) => {
+    // let data = JSON.stringify({
+    //     "comment": "This is a second comment for the post!!!!."
+    // });
 
-export const deletePostByIdApi = async (id) => {
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${apiUrl}/${id}/comments`,
+        headers: {
+            'x-auth-token': `${token}`,
+            'Content-Type': 'application/json',
+        },
+        data: data
+    };
+    axios.request(config)
+        .then((response) => {
+            console.log(JSON.stringify(response.data));
+            return response.data;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+};
+
+
+export const deletePostByIdApi = async (id, token) => {
     try {
-        const { data } = await axios.delete(`${apiUrl}/${id}`);
-        return data;
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `${apiUrl}/${id}`,
+            headers: {
+                'x-auth-token': `${token}`
+            }
+        };
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     } catch (e) {
         throw new Error(e.message);
     }

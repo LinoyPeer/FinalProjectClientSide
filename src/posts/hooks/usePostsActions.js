@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import usePosts from "./usePosts";
 import { useAuth } from "../../providers/AuthProvider";
-import { likePostByIdApi } from "../services/postsApiService";
+import { commentPostByIdApi, likePostByIdApi } from "../services/postsApiService";
 
 export default function usePostsActions() {
     const { setPosts, setIsLoading, isLoading, error, setError } = usePosts();
@@ -44,13 +44,23 @@ export default function usePostsActions() {
         }
     }, [user, token, setPosts, setError]);
 
-    const handleComment = () => {
-        console.log('Comment handled');
-    };
-
     const handleShare = () => {
         console.log('Share handled');
     };
+
+    const handleComment = useCallback(async (postId, commentData, token) => {
+        setIsLoading(true);
+        try {
+            const data = await commentPostByIdApi(postId, commentData, token);
+            console.log('Comment created successfully:', data);
+            return data;
+        } catch (e) {
+            setError(e.message);
+            console.error('Error commenting:', e.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
 
 

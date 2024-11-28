@@ -12,10 +12,9 @@ import { useAuth } from "../../providers/AuthProvider";
 export default function UploudPostForm() {
     const [imagePreview, setImagePreview] = useState(null);
     const [altText, setAltText] = useState("Default alt");
-
     const { createPost } = usePosts();
     const { token } = useAuth();
-    const { handleChange, onSubmit, handleReset, data, errors } = useForm(
+    const { handleChange, handleReset, data, errors } = useForm(
         initialUploudForm,
         uploudSchema,
         createPost
@@ -29,7 +28,6 @@ export default function UploudPostForm() {
                 setImagePreview(reader.result);
             };
             reader.readAsDataURL(file);
-
             handleChange({
                 target: {
                     name: 'image',
@@ -39,11 +37,10 @@ export default function UploudPostForm() {
                     },
                 },
             });
-        }
+        };
     };
 
     const handleSubmit = async () => {
-
         try {
             const formData = new FormData();
             formData.append('title', data.title);
@@ -54,13 +51,10 @@ export default function UploudPostForm() {
             } else {
                 return alert('Image is required');
             }
-
             formData.append('imageAlt', data.image?.alt || '');
-
             for (let [key, value] of formData.entries()) {
                 console.log(key, value);
             }
-
             const response = await createPostApi(formData, token);
             console.log('Post created:', response);
         } catch (error) {

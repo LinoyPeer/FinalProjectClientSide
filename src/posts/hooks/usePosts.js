@@ -7,7 +7,7 @@ import {
     getPostByIdApi,
     editPostApi,
     deletePostByIdApi,
-    getMyPostsApi
+    getMyPostsApi,
 } from "../services/postsApiService";
 
 export default function usePosts() {
@@ -82,12 +82,21 @@ export default function usePosts() {
         }
     }, []);
 
-
-
-
     const editPost = useCallback(async (id, postData) => {
         try {
             const data = await editPostApi(id, postData);
+            setNotification('green', 'Post updated successfully!');
+            setPosts(prevPosts => prevPosts.map(post => post._id === id ? data : post));
+        } catch (e) {
+            console.error(e);
+            setNotification('red', 'Failed to update post.');
+            setError(e.message);
+        }
+    }, []);
+
+    const deletePostById = useCallback(async (id, postData) => {
+        try {
+            const data = await deletePostByIdApi(id, postData);
             setNotification('green', 'Post updated successfully!');
             setPosts(prevPosts => prevPosts.map(post => post._id === id ? data : post));
         } catch (e) {
@@ -109,7 +118,7 @@ export default function usePosts() {
         getPostById,
         createPost,
         editPost,
-        // deletePostById,
+        deletePostById,
         getMyPosts,
     };
 }
