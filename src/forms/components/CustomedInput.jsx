@@ -1,7 +1,7 @@
 import { Form, Input } from 'antd';
 import React from 'react';
 
-export default function CustomedInput({ name, error, placeholder, type, value, onChange, prefix }) {
+export default function CustomedInput({ name, error, placeholder, type, value, onChange, prefix, disabled }) {
 
     return (
         <Form.Item
@@ -16,6 +16,7 @@ export default function CustomedInput({ name, error, placeholder, type, value, o
                 value={value}
                 onChange={onChange}
                 prefix={prefix}
+                disabled={disabled}
             />
         </Form.Item>
     );

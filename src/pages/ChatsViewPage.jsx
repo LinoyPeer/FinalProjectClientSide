@@ -16,8 +16,8 @@ export default function ChatsViewPage() {
 
     useEffect(() => {
         const nameOfEachUser = allUsers.map(user => {
-            const fullName = `${user.name.first} ${user.name.middle || ''} ${user.name.last || ''}`.trim();
-            const initials = `${user.name.first[0]}${user.name.last[0]}`.toUpperCase();
+            const fullName = `${user.name?.first || 'Unknown'} ${user.name?.middle || ''} ${user.name?.last || ''}`.trim();
+            const initials = `${user.name?.first?.[0] || 'U'}${user.name?.last?.[0] || 'U'}`.toUpperCase();
             console.log(initials);
 
             return {

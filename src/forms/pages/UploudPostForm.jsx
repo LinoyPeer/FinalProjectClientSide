@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import usePosts from "../../posts/hooks/usePosts";
 import useForm from "../hooks/useForm";
 import CustomedForm from "../components/CustomedForm";
@@ -8,17 +8,34 @@ import uploudSchema from "../models/uploudSchema";
 import { BorderlessTableOutlined, SignatureOutlined, UploadOutlined } from "@ant-design/icons";
 import { createPostApi } from "../../posts/services/postsApiService";
 import { useAuth } from "../../providers/AuthProvider";
+import Typography from "antd/es/typography/Typography";
 
 export default function UploudPostForm() {
     const [imagePreview, setImagePreview] = useState(null);
     const [altText, setAltText] = useState("Default alt");
+    const [userFullName, setUserFullName] = useState(''); // לא בהכרח נדרש, אפשר להדפיס ישירות את המידע ב-Console
     const { createPost } = usePosts();
-    const { token } = useAuth();
+    const { token, userDetails } = useAuth();
     const { handleChange, handleReset, data, errors } = useForm(
         initialUploudForm,
         uploudSchema,
         createPost
     );
+
+    const userFullNameString = userDetails ?
+        `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''}`.trim() :
+        "Unknown";
+
+    useEffect(() => {
+        if (userDetails) {
+            console.log("User Details Loaded:", userDetails);
+            setUserFullName(userFullNameString);
+        }
+    }, [userDetails]);
+
+    useEffect(() => {
+        console.log("Updated userFullName:", userFullName);  // הדפסת השם המלא
+    }, [userFullName]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -37,13 +54,12 @@ export default function UploudPostForm() {
                     },
                 },
             });
-        };
+        }
     };
 
     const handleSubmit = async () => {
         try {
             const formData = new FormData();
-            formData.append('title', data.title);
             formData.append('postStatus', data.postStatus);
             console.log(data);
             if (data.image?.file) {
@@ -71,14 +87,7 @@ export default function UploudPostForm() {
                 submitDisabled: Object.keys(errors).length > 0,
             }}
         >
-            <CustomedInput
-                name="title"
-                placeholder="Title"
-                prefix={<SignatureOutlined />}
-                onChange={handleChange}
-                value={data.title || ''}
-                error={errors.title}
-            />
+            <Typography style={{ fontSize: '10px', color: 'black', fontWeight: 'bold', fontFamily: 'Tahoma' }}>You are logged in as: {userFullNameString}</Typography>
             <CustomedInput
                 name="postStatus"
                 placeholder="Status"

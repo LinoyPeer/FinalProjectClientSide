@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import ROUTES from "../../routes/routes";
 import { setTokenInLocalStorage } from "../services/localStorageService";
-import { getAllUsersApi, getUserDetailsApi, loginUserApi } from "../services/usersApiService";
+import { getAllUsersApi, getUserDetailsApi, loginUserApi, signupUserApi } from "../services/usersApiService";
 import { useCallback, useState } from "react";
 import { useNotification } from "../../providers/NotificationProvider";
 
@@ -52,7 +52,41 @@ export default function useUsers() {
         }
     };
 
+    const handleSignup = useCallback(async (userSignupInfo, profileImage) => {
+        setIsLoading(true);
+        try {
+            // יצירת אובייקט FormData לשליחת פרטי המשתמש והתמונה (אם יש)
+            const formData = new FormData();
 
-    return { userDetails, allUsers, error, getUserDetails, getAllUsers, handleLogin, isLoading, error };
+            formData.append('fullName', userSignupInfo.fullName || '');
+            formData.append('username', userSignupInfo.username || '');
+            formData.append('email', userSignupInfo.email || '');
+            formData.append('phone', userSignupInfo.phone || '');
+            formData.append('password', userSignupInfo.password || '');
+
+            if (profileImage && profileImage instanceof File) {
+                formData.append('image', profileImage);
+            }
+
+            // שליחת הבקשה ל-API עם FormData
+            const userResponse = await signupUserApi(formData);
+
+            // אחרי הרישום, נוודא שאנחנו מנתבים לעמוד ההתחברות
+            navigate(ROUTES.LOGIN);  // ניווט לעמוד ההתחברות
+
+            // ניתן להוסיף הודעה למשתמש שההרשמה הצליחה אם צריך
+            setNotification('green', 'Registration successful. Please log in.');
+
+        } catch (e) {
+            // טיפול בשגיאות
+            console.error('Error during signup:', e);
+            setError(e.message);
+            setNotification('red', `${e.message}, Email OR password are incorrect`);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [navigate]);
+
+
+    return { userDetails, allUsers, error, getUserDetails, getAllUsers, handleLogin, isLoading, error, handleSignup };
 };
-

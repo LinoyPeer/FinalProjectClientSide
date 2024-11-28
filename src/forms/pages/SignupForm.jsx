@@ -1,27 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CustomedForm from '../components/CustomedForm';
 import CustomedInput from '../components/CustomedInput';
 import { LockOutlined, MailOutlined, PhoneOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
 import useForm from '../hooks/useForm';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../../routes/routes';
-import initialSignupForm from '../../users/helpers/initialForms/initialSignupForm';
 import signupSchema from '../../users/models/signupSchema';
-
+import initialSignupForm from '../../users/helpers/initialForms/initialSignupForm';
+import useUsers from '../../users/hooks/useUsers';
 
 export default function SignupForm() {
     const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialSignupForm, signupSchema, (formData) => {
         console.log("Form submitted successfully!", formData);
     });
 
+    const [file, setFile] = useState(null);
+    const { handleSignup } = useUsers();
     const navigate = useNavigate();
+
+    // טיפול בשינוי קובץ
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setFile(file);
+    };
+
+    const handleFormSubmit = (e) => {
+
+        // קריאה לפונקציית התחברות עם פרטי המשתמש ועם התמונה (אם יש)
+        handleSignup(data, file); // שליחה של פרטי המשתמש והקובץ (אם קיים)
+    };
 
     return (
         <CustomedForm
-            onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit();
-            }}
+            onSubmit={handleFormSubmit}
             onClear={handleReset}
             bottomProps={{
                 checkboxText: "Remember me",
@@ -71,6 +82,13 @@ export default function SignupForm() {
                 onChange={handleChange}
                 value={data.password}
                 error={errors.password}
+            />
+            {/* שדה בחירת תמונה */}
+            <CustomedInput
+                name="profileImage"
+                type="file"
+                onChange={handleFileChange}
+                error={errors.profileImage}
             />
         </CustomedForm>
     );

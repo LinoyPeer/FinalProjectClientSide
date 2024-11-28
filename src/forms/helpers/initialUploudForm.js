@@ -1,5 +1,5 @@
 const initialUploudForm = {
-    title: '',
+    // title: '',
     postStatus: '',
     image: {
         file: null,

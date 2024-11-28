@@ -5,16 +5,6 @@ import useForm from './useForm';
 import CustomedInput from '../components/CustomedInput';
 import CustomedBottom from '../components/CustomedBottom';
 
-// const initialData = {
-//     username: "",
-//     password: "",
-// };
-
-// const schema = {
-//     username: Joi.string().min(6).required().label("Username"),
-//     password: Joi.string().min(2).required().label("Password"),
-// };
-
 export default function FormExample({ children }) {
     const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialData, schema, () => {
         console.log("Form submitted successfully!");
