@@ -35,9 +35,13 @@ export const setTokenInLocalStorage = (token) => {
     localStorage.setItem(TOKEN, token);
 };
 
+// export const getTokenFromLocalStorage = () => {
+//     return localStorage.getItem(TOKEN);
+// };
 export const getTokenFromLocalStorage = () => {
     return localStorage.getItem(TOKEN);
 };
+
 
 export const getuserDetailsFromLocalStorage = () => {
     try {
@@ -47,6 +51,7 @@ export const getuserDetailsFromLocalStorage = () => {
         return null;
     }
 };
+
 
 export const getLikedPostsFromLocalStorage = () => {
     return JSON.parse(localStorage.getItem(LIKED_POSTS_KEY) || "{}");

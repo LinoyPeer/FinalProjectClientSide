@@ -4,12 +4,13 @@ import NavBarLink from '../../../routes/components/NavBarLink';
 import ROUTES from '../../../routes/routes';
 import { useMediaQuery } from 'react-responsive';
 import { useAuth } from '../../../providers/AuthProvider';
+import { UserOutlined, UserSwitchOutlined } from '@ant-design/icons';
 
 export default function LogoIcon() {
     const isDesktop = useMediaQuery({ minWidth: 768 });
     const { userDetails } = useAuth();
 
-    const avatarUrl = userDetails?.image?.path || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREzDh3V2ZGpCD7NiBn73Gble1dxHi3o7ZEnw&s';
+    const avatarUrl = userDetails?.image?.path || <UserOutlined />;
 
     return (
         <NavBarLink

@@ -10,7 +10,7 @@ import usePosts from '../../hooks/usePosts';
 export default function PostComponent({ post, handleLike, handleComment, isLiked }) {
     const { posts, getAllPosts } = usePosts();
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
-    const { userDetails } = useAuth();
+    const { userDetails, isLoggedIn } = useAuth();
 
     useEffect(() => {
         getAllPosts();
@@ -31,7 +31,7 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
         }
     }, [userDetails, posts]);
 
-    const avatar = userDetails?.image?.path ? (
+    const avatar = isLoggedIn && userDetails?.image?.path ? (
         <Avatar src={userDetails.image.path} />
     ) : (
         <Avatar icon={<UserOutlined />} />
