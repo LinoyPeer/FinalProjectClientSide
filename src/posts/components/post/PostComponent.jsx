@@ -12,29 +12,30 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
     const { userDetails } = useAuth();
 
-    // טוען פוסטים לאחר שהקומפוננטה טוענה
     useEffect(() => {
         getAllPosts();
     }, [getAllPosts]);
 
-    // בדוק אם הפוסטים נטענים ומכילים את ה-user_id לפני שמחפשים את המשתמש
     useEffect(() => {
-        if (userDetails?._id) {
-            console.log("userDetails._id", userDetails._id);
+        console.log('userDetails: ', userDetails);
+
+        if (userDetails && userDetails._id && posts.length > 0) {
+            console.log("userDetails.name", userDetails.name);
+
             console.log("posts:", posts);
+
             let currentUser = posts.find((item) => item.user_id === userDetails._id);
             setCurrentUserDetails(currentUser);
-            console.log("currentUserDetails:", currentUser); // אם לא נמצא, תדפיס null
-        }
-    }, [userDetails, posts]);  // ודא שה-states 'userDetails' ו-'posts' קיימים קודם
 
-    // אם לא נמצא מידע על המשתמש, מציג אייקון ברירת מחדל
+            console.log("currentUserDetails:", currentUser);
+        }
+    }, [userDetails, posts]);
+
     const avatar = userDetails?.image?.path ? (
         <Avatar src={userDetails.image.path} />
     ) : (
         <Avatar icon={<UserOutlined />} />
     );
-
 
     let optionOfTitle = currentUserDetails?.title || 'Unknown';
 
@@ -48,7 +49,10 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
                 imageSrc={post?.image?.path || 'default_image_path'}
                 imageAlt={post?.image?.alt || 'default_image_alt'}
             >
-                {`${currentUserDetails ? currentUserDetails.title : 'Unknown'}: ${post?.postStatus || 'No status available'}`}
+                <span style={{ fontWeight: 'bold' }}>
+                    {currentUserDetails ? currentUserDetails.title : 'Unknown'}
+                </span>
+                {`: ${post?.postStatus || 'No status available'}`}
             </PostBodyComponent>
             <PostFooterComponent
                 postId={post._id}

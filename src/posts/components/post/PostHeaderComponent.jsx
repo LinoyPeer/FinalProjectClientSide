@@ -3,11 +3,10 @@ import { Avatar, Card, Col, Divider, Row } from 'antd';
 import React from 'react';
 
 export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
-    // אם יש נתיב לתמונה, הצג את התמונה, אחרת השתמש באייקון ברירת מחדל
     const avatar = avatarPath ? (
-        <Avatar src={avatarPath} /> // אם יש נתיב לתמונה, הצג את התמונה
+        <Avatar src={avatarPath} />
     ) : (
-        <Avatar icon={<UserOutlined />} /> // אם לא, השתמש באייקון של משתמש ברירת מחדל
+        <Avatar icon={<UserOutlined />} />
     );
 
     return (
@@ -17,7 +16,10 @@ export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
                     <MoreOutlined style={{ fontSize: '20px' }} />
                 </Col>
                 <Col style={{ textAlign: 'left', flexGrow: 1 }}>
-                    <Card.Meta avatar={avatar} title={userNameOfPost} />
+                    <Card.Meta
+                        avatar={avatar}
+                        title={<div style={{ fontWeight: 'bold' }}>{userNameOfPost}</div>}
+                    />
                 </Col>
             </Row>
             <Divider variant="middle" />

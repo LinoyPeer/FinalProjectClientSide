@@ -22,12 +22,14 @@ export default function AuthProvider({ children }) {
                 url: `http://localhost:8181/users/${user._id}`,
                 headers: {
                     'x-auth-token': `${token}`
+
                 }
             };
 
             axios.request(config)
                 .then((response) => {
-                    console.log(JSON.stringify(response.data));
+                    console.log(JSON.stringify(response));
+                    console.log('res: ', response);
                     setUserDetails(response.data);
                 })
                 .catch((error) => {
