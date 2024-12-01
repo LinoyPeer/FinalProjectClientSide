@@ -17,27 +17,31 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
     }, [getAllPosts]);
 
     useEffect(() => {
-        console.log('userDetails: ', userDetails);
-
         if (userDetails && userDetails._id && posts.length > 0) {
-            console.log("userDetails.name", userDetails.name);
+            // חפש את המשתמש שיצר את הפוסט לפי user_id של הפוסט
+            let postCreator = posts.find((item) => item._id === post._id)?.user_id;
+            console.log('postCreator:', postCreator);
 
-            console.log("posts:", posts);
+            // מצא את פרטי המשתמש שיצר את הפוסט
+            let currentUser = posts.find((item) => item.user_id === postCreator);
 
-            let currentUser = posts.find((item) => item.user_id === userDetails._id);
-            setCurrentUserDetails(currentUser);
-
-            console.log("currentUserDetails:", currentUser);
+            // אם נמצא, עדכן את currentUserDetails
+            if (currentUser) {
+                setCurrentUserDetails(currentUser);
+            } else {
+                console.log('User not found for post');
+            }
         }
-    }, [userDetails, posts]);
+    }, [userDetails, posts, post]); // עדכון כל פעם ש-userDetails, posts או post משתנים
 
-    const avatar = isLoggedIn && userDetails?.image?.path ? (
-        <Avatar src={userDetails.image.path} />
+    const avatar = isLoggedIn && currentUserDetails?.image?.path ? (
+        <Avatar src={currentUserDetails.image.path} />
     ) : (
         <Avatar icon={<UserOutlined />} />
     );
 
     let optionOfTitle = currentUserDetails?.title || 'Unknown';
+    console.log('currentUserDetails: ', currentUserDetails);
 
     return (
         <Card style={{ width: 300, textAlign: 'center' }}>

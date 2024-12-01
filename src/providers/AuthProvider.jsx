@@ -77,7 +77,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
-import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage, removeTokenFromLocalStorage } from '../users/services/localStorageService';
+import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage, removeTokenFromLocalStorage, setTokenInLocalStorage } from '../users/services/localStorageService';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -91,6 +91,7 @@ export default function AuthProvider({ children }) {
     const navigate = useNavigate();
 
     useEffect(() => {
+        // אם יש token ו-user, נבצע קריאה לשרת כדי לקבל את פרטי המשתמש
         if (user && token) {
             const config = {
                 method: 'get',
@@ -102,16 +103,16 @@ export default function AuthProvider({ children }) {
 
             axios(config)
                 .then(response => {
-                    console.log('Response:', response);
                     setUserDetails(response.data);
+                    setTokenInLocalStorage(token); // שימור ה-token ב־localStorage
                 })
                 .catch(error => {
                     console.error('Error fetching user details:', error);
                 });
-        } else {
-            console.log('User or token is missing');
         }
-    }, [user, token]);
+    }, [user, token]); // עדכון מיידי ברגע ש-user או token משתנים
+
+
 
 
 
@@ -128,22 +129,29 @@ export default function AuthProvider({ children }) {
         if (!isLoggedIn && token) {
             setIsLoggedIn(true);
         }
+
     }, [isLoggedIn, token]);  // עושה עדכון רק כשיש צורך
 
-    const login = (newToken) => {
-        setToken(newToken);
+
+
+    // עדכון בעת התחברות עם משתמש חדש
+    const login = (newToken, userDetails) => {
+        setTokenInLocalStorage(newToken); // שמירה של ה-token ב-localStorage
+        setUser(userDetails); // שמירה של פרטי המשתמש
+        setUserDetails(userDetails); // עדכון פרטי המשתמש
         setIsLoggedIn(true);
         navigate(ROUTES.POSTS);
     };
 
+
+    // עדכון בעת התנתקות
     const logout = () => {
         setIsLoggedIn(false);
         setUserDetails(null); // מאפס את פרטי המשתמש
-        setToken(null); // מאפס את ה-token
-        removeTokenFromLocalStorage(); // מסיר את ה-token מה-localStorage
+        setToken(null); // מאפס את ה־token
+        removeTokenFromLocalStorage(); // מסיר את ה־token מה־localStorage
         navigate(ROUTES.ROOT);
     };
-
 
 
 
