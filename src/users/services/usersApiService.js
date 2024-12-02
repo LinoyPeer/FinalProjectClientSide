@@ -11,18 +11,15 @@ export const loginUserApi = async (userLogin) => {
     }
 };
 
-// שירות הרישום ב-API (signupUserApi)
-
 export const signupUserApi = async (normalizedUser) => {
     try {
         const { data } = await axios.post(apiUrl, normalizedUser);
-        // נוודא שה-API לא מחזיר את ה-token (כי אנחנו לא רוצים אותו כאן)
-        return data;  // מחזיר רק את פרטי המשתמש שנרשם
+        console.log('data: ', data);
+        return data;
     } catch (e) {
         console.error('Error during signup:', e);
 
         if (e.response) {
-            // טיפול בשגיאות
             if (e.response.status === 400) {
                 setNotification('red', 'Bad Request: Please check your input.');
             } else if (e.response.status === 500) {
@@ -33,7 +30,6 @@ export const signupUserApi = async (normalizedUser) => {
         } else {
             setNotification('red', `Error: ${e.message}`);
         }
-
         throw new Error(e.message);
     }
 };

@@ -9,13 +9,17 @@ import { BorderlessTableOutlined, SignatureOutlined, UploadOutlined } from "@ant
 import { createPostApi } from "../../posts/services/postsApiService";
 import { useAuth } from "../../providers/AuthProvider";
 import Typography from "antd/es/typography/Typography";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "../../routes/routes";
 
 export default function UploudPostForm() {
     const [imagePreview, setImagePreview] = useState(null);
     const [altText, setAltText] = useState("Default alt");
-    const [userFullName, setUserFullName] = useState(''); // לא בהכרח נדרש, אפשר להדפיס ישירות את המידע ב-Console
+    const [userFullName, setUserFullName] = useState('');
     const { createPost } = usePosts();
     const { token, userDetails } = useAuth();
+    const navigate = useNavigate();
+
     const { handleChange, handleReset, data, errors } = useForm(
         initialUploudForm,
         uploudSchema,
@@ -73,6 +77,7 @@ export default function UploudPostForm() {
             }
             const response = await createPostApi(formData, token);
             console.log('Post created:', response);
+            navigate(ROUTES.PROFILE);
         } catch (error) {
             console.error('Error:', error);
         }

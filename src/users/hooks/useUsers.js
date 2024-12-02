@@ -55,37 +55,36 @@ export default function useUsers() {
     const handleSignup = useCallback(async (userSignupInfo, profileImage) => {
         setIsLoading(true);
         try {
-            // יצירת אובייקט FormData לשליחת פרטי המשתמש והתמונה (אם יש)
             const formData = new FormData();
+            console.log('userSignupInfo: ', userSignupInfo);
 
-            formData.append('fullName', userSignupInfo.fullName || '');
-            formData.append('username', userSignupInfo.username || '');
+            formData.append('name.first', userSignupInfo.first || '');
+            formData.append('name.middle', userSignupInfo.middle || '');
+            formData.append('name.last', userSignupInfo.last || '');
             formData.append('email', userSignupInfo.email || '');
             formData.append('phone', userSignupInfo.phone || '');
             formData.append('password', userSignupInfo.password || '');
+            formData.append('isBussones', userSignupInfo.isBussones || '');
 
             if (profileImage && profileImage instanceof File) {
                 formData.append('image', profileImage);
             }
-
-            // שליחת הבקשה ל-API עם FormData
             const userResponse = await signupUserApi(formData);
-
-            // אחרי הרישום, נוודא שאנחנו מנתבים לעמוד ההתחברות
-            navigate(ROUTES.LOGIN);  // ניווט לעמוד ההתחברות
-
-            // ניתן להוסיף הודעה למשתמש שההרשמה הצליחה אם צריך
+            console.log("User registered successfully:", userResponse);
+            navigate(ROUTES.LOGIN);
             setNotification('green', 'Registration successful. Please log in.');
-
         } catch (e) {
-            // טיפול בשגיאות
-            console.error('Error during signup:', e);
+            console.error('Error during registration:', e);
             setError(e.message);
-            setNotification('red', `${e.message}, Email OR password are incorrect`);
+            setNotification('red', `Error during registration: ${e.message || 'Unknown error'}`);
         } finally {
             setIsLoading(false);
         }
     }, [navigate]);
+
+
+
+
 
 
     return { userDetails, allUsers, error, getUserDetails, getAllUsers, handleLogin, isLoading, error, handleSignup };

@@ -6,47 +6,55 @@ import PostFooterComponent from './PostFooterComponent';
 import { UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../../../providers/AuthProvider';
 import usePosts from '../../hooks/usePosts';
+import useUsers from '../../../users/hooks/useUsers';
 
 export default function PostComponent({ post, handleLike, handleComment, isLiked }) {
     const { posts, getAllPosts } = usePosts();
+    const { allUsers, getAllUsers } = useUsers();
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
     const { userDetails, isLoggedIn } = useAuth();
 
+    // קריאת פוסטים
     useEffect(() => {
         getAllPosts();
     }, [getAllPosts]);
 
+    // קריאת משתמשים
     useEffect(() => {
-        if (userDetails && userDetails._id && posts.length > 0) {
-            // חפש את המשתמש שיצר את הפוסט לפי user_id של הפוסט
-            let postCreator = posts.find((item) => item._id === post._id)?.user_id;
-            console.log('postCreator:', postCreator);
+        getAllUsers();
+    }, []);
 
-            // מצא את פרטי המשתמש שיצר את הפוסט
-            let currentUser = posts.find((item) => item.user_id === postCreator);
+    // חיפוש פרטי המשתמש שפרסם את הפוסט
+    useEffect(() => {
+        if (post && allUsers.length > 0) {
+            // מוודאים שאנחנו שולפים את המשתמש שפרסם את הפוסט
+            const postCreator = post?.user_id;  // מזהה המשתמש שפרסם את הפוסט
 
-            // אם נמצא, עדכן את currentUserDetails
+            const currentUser = allUsers.find((user) => user._id === postCreator);  // חיפוש המשתמש על פי ה-`user_id`
+
             if (currentUser) {
-                setCurrentUserDetails(currentUser);
+                setCurrentUserDetails(currentUser); // עדכון הסטייט עם פרטי המשתמש
             } else {
                 console.log('User not found for post');
             }
         }
-    }, [userDetails, posts, post]); // עדכון כל פעם ש-userDetails, posts או post משתנים
+    }, [allUsers, post]);
 
-    const avatar = isLoggedIn && currentUserDetails?.image?.path ? (
+    // אם יש תמונה עבור המשתמש שפרסם את הפוסט, מציגים אותה
+    const avatar = currentUserDetails?.image?.path ? (
         <Avatar src={currentUserDetails.image.path} />
     ) : (
         <Avatar icon={<UserOutlined />} />
     );
 
-    let optionOfTitle = currentUserDetails?.title || 'Unknown';
     console.log('currentUserDetails: ', currentUserDetails);
+
+    let fullNameOfUser = `${currentUserDetails?.name?.first || ''} ${currentUserDetails?.name?.middle || ''} ${currentUserDetails?.name?.last || ''} `
 
     return (
         <Card style={{ width: 300, textAlign: 'center' }}>
             <PostHeaderComponent
-                userNameOfPost={optionOfTitle}
+                userNameOfPost={currentUserDetails ? fullNameOfUser : 'Unknown'}
                 avatarPath={avatar}
             />
             <PostBodyComponent
@@ -54,7 +62,7 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
                 imageAlt={post?.image?.alt || 'default_image_alt'}
             >
                 <span style={{ fontWeight: 'bold' }}>
-                    {currentUserDetails ? currentUserDetails.title : 'Unknown'}
+                    {currentUserDetails ? fullNameOfUser : 'Unknown'}
                 </span>
                 {`: ${post?.postStatus || 'No status available'}`}
             </PostBodyComponent>

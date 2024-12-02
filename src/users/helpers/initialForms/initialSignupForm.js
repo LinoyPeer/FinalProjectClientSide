@@ -1,8 +1,10 @@
 const initialSignupForm = {
-    fullName: "dvdvd",
-    username: "",
+    first: "",
+    middle: "",
+    last: "",
     email: "",
     phone: "",
     password: "",
+    isBussines: false,
 };
 export default initialSignupForm;

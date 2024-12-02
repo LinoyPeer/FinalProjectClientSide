@@ -8,6 +8,7 @@ import ROUTES from '../../routes/routes';
 import signupSchema from '../../users/models/signupSchema';
 import initialSignupForm from '../../users/helpers/initialForms/initialSignupForm';
 import useUsers from '../../users/hooks/useUsers';
+import { Checkbox } from 'antd';
 
 export default function SignupForm() {
     const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialSignupForm, signupSchema, (formData) => {
@@ -18,16 +19,17 @@ export default function SignupForm() {
     const { handleSignup } = useUsers();
     const navigate = useNavigate();
 
-    // טיפול בשינוי קובץ
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setFile(file);
     };
 
-    const handleFormSubmit = (e) => {
-
-        // קריאה לפונקציית התחברות עם פרטי המשתמש ועם התמונה (אם יש)
-        handleSignup(data, file); // שליחה של פרטי המשתמש והקובץ (אם קיים)
+    const handleFormSubmit = async (e) => {
+        const user = await handleSignup(data, file);
+        if (user) {
+            localStorage.setItem('currentUser', JSON.stringify(user)); // 
+            navigate(ROUTES.HOME);
+        }
     };
 
     return (
@@ -43,20 +45,28 @@ export default function SignupForm() {
             }}
         >
             <CustomedInput
-                name="fullName"
-                placeholder="Full Name"
+                name="first"
+                placeholder="first Name"
                 prefix={<UserOutlined />}
                 onChange={handleChange}
-                value={data.fullName}
-                error={errors.fullName}
+                value={data.first}
+                error={errors.first}
             />
             <CustomedInput
-                name="username"
-                placeholder="Username"
-                prefix={<UserAddOutlined />}
+                name="middle"
+                placeholder="Middle Name"
+                prefix={<UserOutlined />}
                 onChange={handleChange}
-                value={data.username}
-                error={errors.username}
+                value={data.middle}
+                error={errors.middle}
+            />
+            <CustomedInput
+                name="last"
+                placeholder="Last Name"
+                prefix={<UserOutlined />}
+                onChange={handleChange}
+                value={data.last}
+                error={errors.last}
             />
             <CustomedInput
                 name="email"
@@ -83,13 +93,19 @@ export default function SignupForm() {
                 value={data.password}
                 error={errors.password}
             />
-            {/* שדה בחירת תמונה */}
             <CustomedInput
                 name="profileImage"
                 type="file"
                 onChange={handleFileChange}
                 error={errors.profileImage}
             />
+            <Checkbox
+                name="isBusiness"
+                onChange={handleChange}
+                checked={data.isBusiness || false}
+            >
+                Register as Business
+            </Checkbox>
         </CustomedForm>
     );
 }
