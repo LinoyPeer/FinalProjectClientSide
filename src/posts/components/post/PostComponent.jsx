@@ -7,7 +7,7 @@ import { UserOutlined } from '@ant-design/icons';
 import usePosts from '../../hooks/usePosts';
 import useUsers from '../../../users/hooks/useUsers';
 
-export default function PostComponent({ post, handleLike, handleComment, isLiked }) {
+export default function PostComponent({ post, handleLike, handleComment, handleShare, isLiked }) {
     const { getAllPosts } = usePosts();
     const { allUsers, getAllUsers } = useUsers();
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
@@ -67,6 +67,7 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
                 post={post}
                 handleLike={handleLike}
                 handleComment={handleComment}
+                handleShare={handleShare}
                 isLiked={isLiked}
             />
         </Card>

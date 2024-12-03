@@ -3,10 +3,12 @@ import PageHeader from '../../components/pageHeader';
 import PostFeedback from '../components/PostFeedback';
 import usePosts from '../hooks/usePosts';
 import usePostsAction from '../hooks/usePostsActions';
+import { Modal } from 'antd';
+import ChatsViewPage from '../../pages/ChatsViewPage';
 
 export default function PostsPage() {
     const { posts, isLoading, error, getAllPosts } = usePosts();
-    const { handleLike, handleComment, handleShare } = usePostsAction();
+    const { handleLike, handleComment, handleShare, isModalVisible, handleCancelModal } = usePostsAction();
 
     useEffect(() => {
         getAllPosts();
@@ -14,6 +16,15 @@ export default function PostsPage() {
 
     return (
         <>
+            <Modal
+                title="Share Post"
+                open={isModalVisible}
+                onCancel={handleCancelModal}
+                footer={null}
+            >
+                <ChatsViewPage />
+            </Modal>
+
             <PageHeader
                 title="What's new?!"
                 subtitle="Upload your post"
@@ -22,6 +33,7 @@ export default function PostsPage() {
                 posts={posts}
                 handleLike={handleLike}
                 handleComment={handleComment}
+                handleShare={handleShare}
                 isLoading={isLoading}
                 error={error}
             />

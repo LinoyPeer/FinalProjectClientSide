@@ -2,7 +2,7 @@ import React from 'react';
 import PostComponent from './post/PostComponent';
 import { Col, Row } from 'antd';
 
-export default function Posts({ posts = [], handleLike, handleComment }) {
+export default function Posts({ posts = [], handleLike, handleComment, handleShare }) {
     return (
         <Row
             style={{ marginBottom: '20px', marginTop: '100px', width: '80%', margin: '0 auto' }}
@@ -20,6 +20,7 @@ export default function Posts({ posts = [], handleLike, handleComment }) {
                             PostId={post._id}
                             handleLike={handleLike}
                             handleComment={handleComment}
+                            handleShare={handleShare}
 
                         />
                     </Col>

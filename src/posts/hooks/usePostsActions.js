@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useState, useCallback } from "react";
+import { Modal } from 'antd'; // יבוא את רכיב המודל מ-antd
 import usePosts from "./usePosts";
 import { useAuth } from "../../providers/AuthProvider";
 import { commentPostByIdApi, likePostByIdApi } from "../services/postsApiService";
@@ -7,7 +8,14 @@ export default function usePostsActions() {
     const { setPosts, setIsLoading, isLoading, error, setError } = usePosts();
     const { user, token } = useAuth();
     const [favoritePosts, setFavoritePosts] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
+    const handleShare = useCallback(() => {
+        setIsModalVisible(true);
+    }, []);
+    const handleCancelModal = () => {
+        setIsModalVisible(false);
+    };
 
     const handleLike = useCallback(async (postId) => {
         setPosts((prevPosts) => {
@@ -44,10 +52,6 @@ export default function usePostsActions() {
         }
     }, [user, token, setPosts, setError]);
 
-    const handleShare = () => {
-        console.log('Share handled');
-    };
-
     const handleComment = useCallback(async (postId, commentData, token) => {
         setIsLoading(true);
         try {
@@ -74,5 +78,8 @@ export default function usePostsActions() {
         isLoading,
         error,
         setPosts,
+        isModalVisible,
+        handleCancelModal,
     };
 }
+

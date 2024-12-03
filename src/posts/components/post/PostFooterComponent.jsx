@@ -5,7 +5,7 @@ import usePostsActions from "../../hooks/usePostsActions";
 import { useEffect, useState } from "react";
 
 
-export default function PostFooterComponent({ post, handleLike, handleComment }) {
+export default function PostFooterComponent({ post, handleLike, handleComment, handleShare }) {
     const { setPosts } = usePostsActions();
     const { user } = useAuth();
     const [isLiked, setIsLiked] = useState(post.likes.includes(user && user._id));
@@ -43,7 +43,7 @@ export default function PostFooterComponent({ post, handleLike, handleComment })
                 />
             )}
             <CommentOutlined style={{ fontSize: '1.3em' }} onClick={() => handleComment(post._id)} />
-            <ShareAltOutlined style={{ fontSize: '1.3em' }} />
+            <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} />
             <SaveOutlined style={{ fontSize: '1.3em' }} />
         </Space>
     );
