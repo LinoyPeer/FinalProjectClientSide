@@ -13,16 +13,17 @@ export default function ChatsViewPage() {
     useEffect(() => {
         getAllUsers();
     }, []);
-
+    console.log(allUsers);
     useEffect(() => {
         const nameOfEachUser = allUsers.map(user => {
             const fullName = `${user.name?.first || 'Unknown'} ${user.name?.middle || ''} ${user.name?.last || ''}`.trim();
             const initials = `${user.name?.first?.[0] || 'U'}${user.name?.last?.[0] || 'U'}`.toUpperCase();
+            const avatar = user?.image?.path || null
             console.log(initials);
 
             return {
                 fullName,
-                avatar: user.image?.url || null,
+                avatar,
                 initials,
                 userId: user._id,
             };
@@ -46,17 +47,13 @@ export default function ChatsViewPage() {
                 itemLayout="horizontal"
                 dataSource={nameOfUsers}
                 renderItem={(user, index) => (
-                    <List.Item key={index} actions={[
-                        <Button type="primary" onClick={() => startPrivateChat(user)}>
-                            {<WechatWorkOutlined />}
-                        </Button>
-                    ]}>
+                    <List.Item key={index} actions={[<Button type="primary" onClick={() => startPrivateChat(user)}>{<WechatWorkOutlined />}</Button>]}>
                         <List.Item.Meta
                             avatar={
                                 user.avatar ? (
-                                    <Avatar>{user.initials}</Avatar>
+                                    <Avatar src={user.avatar} />
                                 ) : (
-                                    <Avatar>{user.image}</Avatar>
+                                    <Avatar>{user.initials}</Avatar>
                                 )
                             }
                             title={user.fullName}
@@ -64,6 +61,7 @@ export default function ChatsViewPage() {
                     </List.Item>
                 )}
             />
+
         </div>
     );
 }
