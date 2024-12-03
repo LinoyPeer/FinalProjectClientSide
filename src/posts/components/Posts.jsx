@@ -17,6 +17,7 @@ export default function Posts({ posts = [], handleLike, handleComment }) {
                     >
                         <PostComponent
                             post={post}
+                            PostId={post._id}
                             handleLike={handleLike}
                             handleComment={handleComment}
 

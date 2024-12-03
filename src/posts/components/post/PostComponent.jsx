@@ -4,15 +4,13 @@ import PostHeaderComponent from './PostHeaderComponent';
 import PostBodyComponent from './PostBodyComponent';
 import PostFooterComponent from './PostFooterComponent';
 import { UserOutlined } from '@ant-design/icons';
-import { useAuth } from '../../../providers/AuthProvider';
 import usePosts from '../../hooks/usePosts';
 import useUsers from '../../../users/hooks/useUsers';
 
 export default function PostComponent({ post, handleLike, handleComment, isLiked }) {
-    const { posts, getAllPosts } = usePosts();
+    const { getAllPosts } = usePosts();
     const { allUsers, getAllUsers } = useUsers();
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
-    const { userDetails, isLoggedIn } = useAuth();
 
     // קריאת פוסטים
     useEffect(() => {
@@ -27,10 +25,9 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
     // חיפוש פרטי המשתמש שפרסם את הפוסט
     useEffect(() => {
         if (post && allUsers.length > 0) {
-            // מוודאים שאנחנו שולפים את המשתמש שפרסם את הפוסט
-            const postCreator = post?.user_id;  // מזהה המשתמש שפרסם את הפוסט
+            const postCreator = post?.user_id;
 
-            const currentUser = allUsers.find((user) => user._id === postCreator);  // חיפוש המשתמש על פי ה-`user_id`
+            const currentUser = allUsers.find((user) => user._id === postCreator);
 
             if (currentUser) {
                 setCurrentUserDetails(currentUser); // עדכון הסטייט עם פרטי המשתמש
@@ -67,7 +64,6 @@ export default function PostComponent({ post, handleLike, handleComment, isLiked
                 {`: ${post?.postStatus || 'No status available'}`}
             </PostBodyComponent>
             <PostFooterComponent
-                postId={post._id}
                 post={post}
                 handleLike={handleLike}
                 handleComment={handleComment}
