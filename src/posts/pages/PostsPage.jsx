@@ -37,6 +37,7 @@ export default function PostsPage() {
                 isLoading={isLoading}
                 error={error}
             />
+            <br></br><br></br><p></p>
         </>
     );
 }
