@@ -62,10 +62,10 @@ export default function ProfilePage({ postId }) {
                                             objectFit: 'cover',
                                             borderRadius: '8px',
                                         }}
-                                        onClick={() => handlePostClick(post._id)
-                                            />
-                                }
+                                        onClick={() => handlePostClick(post._id)}
                                     />
+                                }
+                            />
                         </Col>
                     ))
                 ) : (
