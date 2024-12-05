@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import usePosts from '../posts/hooks/usePosts';
 import { useAuth } from '../providers/AuthProvider';
 import { EditOutlined, SettingOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
 import { useReference } from '../providers/RefProvider';
+import { useNavigate } from 'react-router-dom'; // יש להוסיף את זה בשביל הניווט
 
 const { Title } = Typography;
 
@@ -12,21 +12,14 @@ export default function ProfilePage({ postId }) {
     const { posts, getMyPosts } = usePosts();
     const { userDetails } = useAuth();
     const { handlePostClick } = useReference();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getMyPosts();
     }, [getMyPosts]);
 
+    let fullNameOfUser = `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''} `;
 
-    let fullNameOfUser = `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''} `
-
-    if (posts) {
-        const post = posts.find(p => p._id === postId);
-
-        console.log(postId);
-        console.log(post);
-        console.log(posts);
-    }
     return (
         <>
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px', marginTop: '2em', marginBottom: '4em' }}>
@@ -39,14 +32,7 @@ export default function ProfilePage({ postId }) {
             </div>
             <Divider />
 
-            <Row
-                style={{
-                    // marginTop: '50px',
-                    width: '80%',
-                    margin: '0 auto',
-                }}
-                gutter={16}
-            >
+            <Row style={{ width: '80%', margin: '0 auto' }} gutter={16}>
                 {Array.isArray(posts) && posts.length > 0 ? (
                     posts.map((post) => (
                         <Col
@@ -56,7 +42,6 @@ export default function ProfilePage({ postId }) {
                                 display: 'flex',
                                 justifyContent: 'center',
                                 marginBottom: '-16px',
-
                             }}
                         >
                             <Card
@@ -77,9 +62,10 @@ export default function ProfilePage({ postId }) {
                                             objectFit: 'cover',
                                             borderRadius: '8px',
                                         }}
-                                        onClick={() => handlePostClick(post._id)} />
+                                        onClick={() => handlePostClick(post._id)
+                                            />
                                 }
-                            />
+                                    />
                         </Col>
                     ))
                 ) : (

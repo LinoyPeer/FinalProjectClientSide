@@ -5,16 +5,25 @@ import ROUTES from '../routes/routes';
 const RefContext = createContext();
 
 export default function RefProvider({ children }) {
-    const divRef = useRef();
+    const postRefs = useRef({});
     const navigate = useNavigate();
 
-    const handlePostClick = () => {
-        navigate(ROUTES.POSTS);
-        divRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const handlePostClick = (postId) => {
+        navigate(`${ROUTES.POSTS}?postId=${postId}`);
+
+        setTimeout(() => {
+            if (postRefs.current[postId]) {
+                postRefs.current[postId].scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 500);
+    };
+
+    const setPostRef = (postId, ref) => {
+        postRefs.current[postId] = ref;
     };
 
     return (
-        <RefContext.Provider value={{ divRef, handlePostClick }}>
+        <RefContext.Provider value={{ postRefs, handlePostClick, setPostRef }}>
             {children}
         </RefContext.Provider>
     );
