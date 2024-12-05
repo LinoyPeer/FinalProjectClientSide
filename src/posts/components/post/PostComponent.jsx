@@ -12,17 +12,14 @@ export default function PostComponent({ post, handleLike, handleComment, handleS
     const { allUsers, getAllUsers } = useUsers();
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
 
-    // קריאת פוסטים
     useEffect(() => {
         getAllPosts();
     }, [getAllPosts]);
 
-    // קריאת משתמשים
     useEffect(() => {
         getAllUsers();
     }, []);
 
-    // חיפוש פרטי המשתמש שפרסם את הפוסט
     useEffect(() => {
         if (post && allUsers.length > 0) {
             const postCreator = post?.user_id;
@@ -30,14 +27,13 @@ export default function PostComponent({ post, handleLike, handleComment, handleS
             const currentUser = allUsers.find((user) => user._id === postCreator);
 
             if (currentUser) {
-                setCurrentUserDetails(currentUser); // עדכון הסטייט עם פרטי המשתמש
+                setCurrentUserDetails(currentUser);
             } else {
                 console.log('User not found for post');
             }
         }
     }, [allUsers, post]);
 
-    // אם יש תמונה עבור המשתמש שפרסם את הפוסט, מציגים אותה
     const avatar = currentUserDetails?.image?.path ? (
         <Avatar src={currentUserDetails.image.path} />
     ) : (

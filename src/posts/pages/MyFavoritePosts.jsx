@@ -2,11 +2,10 @@ import { Col, Row } from 'antd';
 import React, { useEffect } from 'react';
 
 import PostComponent from '../components/post/PostComponent';
-import { useAuth } from '../../providers/AuthProvider';
 import usePostsActions from '../hooks/usePostsActions';
 
 export default function MyFavoritePosts() {
-    const { favoritePosts } = usePostsActions(); // מקבל את הפוסטים האהובים מההוק שלך
+    const { favoritePosts } = usePostsActions();
 
     return (
         <>
