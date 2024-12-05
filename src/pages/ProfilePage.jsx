@@ -4,13 +4,14 @@ import usePosts from '../posts/hooks/usePosts';
 import { useAuth } from '../providers/AuthProvider';
 import { EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useReference } from '../providers/RefProvider';
 
 const { Title } = Typography;
 
 export default function ProfilePage({ postId }) {
     const { posts, getMyPosts } = usePosts();
     const { userDetails } = useAuth();
-    const navigate = useNavigate();
+    const { handlePostClick } = useReference();
 
     useEffect(() => {
         getMyPosts();
@@ -19,9 +20,6 @@ export default function ProfilePage({ postId }) {
 
     let fullNameOfUser = `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''} `
 
-    const handlePostClick = (postId) => {
-        navigate(`/posts/${postId}`);
-    };
     if (posts) {
         const post = posts.find(p => p._id === postId);
 

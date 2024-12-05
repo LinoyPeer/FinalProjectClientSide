@@ -8,13 +8,13 @@ export default function RefProvider({ children }) {
     const divRef = useRef();
     const navigate = useNavigate();
 
-    const handleClick = () => {
+    const handlePostClick = () => {
         navigate(ROUTES.POSTS);
         divRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
-        <RefContext.Provider value={{ divRef, handleClick }}>
+        <RefContext.Provider value={{ divRef, handlePostClick }}>
             {children}
         </RefContext.Provider>
     );
