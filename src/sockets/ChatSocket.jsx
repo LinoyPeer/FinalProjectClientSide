@@ -90,8 +90,8 @@ export default function ChatSocket() {
                 }}
             />
             < div ref={messagesEndRef} />
-
             <div style={{ position: 'fixed', bottom: '60px', left: '20px', right: '20px' }}>
+
                 <Input
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}

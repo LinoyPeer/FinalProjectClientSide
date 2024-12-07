@@ -3,16 +3,29 @@ import { Modal } from 'antd'; // יבוא את רכיב המודל מ-antd
 import usePosts from "./usePosts";
 import { useAuth } from "../../providers/AuthProvider";
 import { commentPostByIdApi, likePostByIdApi } from "../services/postsApiService";
+import { useNavigate } from "react-router-dom";
 
 export default function usePostsActions() {
     const { setPosts, setIsLoading, isLoading, error, setError } = usePosts();
     const { user, token } = useAuth();
     const [favoritePosts, setFavoritePosts] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const navigate = useNavigate();
 
     const handleShare = useCallback(() => {
         setIsModalVisible(true);
     }, []);
+
+    const handleMenu = useCallback(() => {
+        setIsModalVisible(true);
+    }, []);
+
+
+    const hanndleChooseOption = (route) => {
+        navigate(route);
+        setIsModalVisible(false)
+    }
+
     const handleCancelModal = () => {
         setIsModalVisible(false);
     };
@@ -80,6 +93,8 @@ export default function usePostsActions() {
         setPosts,
         isModalVisible,
         handleCancelModal,
+        handleMenu,
+        hanndleChooseOption,
     };
 }
 

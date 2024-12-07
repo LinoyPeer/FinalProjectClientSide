@@ -8,7 +8,6 @@ import ROUTES from '../../routes/routes';
 
 export default function Footer() {
     const navigate = useNavigate();
-
     const { Footer } = Layout;
     const { isDarkMode } = useTheme();
     const theme = isDarkMode ? darkTheme : lightTheme;
