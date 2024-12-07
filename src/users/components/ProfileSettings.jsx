@@ -36,28 +36,25 @@ export default function ProfileSettings() {
                 </Upload>
             </Space>
 
-            {/* Username Display */}
             <div style={{ marginTop: '20px' }}>
                 <Text strong>Username: </Text>
                 <Text>linoy_peer</Text>
             </div>
 
-            {/* Bio Section */}
             <div style={{ marginTop: '20px' }}>
-                <Text strong>Bio</Text>
+                <Text strong>Bio: </Text>
+                <div style={{ marginTop: '10px' }}></div>
                 <Input.TextArea
                     value={bio}
                     onChange={handleBioChange}
-                    maxLength={150}
+                    maxLength={30}
                     showCount
                     rows={4}
                     placeholder="Write something about yourself..."
                 />
             </div>
-
-            {/* Gender */}
-            <div style={{ marginTop: '20px' }}>
-                <Text strong>Gender</Text>
+            <div style={{ marginTop: '30px' }}>
+                <Text strong>Gender: </Text>
                 <Text type="secondary">This will not be part of your public profile.</Text>
                 <Input
                     value={gender}
