@@ -14,10 +14,12 @@ export default function ProfileSettings() {
     const { userDetails } = useAuth();
     // const fullName = `${userDetails.name?.first || 'Unknown'} ${userDetails.name?.middle || ''} ${userDetails.name?.last || ''}`.trim();
 
-
     const handleBioChange = (e) => setBio(e.target.value);
     const handleGenderChange = (value) => {
-        setGender(value);
+        if (value !== "" && value) {
+            setGender(value);
+            console.log(gender);
+        }
     };
     const handleProfilePictureChange = (info) => {
         if (info.file.status === 'done') {
@@ -43,31 +45,34 @@ export default function ProfileSettings() {
 
             <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column' }}>
                 <Text strong>Edit Username: </Text>
-                <br></br>
+                <br />
                 <Space>
                     <Typography style={{ fontWeight: 'normal' }}>first: </Typography>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
                         placeholder={userDetails?.name?.first || 'Unknown'}
-                    >{userDetails?.name?.first || 'Unknown'}
+                    >
+                        {userDetails?.name?.first || 'Unknown'}
                     </TextArea>
                 </Space>
-                <br></br>
+                <br />
                 <Space>
-                    <Typography strong>middle: </Typography>
+                    <Text strong>middle: </Text>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
                         placeholder={userDetails?.name?.middle || 'Unknown'}
-                    >{userDetails?.name?.middle || 'Unknown'}
+                    >
+                        {userDetails?.name?.middle || 'Unknown'}
                     </TextArea>
                 </Space>
-                <br></br>
+                <br />
                 <Space>
-                    <Typography strong>last: </Typography>
+                    <Text strong>last: </Text>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
                         placeholder={userDetails?.name?.last || 'Unknown'}
-                    >{userDetails?.name?.last || 'Unknown'}
+                    >
+                        {userDetails?.name?.last || 'Unknown'}
                     </TextArea>
                 </Space>
             </div>
@@ -104,7 +109,7 @@ export default function ProfileSettings() {
                     Save Changes
                 </Button>
             </div>
-            <br></br>.
-        </div >
+            <br />
+        </div>
     );
 };

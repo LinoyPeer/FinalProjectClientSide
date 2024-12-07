@@ -70,3 +70,28 @@ export const getAllUsersApi = async (token) => {
         throw new Error(e.message);
     }
 };
+
+export const editUserApi = async (token, data) => {
+    try {
+        let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `${apiUrl}/${userId}`,
+            headers: {
+                'x-auth-token': token,
+            },
+            data: data
+        };
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                return response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    } catch (e) {
+        console.error('Error fetching all users:', e);
+        throw new Error(e.message);
+    }
+};

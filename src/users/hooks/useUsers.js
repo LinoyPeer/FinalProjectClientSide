@@ -83,9 +83,23 @@ export default function useUsers() {
     }, [navigate]);
 
 
+    const handleEditUser = async (userData) => {
+        setIsLoading(true);
+        try {
+            const response = await editUserApi(token, userData);
+            setUserDetails(response.data);
+            setNotification('green', 'Profile updated successfully');
+        } catch (e) {
+            console.error('Error updating user:', e);
+            setError(e.message);
+            setNotification('red', `Error updating profile: ${e.message}`);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
 
 
 
-    return { userDetails, allUsers, error, getUserDetails, getAllUsers, handleLogin, isLoading, error, handleSignup };
+    return { userDetails, allUsers, error, getUserDetails, getAllUsers, handleLogin, isLoading, error, handleSignup, handleEditUser };
 };
