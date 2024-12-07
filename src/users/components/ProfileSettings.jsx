@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
-import { Input, Button, Typography, Upload, message, Space } from 'antd';
+import { Input, Button, Typography, Upload, message, Space, Select } from 'antd';
 import { UserOutlined, EditOutlined } from '@ant-design/icons';
 import { UploadOutlined } from '@ant-design/icons';
 import PageHeader from '../../components/pageHeader';
+import { useAuth } from '../../providers/AuthProvider';
+import TextArea from 'antd/es/input/TextArea';
 
 const { Title, Text } = Typography;
 
 export default function ProfileSettings() {
     const [bio, setBio] = useState('');
     const [gender, setGender] = useState('');
+    const { userDetails } = useAuth();
+    // const fullName = `${userDetails.name?.first || 'Unknown'} ${userDetails.name?.middle || ''} ${userDetails.name?.last || ''}`.trim();
 
 
     const handleBioChange = (e) => setBio(e.target.value);
-    const handleGenderChange = (e) => setGender(e.target.value);
-
+    const handleGenderChange = (value) => {
+        setGender(value);
+    };
     const handleProfilePictureChange = (info) => {
         if (info.file.status === 'done') {
             message.success(`${info.file.name} file uploaded successfully`);
@@ -36,9 +41,35 @@ export default function ProfileSettings() {
                 </Upload>
             </Space>
 
-            <div style={{ marginTop: '20px' }}>
-                <Text strong>Username: </Text>
-                <Text>linoy_peer</Text>
+            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column' }}>
+                <Text strong>Edit Username: </Text>
+                <br></br>
+                <Space>
+                    <Typography style={{ fontWeight: 'normal' }}>first: </Typography>
+                    <TextArea
+                        style={{ width: '130px', height: '10px', fontSize: '14px' }}
+                        placeholder={userDetails?.name?.first || 'Unknown'}
+                    >{userDetails?.name?.first || 'Unknown'}
+                    </TextArea>
+                </Space>
+                <br></br>
+                <Space>
+                    <Typography strong>middle: </Typography>
+                    <TextArea
+                        style={{ width: '130px', height: '10px', fontSize: '14px' }}
+                        placeholder={userDetails?.name?.middle || 'Unknown'}
+                    >{userDetails?.name?.middle || 'Unknown'}
+                    </TextArea>
+                </Space>
+                <br></br>
+                <Space>
+                    <Typography strong>last: </Typography>
+                    <TextArea
+                        style={{ width: '130px', height: '10px', fontSize: '14px' }}
+                        placeholder={userDetails?.name?.last || 'Unknown'}
+                    >{userDetails?.name?.last || 'Unknown'}
+                    </TextArea>
+                </Space>
             </div>
 
             <div style={{ marginTop: '20px' }}>
@@ -56,13 +87,16 @@ export default function ProfileSettings() {
             <div style={{ marginTop: '30px' }}>
                 <Text strong>Gender: </Text>
                 <Text type="secondary">This will not be part of your public profile.</Text>
-                <Input
+                <Select
                     value={gender}
                     onChange={handleGenderChange}
+                    style={{ width: '100%', marginTop: '10px' }}
+                    placeholder="Select your gender"
                     prefix={<UserOutlined />}
-                    placeholder="Enter your gender"
-                    style={{ marginTop: '10px' }}
-                />
+                >
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                </Select>
             </div>
 
             <div style={{ marginTop: '20px' }}>
