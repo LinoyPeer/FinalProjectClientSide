@@ -1,11 +1,13 @@
-import { Avatar, Col, Row, Typography, Card, Divider } from 'antd';
-import React, { useEffect } from 'react';
+import { Avatar, Col, Row, Typography, Card, Divider, Modal } from 'antd';
+import React, { useEffect, useState } from 'react';
 import usePosts from '../posts/hooks/usePosts';
 import { useAuth } from '../providers/AuthProvider';
 import { EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { useReference } from '../providers/RefProvider';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
+import usePostsActions from '../posts/hooks/usePostsActions';
+import BioEditing from '../users/components/BioEditing';
 
 const { Title } = Typography;
 
@@ -14,6 +16,16 @@ export default function ProfilePage() {
     const { userDetails } = useAuth();
     const { handlePostClick } = useReference();
     const navigate = useNavigate();
+    const { isModalVisible, handleCancelModal, handleMenu } = usePostsActions();
+    const [bio, setBio] = useState('Welcome to my InstaPost profile page!');
+
+    const handleBioChange = (newBio) => {
+        setBio(newBio);
+    };
+
+    const handleModalClose = () => {
+        handleCancelModal();
+    };
 
     useEffect(() => {
         getMyPosts();
@@ -27,10 +39,29 @@ export default function ProfilePage() {
                 <Avatar size={40} style={{ marginLeft: '2em', marginBottom: '-1vh' }} src={userDetails?.image?.path} />
                 <Title level={2} style={{ fontSize: '17px', color: '#000', fontFamily: 'Tahoma', fontWeight: '100' }}>
                     {fullNameOfUser || 'User Name'}
-                    <EditOutlined style={{ marginLeft: '20px' }} />
+                    <EditOutlined style={{ marginLeft: '20px' }} onClick={() => handleMenu()} />
+                    <Modal
+                        title="Bio editing"
+                        open={isModalVisible}
+                        onCancel={handleModalClose}
+                        footer={null}
+                        width={200}
+                        centered
+                    >
+                        <BioEditing currentBio={bio} onBioChange={handleBioChange} />
+                    </Modal>
                     <SettingOutlined style={{ marginLeft: '20px' }} onClick={() => navigate(ROUTES.PROFILE_SETTINGS)} />
                 </Title>
             </div>
+            <div style={{ marginTop: '-2em', marginLeft: '2em', display: 'flex', flexDirection: 'row', marginRight: '1em' }}>
+                <Typography style={{ fontWeight: '600', marginRight: '10px', color: '#6495ED' }}>
+                    Bio:
+                </Typography>
+                <Typography style={{ fontWeight: 'normal' }}>
+                    {bio}
+                </Typography>
+            </div >
+
             <Divider />
 
             <Row style={{ width: '80%', margin: '0 auto' }} gutter={16}>

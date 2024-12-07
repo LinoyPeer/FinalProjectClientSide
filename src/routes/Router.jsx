@@ -15,6 +15,7 @@ import StartChat from '../sockets/StartChat'
 import UploudPostForm from '../forms/pages/UploudPostForm'
 import ContactPage from '../pages/ContactPage'
 import ProfileSettings from '../users/components/ProfileSettings'
+import BioEditing from '../users/components/BioEditing'
 
 
 export default function Router() {
@@ -35,6 +36,8 @@ export default function Router() {
                 <Route path={ROUTES.START_CHAT} element={<StartChat />} />
                 <Route path={ROUTES.UPLOUD_PAGE} element={<UploudPostForm />} />
                 <Route path={ROUTES.PROFILE_SETTINGS} element={<ProfileSettings />} />
+                <Route path={ROUTES.BIO_EDITING} element={<BioEditing />} />
+
                 <Route path='/*' element={<ErrorPage />} />
             </Routes>
         </>

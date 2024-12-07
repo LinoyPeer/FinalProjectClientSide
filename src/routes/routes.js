@@ -11,7 +11,8 @@ const ROUTES = {
     COMMUNICATION: '/communication',
     START_CHAT: '/chat/:roomId',
     UPLOUD_PAGE: '/uploud-post',
-    PROFILE_SETTINGS: '/profille-settings'
+    PROFILE_SETTINGS: '/profille-settings',
+    BIO_EDITING: '/bio-editding'
 };
 
 export default ROUTES;
