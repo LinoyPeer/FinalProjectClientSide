@@ -5,5 +5,6 @@ export default function ContactPage() {
     return (
         <>
             <PageHeader title={'Contact Us'} subtitle={'Fil the Form'} />
-        </>)
+        </>
+    )
 }

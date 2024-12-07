@@ -91,7 +91,6 @@ export default function AuthProvider({ children }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // אם יש token ו-user, נבצע קריאה לשרת כדי לקבל את פרטי המשתמש
         if (user && token) {
             const config = {
                 method: 'get',
@@ -104,41 +103,35 @@ export default function AuthProvider({ children }) {
             axios(config)
                 .then(response => {
                     setUserDetails(response.data);
-                    setTokenInLocalStorage(token); // שימור ה-token ב־localStorage
+                    setTokenInLocalStorage(token);
                 })
                 .catch(error => {
                     console.error('Error fetching user details:', error);
                 });
         }
-    }, [user, token]); // עדכון מיידי ברגע ש-user או token משתנים
+    }, [user, token]);
 
 
-
-
-
-    // בדיקה אם המשתמש נמצא ב־localStorage ומעדכן את ה־user
     useEffect(() => {
         if (user === null) {
             const userFromLocalStorage = getuserDetailsFromLocalStorage();
             setUser(userFromLocalStorage);
         }
-    }, [user]);  // עושה עדכון רק כשיש צורך
+    }, [user]);
 
-    // בדיקה אם המשתמש מחובר
     useEffect(() => {
         if (!isLoggedIn && token) {
             setIsLoggedIn(true);
         }
 
-    }, [isLoggedIn, token]);  // עושה עדכון רק כשיש צורך
+    }, [isLoggedIn, token]);
 
 
 
-    // עדכון בעת התחברות עם משתמש חדש
     const login = (newToken, userDetails) => {
-        setTokenInLocalStorage(newToken); // שמירה של ה-token ב-localStorage
-        setUser(userDetails); // שמירה של פרטי המשתמש
-        setUserDetails(userDetails); // עדכון פרטי המשתמש
+        setTokenInLocalStorage(newToken);
+        setUser(userDetails);
+        setUserDetails(userDetails);
         setIsLoggedIn(true);
         navigate(ROUTES.POSTS);
     };
@@ -147,9 +140,9 @@ export default function AuthProvider({ children }) {
     // עדכון בעת התנתקות
     const logout = () => {
         setIsLoggedIn(false);
-        setUserDetails(null); // מאפס את פרטי המשתמש
-        setToken(null); // מאפס את ה־token
-        removeTokenFromLocalStorage(); // מסיר את ה־token מה־localStorage
+        setUserDetails(null);
+        setToken(null);
+        removeTokenFromLocalStorage();
         navigate(ROUTES.ROOT);
     };
 

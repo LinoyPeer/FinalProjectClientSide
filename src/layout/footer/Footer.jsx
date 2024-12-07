@@ -2,8 +2,9 @@ import { Layout, Row } from 'antd';
 import React from 'react';
 import { useTheme } from '../../providers/ThemeProvider';
 import { darkTheme, lightTheme } from '../../themes/accessibilityTheme';
-import { FileAddOutlined, HeartOutlined, HomeOutlined, MessageOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { FileAddFilled, FileAddOutlined, HeartFilled, HeartOutlined, HomeFilled, HomeOutlined, MessageFilled, MessageOutlined, SearchOutlined, UserAddOutlined, UserOutlined } from '@ant-design/icons';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { FaRegUser, FaUser, FaUserLarge } from "react-icons/fa6";
 import ROUTES from '../../routes/routes';
 
 export default function Footer() {
@@ -11,6 +12,11 @@ export default function Footer() {
     const { Footer } = Layout;
     const { isDarkMode } = useTheme();
     const theme = isDarkMode ? darkTheme : lightTheme;
+    const location = useLocation();
+
+    const isActive = (route) => location.pathname === route;
+
+
     return (
         <Footer
             style={{
@@ -28,15 +34,35 @@ export default function Footer() {
             <Row
                 style={{ textAlign: 'center', display: 'inline-flex', gap: '3em', fontSize: '19px' }}
             >
-                <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
-                <MessageOutlined onClick={() => navigate(ROUTES.CHATS)} />
-                <FileAddOutlined onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
-                <HeartOutlined onClick={() => {
-                    navigate(ROUTES.FAVORITES)
-                }} />
-                <UserOutlined onClick={() => {
-                    navigate(ROUTES.PROFILE)
-                }} />
+                {isActive(ROUTES.POSTS) ? (
+                    <HomeFilled onClick={() => navigate(ROUTES.POSTS)} />
+                ) : (
+                    <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
+                )}
+
+                {isActive(ROUTES.CHATS) ? (
+                    <MessageFilled onClick={() => navigate(ROUTES.CHATS)} />
+                ) : (
+                    <MessageOutlined onClick={() => navigate(ROUTES.CHATS)} />
+                )}
+
+                {isActive(ROUTES.UPLOUD_PAGE) ? (
+                    <FileAddFilled onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
+                ) : (
+                    <FileAddOutlined onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
+                )}
+
+                {isActive(ROUTES.FAVORITES) ? (
+                    <HeartFilled onClick={() => navigate(ROUTES.FAVORITES)} />
+                ) : (
+                    <HeartOutlined onClick={() => navigate(ROUTES.FAVORITES)} />
+                )}
+
+                {isActive(ROUTES.PROFILE) ? (
+                    <FaUser onClick={() => navigate(ROUTES.PROFILE)} />
+                ) : (
+                    <FaRegUser onClick={() => navigate(ROUTES.PROFILE)} />
+                )}
             </Row>
         </Footer>
 

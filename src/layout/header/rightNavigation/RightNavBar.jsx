@@ -1,13 +1,11 @@
 import { MenuOutlined, MoonOutlined, SunOutlined, LogoutOutlined } from '@ant-design/icons'
-import { Col, Modal, Switch, Typography } from 'antd'
-import React, { useState } from 'react'
+import { Col, Divider, Modal, Switch, Typography } from 'antd'
+import React from 'react'
 import { useMediaQuery } from 'react-responsive';
 import { useTheme } from '../../../providers/ThemeProvider';
 import { useAuth } from '../../../providers/AuthProvider';
 import usePostsActions from '../../../posts/hooks/usePostsActions';
-import AboutPage from '../../../pages/AboutPage';
 import ROUTES from '../../../routes/routes';
-import { useNavigate } from 'react-router-dom';
 
 
 export default function RightNavBar() {
@@ -15,7 +13,6 @@ export default function RightNavBar() {
     const { isDarkMode, toggleTheme } = useTheme();
     const isDesktop = useMediaQuery({ minWidth: 768 });
     const { logout, isLoggedIn } = useAuth();
-    const navigate = useNavigate();
 
     return (
         <>
@@ -43,7 +40,7 @@ export default function RightNavBar() {
                             onCancel={handleCancelModal}
                             onClose={handleCancelModal}
                             footer={null}
-                            width={150}
+                            width={130}
 
                             style={{
                                 top: 60,
@@ -51,13 +48,17 @@ export default function RightNavBar() {
                                 position: 'fixed',
                             }}
                         >
-                            <Col style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', gap: '1em', marginTop: '2vh' }}>
+                            <Col style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', color: 'black', marginTop: '-1vh' }}>
+                                <Divider style={{ margin: '8px 0', borderWidth: '3px', fontWeight: 'bold', borderColor: 'grey' }} />
                                 <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)} >About</Typography>
+                                <Divider style={{ margin: '8px 0' }} />
                                 <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)} >Settings</Typography>
+                                <Divider style={{ margin: '8px 0' }} />
                                 <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)} >Saved</Typography>
-                                <Typography onClick={() => hanndleChooseOption(ROUTES.COMMUNICATION)} >communication</Typography>
+                                <Divider style={{ margin: '8px 0' }} />
                                 <Typography onClick={() => hanndleChooseOption(ROUTES.CONTACT)} >Contact</Typography>
-                                <Typography onClick={() => hanndleChooseOption(ROUTES.LOGIN)} >Logout</Typography>
+                                <Divider style={{ margin: '8px 0' }} />
+                                <Typography onClick={logout} >Logout</Typography>
                             </Col>
                         </Modal>
                     </Col>
