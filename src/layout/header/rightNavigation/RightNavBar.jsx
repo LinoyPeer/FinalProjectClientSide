@@ -52,7 +52,7 @@ export default function RightNavBar() {
                                 <Divider style={{ margin: '8px 0', borderWidth: '3px', fontWeight: 'bold', borderColor: 'grey' }} />
                                 <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)} >About</Typography>
                                 <Divider style={{ margin: '8px 0' }} />
-                                <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)} >Settings</Typography>
+                                <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)} >Settings</Typography>
                                 <Divider style={{ margin: '8px 0' }} />
                                 <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)} >Saved</Typography>
                                 <Divider style={{ margin: '8px 0' }} />

@@ -4,11 +4,12 @@ import usePosts from '../posts/hooks/usePosts';
 import { useAuth } from '../providers/AuthProvider';
 import { EditOutlined, SettingOutlined } from '@ant-design/icons';
 import { useReference } from '../providers/RefProvider';
-import { useNavigate } from 'react-router-dom'; // יש להוסיף את זה בשביל הניווט
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../routes/routes';
 
 const { Title } = Typography;
 
-export default function ProfilePage({ postId }) {
+export default function ProfilePage() {
     const { posts, getMyPosts } = usePosts();
     const { userDetails } = useAuth();
     const { handlePostClick } = useReference();
@@ -27,7 +28,7 @@ export default function ProfilePage({ postId }) {
                 <Title level={2} style={{ fontSize: '17px', color: '#000', fontFamily: 'Tahoma', fontWeight: '100' }}>
                     {fullNameOfUser || 'User Name'}
                     <EditOutlined style={{ marginLeft: '20px' }} />
-                    <SettingOutlined style={{ marginLeft: '20px' }} />
+                    <SettingOutlined style={{ marginLeft: '20px' }} onClick={() => navigate(ROUTES.PROFILE_SETTINGS)} />
                 </Title>
             </div>
             <Divider />

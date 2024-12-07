@@ -10,7 +10,8 @@ const ROUTES = {
     CHATS: '/chats-view',
     COMMUNICATION: '/communication',
     START_CHAT: '/chat/:roomId',
-    UPLOUD_PAGE: '/uploud-post'
+    UPLOUD_PAGE: '/uploud-post',
+    PROFILE_SETTINGS: '/profille-settings'
 };
 
 export default ROUTES;
