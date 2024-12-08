@@ -24,7 +24,7 @@ export default function ProfileSettings() {
             updatedUserData.append('firstName', formData.firstName);
             updatedUserData.append('middleName', formData.middleName);
             updatedUserData.append('lastName', formData.lastName);
-            updatedUserData.append('bio', formData.bio); // שיגור ה-BIO
+            updatedUserData.append('bio', formData.bio);
 
             if (formData.image) {
                 updatedUserData.append('image', formData.image);
@@ -34,12 +34,11 @@ export default function ProfileSettings() {
                 await handleEditUser(updatedUserData);
                 setNotification('green', 'Profile updated successfully');
 
-                // לאחר עדכון פרופיל, עדכן את הנתונים בסטייט
                 setData({
                     firstName: formData.firstName,
                     middleName: formData.middleName,
                     lastName: formData.lastName,
-                    bio: formData.bio, // עדכון ה-BIO בסטייט
+                    bio: formData.bio,
                 });
             } catch (error) {
                 setNotification('red', 'Error updating profile');
@@ -140,9 +139,9 @@ export default function ProfileSettings() {
                 <Text strong>Bio: </Text>
                 <div style={{ marginTop: '10px' }}></div>
                 <TextArea
-                    value={data.bio} // כך ה-BIO יתעדכן בכל פעם שיש שינוי
+                    value={data.bio}
                     name='bio'
-                    onChange={(e) => handleChange(e)} // כל שינוי ב-BIO יעודכן בסטייט
+                    onChange={(e) => handleChange(e)}
                     maxLength={30}
                     showCount
                     rows={4}

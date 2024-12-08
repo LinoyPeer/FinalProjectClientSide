@@ -17,14 +17,13 @@ export default function ProfilePage() {
     const navigate = useNavigate();
     const { isModalVisible, handleCancelModal, handleMenu } = usePostsActions();
 
-    // אתחול ה-BIO עם ערך ברירת מחדל
     const [bio, setBio] = useState('Welcome to my InstaPost profile page!');
 
     useEffect(() => {
         if (userDetails?.bio) {
-            setBio(userDetails.bio); // עדכון ה-BIO עם הערך שהתקבל מהשרת
+            setBio(userDetails.bio);
         }
-    }, [userDetails?.bio]); // עדכון ה-BIO בכל פעם שה-`bio` משתנה
+    }, [userDetails?.bio]);
 
     const handleModalClose = () => {
         handleCancelModal();
@@ -48,11 +47,11 @@ export default function ProfilePage() {
             </div>
 
             <div style={{ marginTop: '-2em', marginLeft: '2em', display: 'flex', flexDirection: 'row', marginRight: '1em' }}>
-                <Typography style={{ fontWeight: '600', marginRight: '10px', color: '#6495ED' }}>
+                <Typography style={{ fontWeight: '600', marginRight: '10px', color: '#3D52A0' }}>
                     Bio:
                 </Typography>
                 <Typography style={{ fontWeight: 'normal', color: 'black' }}>
-                    {bio} {/* הצג את ה-BIO המעודכן */}
+                    {bio}
                 </Typography>
             </div>
 
