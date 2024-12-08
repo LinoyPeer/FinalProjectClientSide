@@ -45,10 +45,12 @@ export default function ProfilePage() {
         try {
             if (postToDelete) {
                 await deletePostById(postToDelete, token);
+                // עדכון הפוסטים לאחר מחיקה
                 if (posts) {
-                    setPosts(prevPosts => prevPosts.filter(post => post != undefined && post._id !== postToDelete));
+                    setPosts(prevPosts => prevPosts.filter(post => post != undefined && post._id !== post != undefined && postToDelete));
                     setDeleteModalVisible(false);
-                    setShakingPosts([]);
+                    setShakingPosts([]);  // עצירת הרעד
+                    setEditMode(false);    // עצירת מצב עריכה והסתרת האייקון של הפח
                 }
             } else {
                 console.error('Post ID is not defined!');
@@ -60,8 +62,10 @@ export default function ProfilePage() {
 
     const toggleEditMode = () => {
         setEditMode(!editMode);
-        if (posts) {
-            setShakingPosts(posts.filter(post => post != undefined && post?._id).map((post) => post._id));
+        if (!editMode) {
+            setShakingPosts(posts.filter(post => post._id).map(post => post._id));  // התחלת רעד הפוסטים
+        } else {
+            setShakingPosts([]);  // עצירת רעד הפוסטים
         }
     };
 
@@ -156,7 +160,6 @@ export default function ProfilePage() {
                     <p>No posts available</p>
                 )}
             </Row>
-
 
             <Modal
                 title="Delete Post"

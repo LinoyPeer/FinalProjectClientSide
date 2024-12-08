@@ -38,6 +38,7 @@ export default function StartChat() {
         return 'Unknown User';
     };
 
+
     useEffect(() => {
         socketRef.current = io('http://localhost:8181/chat', {
             query: { roomId },
@@ -137,17 +138,19 @@ export default function StartChat() {
                                         <Avatar>
                                             {item.sender && item.sender.image ? (
                                                 <img
-                                                    src={item.sender.image.path} alt="User profile"
+                                                    src={item.sender.image.path} // ודא שה-path לא empty
+                                                    alt="User profile"
                                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                 />
                                             ) : (
-                                                item.sender && item.sender.first.charAt(0)
+                                                item.sender && item.sender.first
                                             )}
                                         </Avatar>
                                     }
-                                    title={getUserNameById(item.sender._id)}
+                                    title={item.sender && item.sender._id ? getUserNameById(item.sender._id) : 'Unknown User'} // הגנה כאן
                                     description={item.content}
                                 />
+
 
                                 <div style={{ fontSize: '0.75rem', color: 'gray' }}>
                                     {new Date(item.timestamp).toLocaleString()}
