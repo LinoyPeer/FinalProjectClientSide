@@ -1,42 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Typography, Space } from 'antd';
+import { Button, Typography, Space, Form } from 'antd';
 import { UploadOutlined, EditOutlined } from '@ant-design/icons';
 import PageHeader from '../../components/pageHeader';
 import { useAuth } from '../../providers/AuthProvider';
 import TextArea from 'antd/es/input/TextArea';
 import useUsers from '../hooks/useUsers';
 import { useNotification } from '../../providers/NotificationProvider';  // Import the notification hook
+import Joi from 'joi';
+import useForm from '../../forms/hooks/useForm';
+import initialEditProfileForm from '../helpers/initialForms/initialEditProfileForm';
+import editProfileSchema from '../models/editProfileSchema';
 
 const { Text } = Typography;
 
 export default function ProfileSettings() {
-    const [userData, setUserData] = useState({
-        firstName: '',
-        middleName: '',
-        lastName: '',
-        image: null,
-    });
-    const [imagePreview, setImagePreview] = useState(null);
     const { userDetails } = useAuth();
+    const [imagePreview, setImagePreview] = useState(null);
     const { handleEditUser } = useUsers();
-    const setNotification = useNotification(); // Get the notification function
+    const setNotification = useNotification();
+
+    const { handleChange, handleReset, onSubmit, data, errors, setData, setErrors } = useForm(
+        initialEditProfileForm, editProfileSchema, async (formData) => {
+            const updatedUserData = new FormData();
+            updatedUserData.append('firstName', formData.firstName);
+            updatedUserData.append('middleName', formData.middleName);
+            updatedUserData.append('lastName', formData.lastName);
+
+            if (formData.image) {
+                updatedUserData.append('image', formData.image);
+            }
+
+            try {
+                await handleEditUser(updatedUserData);
+                setNotification('green', 'Profile updated successfully');
+
+                // לאחר עדכון פרופיל, עדכן את הנתונים בסטייט
+                setData({
+                    firstName: formData.firstName,
+                    middleName: formData.middleName,
+                    lastName: formData.lastName,
+                });
+            } catch (error) {
+                setNotification('red', 'Error updating profile');
+                console.error(error);
+            }
+        }
+    );
 
     useEffect(() => {
         if (userDetails) {
-            setUserData({
+            setData({
                 firstName: userDetails.name?.first || '',
                 middleName: userDetails.name?.middle || '',
                 lastName: userDetails.name?.last || '',
             });
         }
-    }, [userDetails]);
-
-    const handleInputChange = (e, field) => {
-        setUserData({
-            ...userData,
-            [field]: e.target.value,
-        });
-    };
+    }, [userDetails, setData]);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -47,29 +66,10 @@ export default function ProfileSettings() {
             };
             reader.readAsDataURL(file);
 
-            setUserData({
-                ...userData,
+            setData((prev) => ({
+                ...prev,
                 image: file,
-            });
-        }
-    };
-
-    const handleSaveChanges = async () => {
-        const updatedUserData = new FormData();
-        updatedUserData.append('firstName', userData.firstName);
-        updatedUserData.append('middleName', userData.middleName);
-        updatedUserData.append('lastName', userData.lastName);
-
-        if (userData.image) {
-            updatedUserData.append('image', userData.image);
-        }
-
-        try {
-            await handleEditUser(updatedUserData);
-            setNotification('green', 'Profile updated successfully');
-        } catch (error) {
-            setNotification('red', 'Error updating profile');
-            console.error(error);
+            }));
         }
     };
 
@@ -104,32 +104,38 @@ export default function ProfileSettings() {
                     <Typography style={{ fontWeight: 'normal' }}>First: </Typography>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
-                        value={userData.firstName}
-                        onChange={(e) => handleInputChange(e, 'firstName')}
+                        name="firstName"
+                        value={data.firstName}
+                        onChange={handleChange}
                     />
+                    {errors.firstName && <div style={{ color: 'red' }}>{errors.firstName}</div>}
                 </Space>
                 <br />
                 <Space>
-                    <Text strong>Middle: </Text>
+                    <Text style={{ fontWeight: 'normal' }}>Middle: </Text>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
-                        value={userData.middleName}
-                        onChange={(e) => handleInputChange(e, 'middleName')}
+                        name="middleName"
+                        value={data.middleName}
+                        onChange={handleChange}
                     />
+                    {errors.middleName && <div style={{ color: 'red' }}>{errors.middleName}</div>}
                 </Space>
                 <br />
                 <Space>
-                    <Text strong>Last: </Text>
+                    <Text style={{ fontWeight: 'normal' }}>Last: </Text>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
-                        value={userData.lastName}
-                        onChange={(e) => handleInputChange(e, 'lastName')}
+                        name="lastName"
+                        value={data.lastName}
+                        onChange={handleChange}
                     />
+                    {errors.lastName && <div style={{ color: 'red' }}>{errors.lastName}</div>}
                 </Space>
             </div>
 
             <div style={{ marginTop: '20px' }}>
-                <Button type="primary" icon={<EditOutlined />} onClick={handleSaveChanges}>
+                <Button type="primary" icon={<EditOutlined />} onClick={onSubmit}>
                     Save Changes
                 </Button>
             </div>
