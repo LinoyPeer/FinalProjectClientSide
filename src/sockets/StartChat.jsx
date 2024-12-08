@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { io } from 'socket.io-client';
@@ -32,11 +31,12 @@ export default function StartChat() {
     const theIdOfEachUser = allTheUsers.map((user) => user._id);
 
     const getUserNameById = (id) => {
-        if (allTheUsers) {
+        if (allTheUsers && id) {
             const index = theIdOfEachUser.indexOf(id);
             return index !== -1 ? theNameOfEachUser[index] : 'Unknown User';
         }
-    }
+        return 'Unknown User';
+    };
 
     useEffect(() => {
         socketRef.current = io('http://localhost:8181/chat', {
@@ -81,12 +81,14 @@ export default function StartChat() {
                     roomId,
                     content: message,
                     timestamp: new Date().toISOString(),
-                    sender: {
-                        first: userDetails.name.first,
-                        last: userDetails.name.last,
-                        image: userDetails.image.url,
-                        _id: userDetails._id,
-                    },
+                    sender: userDetails
+                        ? {
+                            first: userDetails.name.first,
+                            last: userDetails.name.last,
+                            image: userDetails.image.url,
+                            _id: userDetails._id,
+                        }
+                        : {},
                 });
             }
             setMessage('');
@@ -108,7 +110,9 @@ export default function StartChat() {
             <List
                 dataSource={messages}
                 renderItem={(item, index) => {
-                    const isCurrentUser = userDetails && item.sender._id === userDetails._id;
+                    const isCurrentUser =
+                        userDetails && item.sender && item.sender._id === userDetails._id;
+
                     return (
                         <List.Item
                             key={index}
@@ -126,18 +130,25 @@ export default function StartChat() {
                                     wordWrap: 'break-word',
                                     marginBottom: '10px',
                                     width: '100%',
-
                                 }}
                             >
                                 <List.Item.Meta
                                     avatar={
                                         <Avatar>
-                                            {item.sender.first && item.sender.first.charAt(0)}
+                                            {item.sender && item.sender.image ? (
+                                                <img
+                                                    src={item.sender.image.path} alt="User profile"
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                />
+                                            ) : (
+                                                item.sender && item.sender.first.charAt(0)
+                                            )}
                                         </Avatar>
                                     }
                                     title={getUserNameById(item.sender._id)}
                                     description={item.content}
                                 />
+
                                 <div style={{ fontSize: '0.75rem', color: 'gray' }}>
                                     {new Date(item.timestamp).toLocaleString()}
                                 </div>
@@ -168,4 +179,3 @@ export default function StartChat() {
         </div>
     );
 }
-
