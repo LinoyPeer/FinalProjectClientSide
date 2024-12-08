@@ -11,7 +11,6 @@ export default function PostComponent({ post, handleLike, handleComment, handleS
     const { allUsers, getAllUsers } = useUsers();
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
 
-
     useEffect(() => {
         getAllUsers();
     }, []);
