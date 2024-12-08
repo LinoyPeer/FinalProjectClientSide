@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Space, Input, Select } from 'antd';
+import { Button, Typography, Space, Select } from 'antd';
 import { UploadOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import PageHeader from '../../components/pageHeader';
 import { useAuth } from '../../providers/AuthProvider';
@@ -53,7 +53,7 @@ export default function ProfileSettings() {
                 firstName: userDetails.name?.first || '',
                 middleName: userDetails.name?.middle || '',
                 lastName: userDetails.name?.last || '',
-                bio: userDetails.bio || '', // וודא ש-MISSING BIO לא גורם לבעיה
+                bio: userDetails.bio || '',
             });
         }
     }, [userDetails, setData]);
