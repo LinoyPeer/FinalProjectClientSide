@@ -38,7 +38,6 @@ export default function usePosts() {
             if (myPostsData) {
                 setPosts(myPostsData);
                 console.log('Updated posts:', myPostsData);
-                setNotification("green", "All my cards are here!");
             }
         } catch (error) {
             console.error(error);

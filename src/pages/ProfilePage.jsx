@@ -7,7 +7,6 @@ import { useReference } from '../providers/RefProvider';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
 import usePostsActions from '../posts/hooks/usePostsActions';
-import BioEditing from '../users/components/BioEditing';
 
 const { Title } = Typography;
 
@@ -17,11 +16,15 @@ export default function ProfilePage() {
     const { handlePostClick } = useReference();
     const navigate = useNavigate();
     const { isModalVisible, handleCancelModal, handleMenu } = usePostsActions();
+
+    // אתחול ה-BIO עם ערך ברירת מחדל
     const [bio, setBio] = useState('Welcome to my InstaPost profile page!');
 
-    const handleBioChange = (newBio) => {
-        setBio(newBio);
-    };
+    useEffect(() => {
+        if (userDetails?.bio) {
+            setBio(userDetails.bio); // עדכון ה-BIO עם הערך שהתקבל מהשרת
+        }
+    }, [userDetails?.bio]); // עדכון ה-BIO בכל פעם שה-`bio` משתנה
 
     const handleModalClose = () => {
         handleCancelModal();
@@ -40,27 +43,18 @@ export default function ProfilePage() {
                 <Title level={2} style={{ fontSize: '17px', color: '#000', fontFamily: 'Tahoma', fontWeight: '100' }}>
                     {fullNameOfUser || 'User Name'}
                     <EditOutlined style={{ marginLeft: '20px' }} onClick={() => handleMenu()} />
-                    <Modal
-                        title="Bio editing"
-                        open={isModalVisible}
-                        onCancel={handleModalClose}
-                        footer={null}
-                        width={200}
-                        centered
-                    >
-                        <BioEditing currentBio={bio} onBioChange={handleBioChange} />
-                    </Modal>
                     <SettingOutlined style={{ marginLeft: '20px' }} onClick={() => navigate(ROUTES.PROFILE_SETTINGS)} />
                 </Title>
             </div>
+
             <div style={{ marginTop: '-2em', marginLeft: '2em', display: 'flex', flexDirection: 'row', marginRight: '1em' }}>
                 <Typography style={{ fontWeight: '600', marginRight: '10px', color: '#6495ED' }}>
                     Bio:
                 </Typography>
-                <Typography style={{ fontWeight: 'normal' }}>
-                    {bio}
+                <Typography style={{ fontWeight: 'normal', color: 'black' }}>
+                    {bio} {/* הצג את ה-BIO המעודכן */}
                 </Typography>
-            </div >
+            </div>
 
             <Divider />
 
