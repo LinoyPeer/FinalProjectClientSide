@@ -2,11 +2,12 @@ import { Avatar, Col, Row, Typography, Card, Divider, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import usePosts from '../posts/hooks/usePosts';
 import { useAuth } from '../providers/AuthProvider';
-import { EditOutlined, SettingOutlined } from '@ant-design/icons';
+import { EditOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useReference } from '../providers/RefProvider';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
 import usePostsActions from '../posts/hooks/usePostsActions';
+import { useSpring, animated } from '@react-spring/web'; // ייבוא אנימציה
 
 const { Title } = Typography;
 
@@ -18,6 +19,8 @@ export default function ProfilePage() {
     const { isModalVisible, handleCancelModal, handleMenu } = usePostsActions();
 
     const [bio, setBio] = useState('Welcome to my InstaPost profile page!');
+    const [editMode, setEditMode] = useState(false);
+    const [shakingPosts, setShakingPosts] = useState([]);
 
     useEffect(() => {
         if (userDetails?.bio) {
@@ -25,15 +28,33 @@ export default function ProfilePage() {
         }
     }, [userDetails?.bio]);
 
-    const handleModalClose = () => {
-        handleCancelModal();
-    };
-
     useEffect(() => {
         getMyPosts();
     }, [getMyPosts]);
 
-    let fullNameOfUser = `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''} `;
+    const handleDeletePost = (postId) => {
+        console.log("DELETED", postId);
+    };
+
+    const handleModalClose = () => {
+        handleCancelModal();
+    };
+
+    const toggleEditMode = () => {
+        setEditMode(!editMode);
+        setShakingPosts(posts.map((post) => post._id));
+    };
+
+    let fullNameOfUser = `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''}`;
+
+    const shakeStyle = useSpring({
+        to: { transform: editMode ? 'translateX(5px)' : 'translateX(0px)' },
+        from: { transform: 'translateX(0px)' },
+        reset: true,
+        reverse: editMode,
+        config: { duration: 100 },
+        loop: editMode ? { reverse: true } : false,
+    });
 
     return (
         <>
@@ -41,7 +62,7 @@ export default function ProfilePage() {
                 <Avatar size={40} style={{ marginLeft: '2em', marginBottom: '-1vh' }} src={userDetails?.image?.path} />
                 <Title level={2} style={{ fontSize: '17px', color: '#000', fontFamily: 'Tahoma', fontWeight: '100' }}>
                     {fullNameOfUser || 'User Name'}
-                    <EditOutlined style={{ marginLeft: '20px' }} onClick={() => handleMenu()} />
+                    <EditOutlined style={{ marginLeft: '20px' }} onClick={toggleEditMode} />
                     <SettingOutlined style={{ marginLeft: '20px' }} onClick={() => navigate(ROUTES.PROFILE_SETTINGS)} />
                 </Title>
             </div>
@@ -69,28 +90,44 @@ export default function ProfilePage() {
                                 marginBottom: '-16px',
                             }}
                         >
-                            <Card
-                                hoverable
-                                style={{
-                                    width: '100%',
-                                    borderRadius: '8px',
-                                    height: '50%',
-                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                }}
-                                cover={
-                                    <img
-                                        src={post?.image?.path}
-                                        alt="Post image"
-                                        style={{
-                                            width: '100%',
-                                            aspectRatio: '1',
-                                            objectFit: 'cover',
-                                            borderRadius: '8px',
-                                        }}
-                                        onClick={() => handlePostClick(post._id)}
-                                    />
-                                }
-                            />
+                            <animated.div style={shakingPosts.includes(post._id) ? shakeStyle : {}}>
+                                <Card
+                                    hoverable
+                                    style={{
+                                        width: '100%',
+                                        borderRadius: '8px',
+                                        height: '50%',
+                                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                    }}
+                                    cover={
+                                        <img
+                                            src={post?.image?.path}
+                                            alt="Post image"
+                                            style={{
+                                                width: '100%',
+                                                aspectRatio: '1',
+                                                objectFit: 'cover',
+                                                borderRadius: '8px',
+                                            }}
+                                            onClick={() => handlePostClick(post._id)}
+                                        />
+                                    }
+                                >
+                                    {editMode && (
+                                        <DeleteOutlined
+                                            onClick={() => handleDeletePost(post._id)}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '10px',
+                                                right: '10px',
+                                                fontSize: '20px',
+                                                color: 'black',
+                                                cursor: 'pointer',
+                                            }}
+                                        />
+                                    )}
+                                </Card>
+                            </animated.div>
                         </Col>
                     ))
                 ) : (
