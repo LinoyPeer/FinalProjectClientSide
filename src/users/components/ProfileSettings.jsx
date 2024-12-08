@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Space, Form } from 'antd';
-import { UploadOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Typography, Space, Input, Select } from 'antd';
+import { UploadOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
 import PageHeader from '../../components/pageHeader';
 import { useAuth } from '../../providers/AuthProvider';
 import TextArea from 'antd/es/input/TextArea';
 import useUsers from '../hooks/useUsers';
-import { useNotification } from '../../providers/NotificationProvider';  // Import the notification hook
-import Joi from 'joi';
+import { useNotification } from '../../providers/NotificationProvider';
 import useForm from '../../forms/hooks/useForm';
 import initialEditProfileForm from '../helpers/initialForms/initialEditProfileForm';
 import editProfileSchema from '../models/editProfileSchema';
@@ -19,12 +18,13 @@ export default function ProfileSettings() {
     const { handleEditUser } = useUsers();
     const setNotification = useNotification();
 
-    const { handleChange, handleReset, onSubmit, data, errors, setData, setErrors } = useForm(
+    const { handleChange, handleReset, onSubmit, data, errors, setData } = useForm(
         initialEditProfileForm, editProfileSchema, async (formData) => {
             const updatedUserData = new FormData();
             updatedUserData.append('firstName', formData.firstName);
             updatedUserData.append('middleName', formData.middleName);
             updatedUserData.append('lastName', formData.lastName);
+            updatedUserData.append('bio', formData.bio); // שיגור ה-BIO
 
             if (formData.image) {
                 updatedUserData.append('image', formData.image);
@@ -39,6 +39,7 @@ export default function ProfileSettings() {
                     firstName: formData.firstName,
                     middleName: formData.middleName,
                     lastName: formData.lastName,
+                    bio: formData.bio, // עדכון ה-BIO בסטייט
                 });
             } catch (error) {
                 setNotification('red', 'Error updating profile');
@@ -53,6 +54,7 @@ export default function ProfileSettings() {
                 firstName: userDetails.name?.first || '',
                 middleName: userDetails.name?.middle || '',
                 lastName: userDetails.name?.last || '',
+                bio: userDetails.bio || '', // וודא ש-MISSING BIO לא גורם לבעיה
             });
         }
     }, [userDetails, setData]);
@@ -78,7 +80,7 @@ export default function ProfileSettings() {
             <PageHeader title={'Profile Settings'} subtitle={'Edit your profile'} />
 
             <Space direction="vertical" style={{ width: '100%' }}>
-                <Text strong>Change Profile Picture</Text>
+                <Text strong>Change Profile Picture: </Text>
                 <input
                     onChange={handleFileChange}
                     type="file"
@@ -132,6 +134,33 @@ export default function ProfileSettings() {
                     />
                     {errors.lastName && <div style={{ color: 'red' }}>{errors.lastName}</div>}
                 </Space>
+            </div>
+
+            <div style={{ marginTop: '20px' }}>
+                <Text strong>Bio: </Text>
+                <div style={{ marginTop: '10px' }}></div>
+                <TextArea
+                    value={data.bio} // כך ה-BIO יתעדכן בכל פעם שיש שינוי
+                    name='bio'
+                    onChange={(e) => handleChange(e)} // כל שינוי ב-BIO יעודכן בסטייט
+                    maxLength={30}
+                    showCount
+                    rows={4}
+                    placeholder="Write something about yourself..."
+                />
+            </div>
+
+            <div style={{ marginTop: '30px' }}>
+                <Text strong>Gender: </Text>
+                <Text type="secondary">This will not be part of your public profile.</Text>
+                <Select
+                    style={{ width: '100%', marginTop: '10px' }}
+                    placeholder="Select your gender"
+                    prefix={<UserOutlined />}
+                >
+                    <Select.Option value="Male">Male</Select.Option>
+                    <Select.Option value="Female">Female</Select.Option>
+                </Select>
             </div>
 
             <div style={{ marginTop: '20px' }}>
