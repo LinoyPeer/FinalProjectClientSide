@@ -6,21 +6,21 @@ import { EditOutlined, SettingOutlined, DeleteOutlined } from '@ant-design/icons
 import { useReference } from '../providers/RefProvider';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
-import usePostsActions from '../posts/hooks/usePostsActions';
-import { useSpring, animated } from '@react-spring/web'; // ייבוא אנימציה
+import { useSpring, animated } from '@react-spring/web';
 
 const { Title } = Typography;
 
 export default function ProfilePage() {
-    const { posts, getMyPosts } = usePosts();
+    const { posts, getMyPosts, setPosts, deletePostById } = usePosts();
     const { userDetails } = useAuth();
     const { handlePostClick } = useReference();
     const navigate = useNavigate();
-    const { isModalVisible, handleCancelModal, handleMenu } = usePostsActions();
-
+    const { token } = useAuth();
     const [bio, setBio] = useState('Welcome to my InstaPost profile page!');
     const [editMode, setEditMode] = useState(false);
     const [shakingPosts, setShakingPosts] = useState([]);
+    const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+    const [postToDelete, setPostToDelete] = useState(null);
 
     useEffect(() => {
         if (userDetails?.bio) {
@@ -33,16 +33,36 @@ export default function ProfilePage() {
     }, [getMyPosts]);
 
     const handleDeletePost = (postId) => {
-        console.log("DELETED", postId);
+        setPostToDelete(postId);
+        setDeleteModalVisible(true);
     };
 
     const handleModalClose = () => {
-        handleCancelModal();
+        setDeleteModalVisible(false);
+    };
+
+    const confirmDeletePost = async () => {
+        try {
+            if (postToDelete) {
+                await deletePostById(postToDelete, token);
+                if (posts) {
+                    setPosts(prevPosts => prevPosts.filter(post => post != undefined && post._id !== postToDelete));
+                    setDeleteModalVisible(false);
+                    setShakingPosts([]);
+                }
+            } else {
+                console.error('Post ID is not defined!');
+            }
+        } catch (e) {
+            console.error('Failed to delete post:', e);
+        }
     };
 
     const toggleEditMode = () => {
         setEditMode(!editMode);
-        setShakingPosts(posts.map((post) => post._id));
+        if (posts) {
+            setShakingPosts(posts.filter(post => post != undefined && post?._id).map((post) => post._id));
+        }
     };
 
     let fullNameOfUser = `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''}`;
@@ -81,59 +101,78 @@ export default function ProfilePage() {
             <Row style={{ width: '80%', margin: '0 auto' }} gutter={16}>
                 {Array.isArray(posts) && posts.length > 0 ? (
                     posts.map((post) => (
-                        <Col
-                            key={post._id}
-                            xs={8} sm={12} md={8} lg={6}
-                            style={{
-                                display: 'flex',
-                                justifyContent: 'center',
-                                marginBottom: '-16px',
-                            }}
-                        >
-                            <animated.div style={shakingPosts.includes(post._id) ? shakeStyle : {}}>
-                                <Card
-                                    hoverable
-                                    style={{
-                                        width: '100%',
-                                        borderRadius: '8px',
-                                        height: '50%',
-                                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                    }}
-                                    cover={
-                                        <img
-                                            src={post?.image?.path}
-                                            alt="Post image"
-                                            style={{
-                                                width: '100%',
-                                                aspectRatio: '1',
-                                                objectFit: 'cover',
-                                                borderRadius: '8px',
-                                            }}
-                                            onClick={() => handlePostClick(post._id)}
-                                        />
-                                    }
-                                >
-                                    {editMode && (
-                                        <DeleteOutlined
-                                            onClick={() => handleDeletePost(post._id)}
-                                            style={{
-                                                position: 'absolute',
-                                                top: '10px',
-                                                right: '10px',
-                                                fontSize: '20px',
-                                                color: 'black',
-                                                cursor: 'pointer',
-                                            }}
-                                        />
-                                    )}
-                                </Card>
-                            </animated.div>
-                        </Col>
+                        post && post._id ? (  // לוודא שהפוסט מוגדר וכולל את _id
+                            <Col
+                                key={post._id}  // השתמש ב-_id כמפתח
+                                xs={8} sm={12} md={8} lg={6}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    marginBottom: '-16px',
+                                }}
+                            >
+                                <animated.div style={shakingPosts.includes(post._id) ? shakeStyle : {}}>
+                                    <Card
+                                        hoverable
+                                        style={{
+                                            width: '100%',
+                                            borderRadius: '8px',
+                                            height: '50%',
+                                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                        }}
+                                        cover={
+                                            <img
+                                                src={post?.image?.path}  // בודקים אם התמונה קיימת
+                                                alt="Post image"
+                                                style={{
+                                                    width: '100%',
+                                                    aspectRatio: '1',
+                                                    objectFit: 'cover',
+                                                    borderRadius: '8px',
+                                                }}
+                                                onClick={() => handlePostClick(post._id)}
+                                            />
+                                        }
+                                    >
+                                        {editMode && (
+                                            <DeleteOutlined
+                                                onClick={() => handleDeletePost(post._id)}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '10px',
+                                                    right: '10px',
+                                                    fontSize: '20px',
+                                                    color: 'black',
+                                                    cursor: 'pointer',
+                                                }}
+                                            />
+                                        )}
+                                    </Card>
+                                </animated.div>
+                            </Col>
+                        ) : null // אם הפוסט לא מוגדר או שאין לו _id, לא מציגים אותו
                     ))
                 ) : (
                     <p>No posts available</p>
                 )}
             </Row>
+
+
+            <Modal
+                title="Delete Post"
+                open={isDeleteModalVisible}
+                onCancel={handleModalClose}
+                footer={[
+                    <button key="cancel" onClick={handleModalClose}>
+                        Cancel
+                    </button>,
+                    <button key="accept" onClick={confirmDeletePost}>
+                        Delete
+                    </button>,
+                ]}
+            >
+                <p>Are you sure you want to delete this post?</p>
+            </Modal>
         </>
     );
 }

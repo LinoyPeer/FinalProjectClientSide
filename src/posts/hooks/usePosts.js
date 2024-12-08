@@ -93,9 +93,9 @@ export default function usePosts() {
         }
     }, []);
 
-    const deletePostById = useCallback(async (id, postData) => {
+    const deletePostById = useCallback(async (id, token) => {
         try {
-            const data = await deletePostByIdApi(id, postData);
+            const data = await deletePostByIdApi(id, token);
             setNotification('green', 'Post updated successfully!');
             setPosts(prevPosts => prevPosts.map(post => post._id === id ? data : post));
         } catch (e) {
