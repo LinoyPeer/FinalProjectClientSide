@@ -2,18 +2,21 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import ROUTES from "../../routes/routes";
 import { setTokenInLocalStorage } from "../services/localStorageService";
-import { getAllUsersApi, getUserDetailsApi, loginUserApi, signupUserApi } from "../services/usersApiService";
-import { useCallback, useState } from "react";
+import { editUserApi, getAllUsersApi, getUserDetailsApi, loginUserApi, signupUserApi } from "../services/usersApiService";
+import { useCallback, useEffect, useState } from "react";
 import { useNotification } from "../../providers/NotificationProvider";
 
 export default function useUsers() {
     const setNotification = useNotification();
-    const [userDetails, setUserDetails] = useState(null);
+    const [userCurrentDetails, setUserCurrentDetails] = useState(null);
+    const { userDetails } = useAuth();
     const [allUsers, setAllUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const { login, token } = useAuth();
     const navigate = useNavigate();
+
+
 
     const handleLogin = useCallback(async (userLoginInfo) => {
         setIsLoading(true);
@@ -37,7 +40,9 @@ export default function useUsers() {
     const getUserDetails = async (userId) => {
         try {
             const data = await getUserDetailsApi(userId, token);
-            setUserDetails(data);
+            setUserCurrentDetails(data);
+            console.log(data);
+            return data;
         } catch (err) {
             setError(err);
         }
@@ -45,7 +50,7 @@ export default function useUsers() {
 
     const getAllUsers = async () => {
         try {
-            const data = await getAllUsersApi(token); // קורא ל-API ומעדכן את allUsers
+            const data = await getAllUsersApi(token);
             setAllUsers(data);
         } catch (err) {
             setError(err);
@@ -82,24 +87,38 @@ export default function useUsers() {
         }
     }, [navigate]);
 
+    const handleEditUser = useCallback(
+        async (userData) => {
+            setIsLoading(true);
+            if (userDetails) {
+                console.log('User details before edit:', userDetails);
+            } else {
+                console.log('No user details available.');
+            }
 
-    const handleEditUser = async (userData) => {
-        setIsLoading(true);
-        try {
-            const response = await editUserApi(token, userData);
-            setUserDetails(response.data);
-            setNotification('green', 'Profile updated successfully');
-        } catch (e) {
-            console.error('Error updating user:', e);
-            setError(e.message);
-            setNotification('red', `Error updating profile: ${e.message}`);
-        } finally {
-            setIsLoading(false);
+            try {
+                const response = await editUserApi(userDetails?._id, token, userData);
+                console.log('Edit response:', response);
+                setUserCurrentDetails(response);
+                setNotification('green', 'Profile updated successfully');
+                window.location.reload();
+
+            } catch (e) {
+                console.error('Error updating user:', e);
+                setError(e.message);
+                setNotification('red', `Error updating profile: ${e.message}`);
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [userDetails, token]
+    );
+
+    useEffect(() => {
+        if (userDetails) {
+            console.log('User details after edit:', userDetails);
         }
-    };
-
-
-
+    }, [userDetails, userCurrentDetails]);
 
     return { userDetails, allUsers, error, getUserDetails, getAllUsers, handleLogin, isLoading, error, handleSignup, handleEditUser };
 };

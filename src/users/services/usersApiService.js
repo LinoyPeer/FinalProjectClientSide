@@ -71,7 +71,7 @@ export const getAllUsersApi = async (token) => {
     }
 };
 
-export const editUserApi = async (token, data) => {
+export const editUserApi = async (userId, token, data) => {
     try {
         let config = {
             method: 'put',
@@ -82,6 +82,7 @@ export const editUserApi = async (token, data) => {
             },
             data: data
         };
+        console.log(config.url);
         axios.request(config)
             .then((response) => {
                 console.log(JSON.stringify(response.data));
