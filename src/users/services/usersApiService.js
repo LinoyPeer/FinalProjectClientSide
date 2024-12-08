@@ -2,11 +2,23 @@ import axios from "axios";
 
 const apiUrl = `http://localhost:8181/users`;
 
-export const loginUserApi = async (userLogin) => {
+export const loginUserApi = async (data, token) => {
     try {
-        const { data } = await axios.post(`${apiUrl}/login`, userLogin);
-        return data;
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `${apiUrl}/login`,
+            headers: {
+                'x-auth-token': `${token}`,
+                'Content-Type': 'application/json'
+            },
+            data: data
+        };
+        const response = await axios.request(config);
+        console.log(JSON.stringify(response.data));
+        return response.data;
     } catch (e) {
+        console.log(e);
         throw new Error(e.message);
     }
 };

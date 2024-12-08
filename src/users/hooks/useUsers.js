@@ -25,7 +25,7 @@ export default function useUsers() {
                 email: userLoginInfo.username,
                 password: userLoginInfo.password,
             };
-            const tokenResponse = await loginUserApi(loginData);
+            const tokenResponse = await loginUserApi(loginData, token);
             setTokenInLocalStorage(tokenResponse);
             login(tokenResponse);
             navigate(ROUTES.POSTS);
