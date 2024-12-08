@@ -8,13 +8,9 @@ import usePosts from '../../hooks/usePosts';
 import useUsers from '../../../users/hooks/useUsers';
 
 export default function PostComponent({ post, handleLike, handleComment, handleShare, isLiked }) {
-    const { getAllPosts } = usePosts();
     const { allUsers, getAllUsers } = useUsers();
     const [currentUserDetails, setCurrentUserDetails] = useState(null);
 
-    useEffect(() => {
-        getAllPosts();
-    }, [getAllPosts]);
 
     useEffect(() => {
         getAllUsers();

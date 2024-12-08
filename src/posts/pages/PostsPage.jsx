@@ -12,6 +12,7 @@ export default function PostsPage() {
 
     useEffect(() => {
         getAllPosts();
+        // getAllUsers();
     }, []);
 
     return (
