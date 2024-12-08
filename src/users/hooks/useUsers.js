@@ -101,7 +101,7 @@ export default function useUsers() {
                 console.log('Edit response:', response);
                 setUserCurrentDetails(response);
                 setNotification('green', 'Profile updated successfully');
-                window.location.reload();
+                // window.location.reload();
 
             } catch (e) {
                 console.error('Error updating user:', e);

@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Input, Button, Typography, Upload, message, Space, Select } from 'antd';
-import { UserOutlined, EditOutlined } from '@ant-design/icons';
-import { UploadOutlined } from '@ant-design/icons';
+import { Input, Button, Typography, Space } from 'antd';
+import { UploadOutlined, EditOutlined } from '@ant-design/icons';
 import PageHeader from '../../components/pageHeader';
 import { useAuth } from '../../providers/AuthProvider';
 import TextArea from 'antd/es/input/TextArea';
 import useUsers from '../hooks/useUsers';
+import { useNotification } from '../../providers/NotificationProvider';  // Import the notification hook
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 export default function ProfileSettings() {
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState({
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        image: null,
+    });
+    const [imagePreview, setImagePreview] = useState(null);
     const { userDetails } = useAuth();
     const { handleEditUser } = useUsers();
+    const setNotification = useNotification(); // Get the notification function
 
     useEffect(() => {
         if (userDetails) {
-            // בעת קבלת פרטי המשתמש, נשמור את המידע ב-state אחד
             setUserData({
                 firstName: userDetails.name?.first || '',
                 middleName: userDetails.name?.middle || '',
                 lastName: userDetails.name?.last || '',
-                bio: userDetails.bio || '',
-                gender: userDetails.gender || '',
             });
         }
     }, [userDetails]);
@@ -34,54 +38,70 @@ export default function ProfileSettings() {
         });
     };
 
-    const handleSelectChange = (value, field) => {
-        setUserData({
-            ...userData,
-            [field]: value,
-        });
-    };
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
 
-    const handleProfilePictureChange = (info) => {
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
+            setUserData({
+                ...userData,
+                image: file,
+            });
         }
     };
 
-    const handleSaveChanges = () => {
-        // הפונקציה תשלח את כל המידע המעודכן דרך ה-API
-        const updatedUserData = {
-            name: {
-                first: userData.firstName,
-                middle: userData.middleName,
-                last: userData.lastName,
-            },
-            bio: userData.bio,
-            gender: userData.gender,
-        };
-        handleEditUser(updatedUserData); // קריאה לפונקציה של עדכון המשתמש
+    const handleSaveChanges = async () => {
+        const updatedUserData = new FormData();
+        updatedUserData.append('firstName', userData.firstName);
+        updatedUserData.append('middleName', userData.middleName);
+        updatedUserData.append('lastName', userData.lastName);
+
+        if (userData.image) {
+            updatedUserData.append('image', userData.image);
+        }
+
+        try {
+            await handleEditUser(updatedUserData);
+            setNotification('green', 'Profile updated successfully');
+        } catch (error) {
+            setNotification('red', 'Error updating profile');
+            console.error(error);
+        }
     };
 
     return (
         <div style={{ padding: '30px' }}>
-            <PageHeader title={'Profile Settings'} subtitle={'edit your own profile'}></PageHeader>
+            <PageHeader title={'Profile Settings'} subtitle={'Edit your profile'} />
+
             <Space direction="vertical" style={{ width: '100%' }}>
                 <Text strong>Change Profile Picture</Text>
-                <Upload
-                    action="/upload"
-                    showUploadList={false}
-                    onChange={handleProfilePictureChange}
-                >
-                    <Button icon={<UploadOutlined />}>Upload New Picture</Button>
-                </Upload>
+                <input
+                    onChange={handleFileChange}
+                    type="file"
+                    accept="image/*"
+                    id="image-upload"
+                    style={{ display: 'none' }}
+                />
+                <Button icon={<UploadOutlined />} onClick={() => document.getElementById('image-upload').click()}>
+                    Upload New Picture
+                </Button>
+
+                {imagePreview && (
+                    <div style={{ marginTop: '10px' }}>
+                        <img src={imagePreview} alt="Preview" style={{ maxWidth: '200px' }} />
+                    </div>
+                )}
             </Space>
 
             <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column' }}>
                 <Text strong>Edit Username: </Text>
                 <br />
                 <Space>
-                    <Typography style={{ fontWeight: 'normal' }}>first: </Typography>
+                    <Typography style={{ fontWeight: 'normal' }}>First: </Typography>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
                         value={userData.firstName}
@@ -90,7 +110,7 @@ export default function ProfileSettings() {
                 </Space>
                 <br />
                 <Space>
-                    <Text strong>middle: </Text>
+                    <Text strong>Middle: </Text>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
                         value={userData.middleName}
@@ -99,40 +119,13 @@ export default function ProfileSettings() {
                 </Space>
                 <br />
                 <Space>
-                    <Text strong>last: </Text>
+                    <Text strong>Last: </Text>
                     <TextArea
                         style={{ width: '130px', height: '10px', fontSize: '14px' }}
                         value={userData.lastName}
                         onChange={(e) => handleInputChange(e, 'lastName')}
                     />
                 </Space>
-            </div>
-
-            <div style={{ marginTop: '20px' }}>
-                <Text strong>Bio: </Text>
-                <div style={{ marginTop: '10px' }}></div>
-                <Input.TextArea
-                    value={userData.bio}
-                    onChange={(e) => handleInputChange(e, 'bio')}
-                    maxLength={30}
-                    showCount
-                    rows={4}
-                    placeholder="Write something about yourself..."
-                />
-            </div>
-            <div style={{ marginTop: '30px' }}>
-                <Text strong>Gender: </Text>
-                <Text type="secondary">This will not be part of your public profile.</Text>
-                <Select
-                    value={userData.gender}
-                    onChange={(value) => handleSelectChange(value, 'gender')}
-                    style={{ width: '100%', marginTop: '10px' }}
-                    placeholder="Select your gender"
-                    prefix={<UserOutlined />}
-                >
-                    <Select.Option value="Male">Male</Select.Option>
-                    <Select.Option value="Female">Female</Select.Option>
-                </Select>
             </div>
 
             <div style={{ marginTop: '20px' }}>
@@ -143,4 +136,4 @@ export default function ProfileSettings() {
             <br />
         </div>
     );
-};
+}
