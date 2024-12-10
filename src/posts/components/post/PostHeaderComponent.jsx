@@ -3,11 +3,11 @@ import { Avatar, Card, Col, Divider, Row } from 'antd';
 import React from 'react';
 
 export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
-    const avatar = avatarPath ? (
-        <Avatar src={avatarPath} />
-    ) : (
-        <Avatar icon={<UserOutlined />} />
-    );
+    // const avatar = avatarPath ? (
+    //     <Avatar src={avatarPath} />
+    // ) : (
+    //     <Avatar icon={<UserOutlined />} />
+    // );
 
     return (
         <>
@@ -17,7 +17,7 @@ export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
                 </Col>
                 <Col style={{ textAlign: 'left', flexGrow: 1 }}>
                     <Card.Meta
-                        avatar={avatar}
+                        avatar={avatarPath}
                         title={<div style={{ fontWeight: 'bold' }}>{userNameOfPost}</div>}
                     />
                 </Col>

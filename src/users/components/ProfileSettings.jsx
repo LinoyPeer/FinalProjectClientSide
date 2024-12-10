@@ -9,6 +9,8 @@ import { useNotification } from '../../providers/NotificationProvider';
 import useForm from '../../forms/hooks/useForm';
 import initialEditProfileForm from '../helpers/initialForms/initialEditProfileForm';
 import editProfileSchema from '../models/editProfileSchema';
+import ROUTES from '../../routes/routes';
+import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
@@ -17,6 +19,7 @@ export default function ProfileSettings() {
     const [imagePreview, setImagePreview] = useState(null);
     const { handleEditUser } = useUsers();
     const setNotification = useNotification();
+    const navigate = useNavigate();
 
     const { handleChange, handleReset, onSubmit, data, errors, setData } = useForm(
         initialEditProfileForm, editProfileSchema, async (formData) => {
@@ -40,6 +43,7 @@ export default function ProfileSettings() {
                     lastName: formData.lastName,
                     bio: formData.bio,
                 });
+                navigate(ROUTES.PROFILE)
             } catch (error) {
                 setNotification('red', 'Error updating profile');
                 console.error(error);

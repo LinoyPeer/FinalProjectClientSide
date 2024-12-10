@@ -77,7 +77,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
-import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage, removeTokenFromLocalStorage, setTokenInLocalStorage } from '../users/services/localStorageService';
+import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage } from '../users/services/localStorageService';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -96,57 +96,51 @@ export default function AuthProvider({ children }) {
                 method: 'get',
                 url: `http://localhost:8181/users/${user._id}`,
                 headers: {
-                    'x-auth-token': `${token}`
-                }
+                    'x-auth-token': token,
+                },
             };
 
-            axios(config)
-                .then(response => {
+            axios.request(config)
+                .then((response) => {
+                    console.log("User details updated:", response.data);
                     setUserDetails(response.data);
-                    setTokenInLocalStorage(token);
                 })
-                .catch(error => {
-                    console.error('Error fetching user details:', error);
+                .catch((error) => {
+                    console.error("Error fetching user details:", error);
                 });
         }
     }, [user, token]);
 
 
     useEffect(() => {
-        if (user === null) {
+        if (token && user === null) {
             const userFromLocalStorage = getuserDetailsFromLocalStorage();
             setUser(userFromLocalStorage);
         }
-    }, [user]);
+    }, [token]);
+
 
     useEffect(() => {
         if (!isLoggedIn && token) {
             setIsLoggedIn(true);
         }
-
     }, [isLoggedIn, token]);
 
-
-
-    const login = (newToken, userDetails) => {
-        setTokenInLocalStorage(newToken);
-        setUser(userDetails);
-        setUserDetails(userDetails);
+    const login = (newToken) => {
+        setToken(newToken);
         setIsLoggedIn(true);
+        const userFromLocalStorage = getuserDetailsFromLocalStorage();
+        setUser(userFromLocalStorage);
         navigate(ROUTES.POSTS);
     };
 
-
-    // עדכון בעת התנתקות
     const logout = () => {
         setIsLoggedIn(false);
-        setUserDetails(null);
         setToken(null);
-        removeTokenFromLocalStorage();
+        setUser(null);
+        setUserDetails(null);
         navigate(ROUTES.ROOT);
     };
-
-
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, token, user, setToken, login, logout, userDetails }}>
@@ -160,4 +154,3 @@ export const useAuth = () => {
     if (!context) throw new Error('useAuth must be used within AuthProvider');
     return context;
 };
-

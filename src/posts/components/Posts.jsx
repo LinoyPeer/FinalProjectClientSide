@@ -3,7 +3,7 @@ import PostComponent from './post/PostComponent';
 import { Col, Row } from 'antd';
 import { useReference } from '../../providers/RefProvider';
 
-export default function Posts({ posts, handleLike, handleComment, handleShare }) {
+export default function Posts({ userDetails, allUsers, posts, handleLike, handleComment, handleShare }) {
     const { postRefs, setPostRef } = useReference();
 
     useEffect(() => {
@@ -22,6 +22,8 @@ export default function Posts({ posts, handleLike, handleComment, handleShare })
                     <Col key={post._id} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
                         <PostComponent
                             post={post}
+                            allUsers={allUsers}
+                            userDetails={userDetails}
                             PostId={post._id}
                             handleLike={handleLike}
                             handleComment={handleComment}

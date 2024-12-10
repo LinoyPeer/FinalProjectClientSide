@@ -37,9 +37,23 @@ export default function useUsers() {
         }
     }, [login, navigate, setNotification]);
 
-    const getUserDetails = async (userId) => {
+    // const getUserDetails = async (userId) => {
+    //     try {
+    //         const data = await getUserDetailsApi(userId, token);
+    //         setUserCurrentDetails(data);
+    //         console.log(data);
+    //         return data;
+    //     } catch (err) {
+    //         setError(err);
+    //     }
+    // };
+
+    const getUserDetails = async () => {
+        console.log(userDetails);
         try {
-            const data = await getUserDetailsApi(userId, token);
+            if (!userDetails && !userDetails._id) return
+            console.log('userDetails: ', userDetails);
+            const data = await getUserDetailsApi(userDetails && userDetails._id, token);
             setUserCurrentDetails(data);
             console.log(data);
             return data;
