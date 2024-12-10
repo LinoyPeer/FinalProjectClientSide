@@ -45,12 +45,11 @@ export default function ProfilePage() {
         try {
             if (postToDelete) {
                 await deletePostById(postToDelete, token);
-                // עדכון הפוסטים לאחר מחיקה
                 if (posts) {
                     setPosts(prevPosts => prevPosts.filter(post => post != undefined && post._id !== post != undefined && postToDelete));
                     setDeleteModalVisible(false);
-                    setShakingPosts([]);  // עצירת הרעד
-                    setEditMode(false);    // עצירת מצב עריכה והסתרת האייקון של הפח
+                    setShakingPosts([]);
+                    setEditMode(false);
                 }
             } else {
                 console.error('Post ID is not defined!');
@@ -63,9 +62,9 @@ export default function ProfilePage() {
     const toggleEditMode = () => {
         setEditMode(!editMode);
         if (!editMode) {
-            setShakingPosts(posts.filter(post => post._id).map(post => post._id));  // התחלת רעד הפוסטים
+            setShakingPosts(posts.filter(post => post._id).map(post => post._id));
         } else {
-            setShakingPosts([]);  // עצירת רעד הפוסטים
+            setShakingPosts([]);
         }
     };
 
@@ -105,9 +104,9 @@ export default function ProfilePage() {
             <Row style={{ width: '80%', margin: '0 auto' }} gutter={16}>
                 {Array.isArray(posts) && posts.length > 0 ? (
                     posts.map((post) => (
-                        post && post._id ? (  // לוודא שהפוסט מוגדר וכולל את _id
+                        post && post._id ? (
                             <Col
-                                key={post._id}  // השתמש ב-_id כמפתח
+                                key={post._id}
                                 xs={8} sm={12} md={8} lg={6}
                                 style={{
                                     display: 'flex',
@@ -126,7 +125,7 @@ export default function ProfilePage() {
                                         }}
                                         cover={
                                             <img
-                                                src={post?.image?.path}  // בודקים אם התמונה קיימת
+                                                src={post?.image?.path}
                                                 alt="Post image"
                                                 style={{
                                                     width: '100%',
@@ -154,7 +153,7 @@ export default function ProfilePage() {
                                     </Card>
                                 </animated.div>
                             </Col>
-                        ) : null // אם הפוסט לא מוגדר או שאין לו _id, לא מציגים אותו
+                        ) : null
                     ))
                 ) : (
                     <p>No posts available</p>

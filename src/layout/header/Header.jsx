@@ -1,8 +1,5 @@
 import React from 'react';
 import { Avatar, Row, Col, Layout } from 'antd';
-import { useMediaQuery } from 'react-responsive';
-import NavBarItem from '../../routes/components/NavBarItem';
-import { HomeOutlined, MenuOutlined } from '@ant-design/icons';
 import { useTheme } from '../../providers/ThemeProvider';
 import { darkTheme, lightTheme } from '../../themes/accessibilityTheme';
 import LeftNavBar from './leftNavigation/LeftNavBar';
