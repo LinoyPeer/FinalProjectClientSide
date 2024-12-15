@@ -9,9 +9,9 @@ export default function CustomedBottom({ checkboxText, linkHrefTextOptinial1, su
         <Space direction="vertical" style={{ textAlign: 'center' }}>
             <Form.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>{checkboxText}</Checkbox>
+                    {/* <Checkbox>{checkboxText}</Checkbox> */}
                 </Form.Item>
-                <Button type="text" icon={<ClearOutlined />} onClick={onClear} />
+                {/* <Button type="text" icon={<ClearOutlined />} onClick={onClear} /> */}
                 <Link href="#">{linkHrefTextOptinial1}</Link>
             </Form.Item>
 

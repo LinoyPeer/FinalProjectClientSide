@@ -6,6 +6,8 @@ import Joi from "joi";
 import useForm from "../../forms/hooks/useForm";
 import CustomedInput from "../../forms/components/CustomedInput";
 import CustomedForm from "../../forms/components/CustomedForm";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
 
 export default function CommentsOfEachPost() {
     const { userDetails } = useAuth();
@@ -26,6 +28,8 @@ export default function CommentsOfEachPost() {
                     middle: userDetails?.name?.middle || '',
                     last: userDetails?.name?.last,
                 },
+                userId: formData,
+                userImage: formData.userImage,
                 comment: formData.comment,
                 commentId: new Date().getTime(),
                 createdAt: new Date().toISOString(),
@@ -54,7 +58,7 @@ export default function CommentsOfEachPost() {
     }, [postId, posts]);
 
     return (
-        <div >
+        <div>
             {selectedPost ? (
                 <div>
                     <CustomedForm
@@ -74,6 +78,14 @@ export default function CommentsOfEachPost() {
                             error={errors.comment}
                             style={styles.input}
                         />
+                        <button
+                            type="submit"
+                            disabled={!data.comment || errors.comment}
+                            style={styles.submitButton}
+                        >
+                            Submit Comment
+                        </button>
+
                         <div style={styles.commentsList}>
                             <h4 style={styles.commentsTitle}>Comments:</h4>
                             {selectedPost.comments && selectedPost.comments.length > 0 ? (
@@ -81,11 +93,16 @@ export default function CommentsOfEachPost() {
                                     {selectedPost.comments.map((comment, index) => (
                                         <li key={index} style={styles.commentItem}>
                                             <div style={styles.commentHeader}>
-                                                <img
-                                                    src={userDetails?.image.path || "/default-avatar.png"}
+                                                <Avatar
                                                     alt="User Avatar"
                                                     style={styles.userAvatar}
-                                                />
+                                                >
+                                                    {comment?.userImage ? (
+                                                        <img src={comment?.userImage} alt="User Avatar" style={{ width: '100%', height: '100%' }} />
+                                                    ) : (
+                                                        <UserOutlined style={{ fontSize: '24px' }} />
+                                                    )}
+                                                </Avatar>
                                                 <div style={styles.userInfo}>
                                                     <strong style={styles.userName}>
                                                         {comment?.userName?.first} {comment?.userName?.middle} {comment?.userName?.last}
@@ -107,8 +124,6 @@ export default function CommentsOfEachPost() {
                                 <p>No comments yet.</p>
                             )}
                         </div>
-
-
                     </CustomedForm>
                 </div>
             ) : (
@@ -170,6 +185,9 @@ const styles = {
         color: '#444',
         marginTop: '10px',
         wordWrap: 'break-word',
+        maxWidth: '500px',  // קביעת רוחב מקסימלי של הטקסט
+        overflow: 'hidden',  // חיתוך תוכן אם הוא ארוך מדי
+        textOverflow: 'ellipsis',  // הוספת שלוש נקודות (...) במקרה שהטקסט ארוך מדי
     },
     input: {
         width: '100%',
@@ -182,9 +200,15 @@ const styles = {
         fontSize: '16px',
         outline: 'none',
         transition: 'border 0.3s ease, box-shadow 0.3s ease',
-        ':focus': {
-            borderColor: '#007bff',
-            boxShadow: '0 0 5px rgba(0, 123, 255, 0.5)',
-        }
+    },
+    submitButton: {
+        padding: '10px 20px',
+        backgroundColor: '#007bff',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        fontSize: '16px',
+        marginTop: '20px',
     }
-}
+};
