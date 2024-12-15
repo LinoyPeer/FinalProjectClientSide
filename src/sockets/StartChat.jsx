@@ -144,7 +144,7 @@ export default function StartChat() {
                                             <Avatar>
                                                 {item.sender && item.sender.image ? (
                                                     <img
-                                                        src={item.sender.image} // תמונת פרופיל ישירה
+                                                        src={item.sender.image}
                                                         alt="User profile"
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                     />
@@ -169,7 +169,7 @@ export default function StartChat() {
 
             <div
                 style={{
-                    position: 'sticky',
+                    position: 'absolute',
                     bottom: '60px',
                     left: '20px',
                     right: '20px',
