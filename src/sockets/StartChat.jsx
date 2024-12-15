@@ -38,7 +38,6 @@ export default function StartChat() {
         return 'Unknown User';
     };
 
-
     useEffect(() => {
         socketRef.current = io('http://localhost:8181/chat', {
             query: { roomId },
@@ -86,7 +85,7 @@ export default function StartChat() {
                         ? {
                             first: userDetails.name.first,
                             last: userDetails.name.last,
-                            image: userDetails.image.url,
+                            image: userDetails.image.path,
                             _id: userDetails._id,
                         }
                         : {},
@@ -106,64 +105,81 @@ export default function StartChat() {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100vh',
+                position: 'relative',
             }}
         >
-            <List
-                dataSource={messages}
-                renderItem={(item, index) => {
-                    const isCurrentUser =
-                        userDetails && item.sender && item.sender._id === userDetails._id;
+            {/* חלק ההודעות - עם גלילה */}
+            <div
+                style={{
+                    flex: 1,
+                    overflowY: 'auto', // גלילה להודעות
+                    paddingBottom: '100px', // שומר על רווח בתחתית להודעות
+                }}
+            >
+                <List
+                    dataSource={messages}
+                    renderItem={(item, index) => {
+                        const isCurrentUser =
+                            userDetails && item.sender && item.sender._id === userDetails._id;
 
-                    return (
-                        <List.Item
-                            key={index}
-                            style={{
-                                display: 'flex',
-                                justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
-                            }}
-                        >
-                            <div
+                        return (
+                            <List.Item
+                                key={index}
                                 style={{
-                                    backgroundColor: isCurrentUser ? '#d1e7dd' : '#f8d7da',
-                                    padding: '10px',
-                                    borderRadius: '10px',
-                                    maxWidth: '80%',
-                                    wordWrap: 'break-word',
-                                    marginBottom: '10px',
-                                    width: '100%',
+                                    display: 'flex',
+                                    justifyContent: isCurrentUser ? 'flex-end' : 'flex-start',
                                 }}
                             >
-                                <List.Item.Meta
-                                    avatar={
-                                        <Avatar>
-                                            {item.sender && item.sender.image ? (
-                                                <img
-                                                    src={item.sender.image.path} // ודא שה-path לא empty
-                                                    alt="User profile"
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                />
-                                            ) : (
-                                                item.sender && item.sender.first
-                                            )}
-                                        </Avatar>
-                                    }
-                                    title={item.sender && item.sender._id ? getUserNameById(item.sender._id) : 'Unknown User'} // הגנה כאן
-                                    description={item.content}
-                                />
-
-
-                                <div style={{ fontSize: '0.75rem', color: 'gray' }}>
-                                    {new Date(item.timestamp).toLocaleString()}
+                                <div
+                                    style={{
+                                        backgroundColor: isCurrentUser ? '#d1e7dd' : '#f8d7da',
+                                        padding: '10px',
+                                        borderRadius: '10px',
+                                        maxWidth: '80%',
+                                        wordWrap: 'break-word',
+                                        marginBottom: '10px',
+                                        width: '100%',
+                                    }}
+                                >
+                                    <List.Item.Meta
+                                        avatar={
+                                            <Avatar>
+                                                {item.sender && item.sender.image ? (
+                                                    <img
+                                                        src={item.sender.image} // תמונת פרופיל ישירה
+                                                        alt="User profile"
+                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                    />
+                                                ) : (
+                                                    item.sender && item.sender.first
+                                                )}
+                                            </Avatar>
+                                        }
+                                        title={item.sender && item.sender._id ? getUserNameById(item.sender._id) : 'Unknown User'}
+                                        description={item.content}
+                                    />
+                                    <div style={{ fontSize: '0.75rem', color: 'gray' }}>
+                                        {new Date(item.timestamp).toLocaleString()}
+                                    </div>
                                 </div>
-                            </div>
-                        </List.Item>
-                    );
+                            </List.Item>
+                        );
+                    }}
+                />
+                <div ref={messagesEndRef} />
+            </div>
+
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '60px',
+                    left: '20px',
+                    right: '20px',
+                    background: 'white',
+                    padding: '10px',
+                    boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.1)',
                 }}
-            />
-
-            <div ref={messagesEndRef} />
-
-            <div style={{ position: 'fixed', bottom: '60px', left: '20px', right: '20px' }}>
+            >
                 <Input
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}

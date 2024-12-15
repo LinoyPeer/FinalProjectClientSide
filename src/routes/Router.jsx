@@ -9,7 +9,7 @@ import LoginPage from '../users/pages/LoginPage'
 import MyFavoritePosts from '../posts/pages/MyFavoritePosts'
 import SignupForm from '../forms/pages/SignupForm'
 import ProfilePage from '../pages/ProfilePage'
-import ChatSocket from '../sockets/ChatSocket'
+// import ChatSocket from '../sockets/ChatSocket'
 import ChatsViewPage from '../pages/ChatsViewPage'
 import StartChat from '../sockets/StartChat'
 import UploudPostForm from '../forms/pages/UploudPostForm'
@@ -30,7 +30,7 @@ export default function Router() {
                 <Route path={ROUTES.LOGIN} element={<LoginPage />} />
                 <Route path={ROUTES.SIGNUP} element={<SignupForm />} />
                 <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
-                <Route path={ROUTES.COMMUNICATION} element={<ChatSocket />} />
+                {/* <Route path={ROUTES.COMMUNICATION} element={<ChatSocket />} /> */}
                 <Route path={ROUTES.CHATS} element={<ChatsViewPage />} />
                 <Route path={ROUTES.START_CHAT} element={<StartChat />} />
                 <Route path={ROUTES.UPLOUD_PAGE} element={<UploudPostForm />} />
