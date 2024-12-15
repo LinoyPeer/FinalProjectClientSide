@@ -82,7 +82,6 @@ export const getAllUsersApi = async (token) => {
         throw new Error(e.message);
     }
 };
-
 export const editUserApi = async (userId, token, data) => {
     try {
         let config = {
@@ -95,14 +94,9 @@ export const editUserApi = async (userId, token, data) => {
             data: data
         };
         console.log(config.url);
-        axios.request(config)
-            .then((response) => {
-                console.log(JSON.stringify(response.data));
-                return response.data;
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        const response = await axios.request(config); // כאן אנחנו מחכים לתשובה
+        console.log("Response data:", JSON.stringify(response.data));
+        return response.data; // מחזירים את התוצאה
     } catch (e) {
         console.error('Error fetching all users:', e);
         throw new Error(e.message);

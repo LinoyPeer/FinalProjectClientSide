@@ -9,11 +9,10 @@ import { useNotification } from "../../providers/NotificationProvider";
 export default function useUsers() {
     const setNotification = useNotification();
     const [userCurrentDetails, setUserCurrentDetails] = useState(null);
-    const { userDetails } = useAuth();
+    const { login, token, userDetails, setUserDetails } = useAuth();
     const [allUsers, setAllUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const { login, token } = useAuth();
     const navigate = useNavigate();
 
 
@@ -109,14 +108,17 @@ export default function useUsers() {
             } else {
                 console.log('No user details available.');
             }
+            console.log(userData);
 
             try {
+                console.log(userDetails?._id, token, userData);
                 const response = await editUserApi(userDetails?._id, token, userData);
                 console.log('Edit response:', response);
-                setUserCurrentDetails(response);
-                setNotification('green', 'Profile updated successfully');
-                // window.location.reload();
 
+                // עדכון ה- userDetails ב- AuthContext
+                setUserDetails(response);  // עדכון הנתונים ב- AuthContext, כל רכיב שמאזין לזה יתעדכן מייד
+
+                setNotification('green', 'Profile updated successfully');
             } catch (e) {
                 console.error('Error updating user:', e);
                 setError(e.message);
@@ -125,7 +127,7 @@ export default function useUsers() {
                 setIsLoading(false);
             }
         },
-        [userDetails, token]
+        [userDetails, token, setUserDetails] // הוספת setUserDetails כ- dependency
     );
 
     useEffect(() => {
