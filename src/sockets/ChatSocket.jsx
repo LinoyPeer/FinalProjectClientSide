@@ -42,7 +42,7 @@ export default function ChatSocket() {
                 sender: {
                     first: userDetails.name.first,
                     last: userDetails.name.last,
-                    image: userDetails.image.url,
+                    image: userDetails.image.path,
                     _id: userDetails._id,
                 }
             });
