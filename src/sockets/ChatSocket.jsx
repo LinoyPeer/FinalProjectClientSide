@@ -17,11 +17,11 @@ export default function ChatSocket() {
         socketRef.current = io(SOCKET_IO_SERVER);
 
         socketRef.current.on('chatHistory', (history) => {
-            setMessages(history);  // עדכון עם היסטוריית השיחות
+            setMessages(history);
         });
 
         socketRef.current.on('chatMessage', (newMessage) => {
-            setMessages(prevMessages => [...prevMessages, newMessage]); // עדכון ההודעות
+            setMessages(prevMessages => [...prevMessages, newMessage]);
         });
 
         return () => {
@@ -36,7 +36,7 @@ export default function ChatSocket() {
     const handleSendMessage = useCallback(() => {
         if (message.trim()) {
             setIsSending(true);
-            const messageData = {
+            socketRef.current.emit('sendMessage', {
                 content: message,
                 timestamp: new Date().toISOString(),
                 sender: {
@@ -45,14 +45,7 @@ export default function ChatSocket() {
                     image: userDetails.image.url,
                     _id: userDetails._id,
                 }
-            };
-
-            // שליחה לשרת
-            socketRef.current.emit('sendMessage', messageData);
-
-            // עדכון המצב בצד הלקוח מיידית
-            setMessages(prevMessages => [...prevMessages, messageData]);
-
+            });
             setMessage('');
             setIsSending(false);
         }
@@ -83,11 +76,12 @@ export default function ChatSocket() {
                                 }}
                             >
                                 <List.Item.Meta
-                                    avatar={<Avatar src={item.sender.image || 'default-avatar-url'}>{item.sender.first[0]}</Avatar>}
+                                    avatar={<Avatar>{item.sender.first[0]}</Avatar>}
                                     title={`${item.sender.first} ${item.sender.last}`}
                                     description={item.content}
                                 />
-                                <div style={{ fontSize: '0.75rem', color: 'gray' }}>
+
+                                <div style={{ fontSize: '0.75rem', color: 'gray', }}>
                                     {new Date(item.timestamp).toLocaleString()}
                                 </div>
                             </div>
@@ -95,8 +89,9 @@ export default function ChatSocket() {
                     );
                 }}
             />
-            <div ref={messagesEndRef} />
+            < div ref={messagesEndRef} />
             <div style={{ position: 'fixed', bottom: '60px', left: '20px', right: '20px' }}>
+
                 <Input
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
@@ -112,6 +107,6 @@ export default function ChatSocket() {
                     }
                 />
             </div>
-        </div>
+        </div >
     );
 }
