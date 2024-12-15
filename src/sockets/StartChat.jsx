@@ -108,12 +108,10 @@ export default function StartChat() {
                 position: 'relative',
             }}
         >
-            {/* חלק ההודעות - עם גלילה */}
             <div
                 style={{
                     flex: 1,
-                    overflowY: 'auto', // גלילה להודעות
-                    paddingBottom: '100px', // שומר על רווח בתחתית להודעות
+                    paddingBottom: '100px',
                 }}
             >
                 <List
@@ -171,7 +169,7 @@ export default function StartChat() {
 
             <div
                 style={{
-                    position: 'absolute',
+                    position: 'sticky',
                     bottom: '60px',
                     left: '20px',
                     right: '20px',
