@@ -108,10 +108,12 @@ export default function StartChat() {
                 position: 'relative',
             }}
         >
+            {/* חלק ההודעות עם גלילה */}
             <div
                 style={{
                     flex: 1,
-                    paddingBottom: '100px',
+                    overflowY: 'auto', // גלילה להודעות
+                    paddingBottom: '100px', // שומר על רווח בתחתית להודעות
                 }}
             >
                 <List
@@ -142,9 +144,10 @@ export default function StartChat() {
                                     <List.Item.Meta
                                         avatar={
                                             <Avatar>
+                                                {/* הצגת התמונה ישירות אם קיימת */}
                                                 {item.sender && item.sender.image ? (
                                                     <img
-                                                        src={item.sender.image}
+                                                        src={item.sender.image} // השתמש בנתיב התמונה
                                                         alt="User profile"
                                                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                     />
@@ -169,7 +172,7 @@ export default function StartChat() {
 
             <div
                 style={{
-                    position: 'absolute',
+                    position: 'sticky',
                     bottom: '60px',
                     left: '20px',
                     right: '20px',
