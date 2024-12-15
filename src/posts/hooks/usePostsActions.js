@@ -4,6 +4,7 @@ import usePosts from "./usePosts";
 import { useAuth } from "../../providers/AuthProvider";
 import { commentPostByIdApi, likePostByIdApi } from "../services/postsApiService";
 import { useNavigate } from "react-router-dom";
+import ROUTES from "../../routes/routes";
 
 export default function usePostsActions() {
     const { setPosts, setIsLoading, isLoading, error, setError } = usePosts();
@@ -67,6 +68,7 @@ export default function usePostsActions() {
 
     const handleComment = useCallback(async (postId, commentData, token) => {
         setIsLoading(true);
+        navigate(`${ROUTES.POST_COMMENTS.replace(':postId', postId)}`, { state: { user } });
         try {
             const data = await commentPostByIdApi(postId, commentData, token);
             console.log('Comment created successfully:', data);

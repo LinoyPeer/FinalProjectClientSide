@@ -12,7 +12,8 @@ const ROUTES = {
     START_CHAT: '/chat/:roomId',
     UPLOUD_PAGE: '/uploud-post',
     PROFILE_SETTINGS: '/profille-settings',
-    BIO_EDITING: '/bio-editding'
+    BIO_EDITING: '/bio-editding',
+    POST_COMMENTS: '/post-comments/:postId'
 };
 
 export default ROUTES;

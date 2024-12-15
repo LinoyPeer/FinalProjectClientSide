@@ -92,9 +92,6 @@ export const likePostByIdApi = async (id, token) => {
 };
 
 export const commentPostByIdApi = async (id, data, token) => {
-    // let data = JSON.stringify({
-    //     "comment": "This is a second comment for the post!!!!."
-    // });
 
     let config = {
         method: 'post',

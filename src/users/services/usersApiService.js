@@ -22,7 +22,6 @@ export const loginUserApi = async (data, token) => {
         throw new Error(e.message);
     }
 };
-
 export const signupUserApi = async (normalizedUser) => {
     try {
         const { data } = await axios.post(apiUrl, normalizedUser);
@@ -31,20 +30,23 @@ export const signupUserApi = async (normalizedUser) => {
     } catch (e) {
         console.error('Error during signup:', e);
 
+        let errorMessage = 'An error occurred during signup.';
+
         if (e.response) {
             if (e.response.status === 400) {
-                setNotification('red', 'Bad Request: Please check your input.');
+                errorMessage = 'Email or Number is already exits.';
             } else if (e.response.status === 500) {
-                setNotification('red', 'Server Error: Please try again later.');
+                errorMessage = 'Server Error: Please try again later.';
             } else {
-                setNotification('red', `Unexpected error: ${e.response.status}`);
+                errorMessage = `Unexpected error: ${e.response.status}`;
             }
         } else {
-            setNotification('red', `Error: ${e.message}`);
+            errorMessage = `Error: ${e.message}`;
         }
-        throw new Error(e.message);
+        throw new Error(errorMessage);
     }
 };
+
 
 
 
