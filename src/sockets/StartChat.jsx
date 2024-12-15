@@ -106,14 +106,13 @@ export default function StartChat() {
                 margin: '0 auto',
                 display: 'flex',
                 flexDirection: 'column',
-                height: '100vh',
                 position: 'relative',
             }}
         >
             <div
                 style={{
                     flex: 1,
-                    paddingBottom: '70px',
+                    paddingBottom: '40px',
                 }}
             >
                 <List
@@ -165,7 +164,7 @@ export default function StartChat() {
             <div
                 style={{
                     position: 'sticky',
-                    bottom: '60px',
+                    bottom: '55px',
                     left: '20px',
                     right: '20px',
                     background: 'white',
