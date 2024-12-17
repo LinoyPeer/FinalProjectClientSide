@@ -92,26 +92,25 @@ export const likePostByIdApi = async (id, token) => {
 };
 
 export const commentPostByIdApi = async (id, data, token) => {
+    try {
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: `${apiUrl}/${id}/comments`,
+            headers: {
+                'x-auth-token': `${token}`,
+                'Content-Type': 'application/json',
+            },
+            data: data
+        };
 
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `${apiUrl}/${id}/comments`,
-        headers: {
-            'x-auth-token': `${token}`,
-            'Content-Type': 'application/json',
-        },
-        data: data
-    };
-    axios.request(config)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
-            return response.data;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-
+        const response = await axios.request(config);
+        console.log(JSON.stringify(response.data));
+        return response.data;
+    } catch (error) {
+        console.error('Error commenting:', error);
+        throw error;
+    }
 };
 
 

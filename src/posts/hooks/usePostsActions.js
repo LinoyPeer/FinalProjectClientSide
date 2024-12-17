@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Modal } from 'antd'; // יבוא את רכיב המודל מ-antd
 import usePosts from "./usePosts";
 import { useAuth } from "../../providers/AuthProvider";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routes";
 
 export default function usePostsActions() {
-    const { posts, setPosts, setIsLoading, isLoading, error, setError } = usePosts();
+    const { posts, setPosts, setIsLoading, isLoading, error, setError, getAllPosts } = usePosts();
     const { user, token } = useAuth();
     const [favoritePosts, setFavoritePosts] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -72,6 +72,7 @@ export default function usePostsActions() {
         try {
             const data = await commentPostByIdApi(postId, commentData, token);
             console.log('Comment created successfully:', data);
+            console.log(data);
             return data;
         } catch (e) {
             setError(e.message);
@@ -81,13 +82,40 @@ export default function usePostsActions() {
         }
     }, []);
 
-    const updatePostComments = useCallback(async (postId, newComment, token) => {
+    useEffect(() => {
+        const postsData = getAllPosts();
+        setPosts(postsData);
+    }, [])
+    const updatePostComments = useCallback(async (postId, newComment) => {
+        if (posts.length === 0) {
+            console.error('No posts available');
+            return;
+        }
+
+        console.log('postId: ', postId);
+        console.log('newComment: ', newComment);
+
+        if (token) {
+            console.log('token: ', token);
+        }
+
         try {
-            // חיפוש הפוסט על פי ה-ID
+            console.log('Current posts:', posts);
             const postToUpdate = posts.find(post => post._id === postId);
+            console.log('Found post:', postToUpdate);
 
             if (!postToUpdate) {
-                throw new Error('Post not found');
+                console.error('Post not found');
+                return;
+            }
+
+            // עדכון ה-userId של הפוסט עם ה-userId של המשתמש המחובר
+            if (user && user._id) {
+                postToUpdate.userId = user._id;  // עדכון ה-userId בפוסט
+                console.log('Updated userId in post:', postToUpdate.userId);
+            } else {
+                console.error('User ID is missing');
+                return;
             }
 
             // הוספת התגובה החדשה לפוסט
@@ -97,7 +125,10 @@ export default function usePostsActions() {
             const updatedPost = await commentPostByIdApi(postId, newComment, token);
 
             // עדכון המצב של הפוסטים עם הפוסט המעודכן
-            setPosts(prevPosts => prevPosts.map(post => post._id === postId ? updatedPost : post));
+            setPosts(prevPosts => {
+                // בדיקה אם הפוסט כבר נמצא בסטייט, אחרת הוסף אותו
+                return prevPosts.map(post => post._id === postId ? updatedPost : post);
+            });
 
             // עדכון התגובה בהצלחה
             console.log('Comment added successfully:', updatedPost);
@@ -107,7 +138,7 @@ export default function usePostsActions() {
         } finally {
             setIsLoading(false);
         }
-    }, [setPosts, setError, setIsLoading]);
+    }, [setPosts, setError, setIsLoading, posts, user, token]);
 
 
     return {

@@ -6,7 +6,6 @@ import Joi from "joi";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import usePostsActions from "../hooks/usePostsActions";
-
 export default function CommentsOfEachPost() {
     const { userDetails } = useAuth();
     const { postId } = useParams();
@@ -37,6 +36,7 @@ export default function CommentsOfEachPost() {
         }
 
         setErrors({});
+
         if (selectedPost) {
             const newComment = {
                 userName: {
@@ -45,20 +45,22 @@ export default function CommentsOfEachPost() {
                     last: userDetails?.name?.last,
                 },
                 userId: userDetails?.id,
-                userImage: userDetails?.image,  // הנחתה כאן שתמונה של המשתמש תישלח אם קיימת
+                userImage: userDetails?.image, // הנחתה כאן שתמונה של המשתמש תישלח אם קיימת
                 comment: commentData.comment,
                 commentId: new Date().getTime(),
                 createdAt: new Date().toISOString(),
             };
 
-            updatePostComments(postId, newComment);
+            // עדכון התגובה והפוסט
+            updatePostComments(postId, newComment, userDetails.token);
+
             setCommentData({ comment: '' });  // איפוס השדה לאחר שליחה
         }
     };
 
     useEffect(() => {
         getAllPosts();
-    }, []);
+    }, [getAllPosts]);
 
     useEffect(() => {
         if (posts && postId) {
@@ -126,7 +128,6 @@ export default function CommentsOfEachPost() {
                         ) : (
                             <p>No comments yet.</p>
                         )}
-
                     </div>
                 </div>
             ) : (
