@@ -3,24 +3,40 @@ import { useAuth } from "../../providers/AuthProvider";
 import usePosts from "../hooks/usePosts";
 import { useEffect, useState } from "react";
 import Joi from "joi";
-import useForm from "../../forms/hooks/useForm";
-import CustomedInput from "../../forms/components/CustomedInput";
-import CustomedForm from "../../forms/components/CustomedForm";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
+import usePostsActions from "../hooks/usePostsActions";
 
 export default function CommentsOfEachPost() {
     const { userDetails } = useAuth();
     const { postId } = useParams();
-    const { posts, getAllPosts, updatePostComments } = usePosts();
+    const { posts, getAllPosts } = usePosts();
+    const { updatePostComments } = usePostsActions();
 
     const [selectedPost, setSelectedPost] = useState(null);
+    const [commentData, setCommentData] = useState({ comment: '' });
+    const [errors, setErrors] = useState({});
 
     const schema = {
         comment: Joi.string().min(1).max(500).required().label('Comment')
     };
 
-    const handleFormSubmit = (formData) => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setCommentData({ ...commentData, [name]: value });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const validation = Joi.object(schema).validate(commentData);
+
+        if (validation.error) {
+            setErrors({ comment: validation.error.details[0].message });
+            return;
+        }
+
+        setErrors({});
         if (selectedPost) {
             const newComment = {
                 userName: {
@@ -28,23 +44,17 @@ export default function CommentsOfEachPost() {
                     middle: userDetails?.name?.middle || '',
                     last: userDetails?.name?.last,
                 },
-                userId: formData,
-                userImage: formData.userImage,
-                comment: formData.comment,
+                userId: userDetails?.id,
+                userImage: userDetails?.image,  // הנחתה כאן שתמונה של המשתמש תישלח אם קיימת
+                comment: commentData.comment,
                 commentId: new Date().getTime(),
                 createdAt: new Date().toISOString(),
             };
 
             updatePostComments(postId, newComment);
-            setData({ comment: '' });
+            setCommentData({ comment: '' });  // איפוס השדה לאחר שליחה
         }
     };
-
-    const { handleChange, handleSubmit, data, errors, setData } = useForm(
-        { comment: '' },
-        schema,
-        handleFormSubmit
-    );
 
     useEffect(() => {
         getAllPosts();
@@ -58,51 +68,44 @@ export default function CommentsOfEachPost() {
     }, [postId, posts]);
 
     return (
-        <div>
+        <div style={styles.container}>
             {selectedPost ? (
                 <div>
-                    <CustomedForm
-                        onSubmit={handleSubmit}
-                        onClear={() => setData({ comment: '' })}
-                        bottomProps={{
-                            submitText: "Submit Comment",
-                            submitDisabled: !data.comment || errors.comment,
-                        }}
-                    >
-                        <CustomedInput
+                    <form onSubmit={handleSubmit}>
+                        <input
                             name="comment"
                             placeholder="Write your comment here..."
                             type="text"
-                            value={data.comment}
+                            value={commentData.comment}
                             onChange={handleChange}
-                            error={errors.comment}
                             style={styles.input}
                         />
+                        {errors.comment && <div style={{ color: 'red' }}>{errors.comment}</div>}
                         <button
                             type="submit"
-                            disabled={!data.comment || errors.comment}
+                            disabled={!commentData.comment || errors.comment}
                             style={styles.submitButton}
                         >
                             Submit Comment
                         </button>
+                    </form>
 
-                        <div style={styles.commentsList}>
-                            <h4 style={styles.commentsTitle}>Comments:</h4>
-                            {selectedPost.comments && selectedPost.comments.length > 0 ? (
-                                <ul style={styles.commentsContainer}>
-                                    {selectedPost.comments.map((comment, index) => (
+                    <div style={styles.commentsList}>
+                        <h4 style={styles.commentsTitle}>Comments:</h4>
+                        {selectedPost.comments && selectedPost.comments.length > 0 ? (
+                            <ul style={styles.commentsContainer}>
+                                {selectedPost.comments
+                                    .map((comment, index) => (
                                         <li key={index} style={styles.commentItem}>
                                             <div style={styles.commentHeader}>
                                                 <Avatar
                                                     alt="User Avatar"
                                                     style={styles.userAvatar}
+                                                    src={comment?.userImage}
                                                 >
-                                                    {comment?.userImage ? (
-                                                        <img src={comment?.userImage} alt="User Avatar" style={{ width: '100%', height: '100%' }} />
-                                                    ) : (
-                                                        <UserOutlined style={{ fontSize: '24px' }} />
-                                                    )}
+                                                    {!comment?.userImage && <UserOutlined style={styles.defaultAvatar} />}
                                                 </Avatar>
+
                                                 <div style={styles.userInfo}>
                                                     <strong style={styles.userName}>
                                                         {comment?.userName?.first} {comment?.userName?.middle} {comment?.userName?.last}
@@ -119,12 +122,12 @@ export default function CommentsOfEachPost() {
                                             </p>
                                         </li>
                                     ))}
-                                </ul>
-                            ) : (
-                                <p>No comments yet.</p>
-                            )}
-                        </div>
-                    </CustomedForm>
+                            </ul>
+                        ) : (
+                            <p>No comments yet.</p>
+                        )}
+
+                    </div>
                 </div>
             ) : (
                 <p>Post not found.</p>
@@ -134,28 +137,53 @@ export default function CommentsOfEachPost() {
 }
 
 const styles = {
+    container: {
+        padding: '20px',
+        fontFamily: 'Arial, sans-serif',
+        maxWidth: '800px',
+        margin: '0 auto',
+        backgroundColor: '#fff',
+        borderRadius: '8px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    },
+    input: {
+        padding: '10px',
+        marginBottom: '10px',
+        borderRadius: '8px',
+        border: '1px solid #ccc',
+        display: 'block',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: '80%',
+    },
+    submitButton: {
+        padding: '10px 20px',
+        backgroundColor: '#007bff',
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        width: '100%',
+        marginBottom: '20px',
+    },
     commentsList: {
         marginTop: '20px',
-        width: '100%',
     },
     commentsTitle: {
-        fontSize: '24px',
+        fontSize: '18px',
+        marginBottom: '10px',
         fontWeight: 'bold',
-        marginBottom: '15px',
     },
     commentsContainer: {
         listStyleType: 'none',
         paddingLeft: '0',
     },
     commentItem: {
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#ffffff',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '8px',
         padding: '15px',
         marginBottom: '10px',
-        borderRadius: '8px',
         boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-        maxWidth: '100%',
     },
     commentHeader: {
         display: 'flex',
@@ -163,52 +191,35 @@ const styles = {
         marginBottom: '10px',
     },
     userAvatar: {
-        width: '50px',
-        height: '50px',
+        marginRight: '10px',
+        marginTop: '-20px',
+        width: '43px',
+        height: '43px',
+    },
+    avatarImage: {
+        width: '30px',
+        height: '30px',
         borderRadius: '50%',
-        marginRight: '15px',
-        marginTop: '-15px',
+    },
+    defaultAvatar: {
+        fontSize: '16px',
     },
     userInfo: {
-        flexGrow: '1',
+        flex: 1,
     },
     userName: {
+        fontWeight: 'bold',
         fontSize: '15px',
-        color: '#333',
+        position: 'relative',
+        left: '1vh',
+        top: '1vh',
     },
     commentDate: {
-        fontSize: '11px',
+        fontSize: '12px',
         color: '#888',
     },
     commentText: {
-        fontSize: '15px',
-        color: '#444',
-        marginTop: '10px',
-        wordWrap: 'break-word',
-        maxWidth: '500px',  // קביעת רוחב מקסימלי של הטקסט
-        overflow: 'hidden',  // חיתוך תוכן אם הוא ארוך מדי
-        textOverflow: 'ellipsis',  // הוספת שלוש נקודות (...) במקרה שהטקסט ארוך מדי
-    },
-    input: {
-        width: '100%',
-        maxWidth: '1300px',
-        padding: '12px',
-        marginTop: '20px',
-        borderRadius: '10px',
-        border: '1px solid #ccc',
-        boxSizing: 'border-box',
-        fontSize: '16px',
-        outline: 'none',
-        transition: 'border 0.3s ease, box-shadow 0.3s ease',
-    },
-    submitButton: {
-        padding: '10px 20px',
-        backgroundColor: '#007bff',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '5px',
-        cursor: 'pointer',
-        fontSize: '16px',
-        marginTop: '20px',
+        fontSize: '14px',
+        color: '#333',
     }
 };

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routes";
 
 export default function usePostsActions() {
-    const { setPosts, setIsLoading, isLoading, error, setError } = usePosts();
+    const { posts, setPosts, setIsLoading, isLoading, error, setError } = usePosts();
     const { user, token } = useAuth();
     const [favoritePosts, setFavoritePosts] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -81,6 +81,33 @@ export default function usePostsActions() {
         }
     }, []);
 
+    const updatePostComments = useCallback(async (postId, newComment, token) => {
+        try {
+            // חיפוש הפוסט על פי ה-ID
+            const postToUpdate = posts.find(post => post._id === postId);
+
+            if (!postToUpdate) {
+                throw new Error('Post not found');
+            }
+
+            // הוספת התגובה החדשה לפוסט
+            postToUpdate.comments = [...(postToUpdate.comments || []), newComment];
+
+            // שליחה ל-API כדי לעדכן את הפוסט עם התגובה החדשה
+            const updatedPost = await commentPostByIdApi(postId, newComment, token);
+
+            // עדכון המצב של הפוסטים עם הפוסט המעודכן
+            setPosts(prevPosts => prevPosts.map(post => post._id === postId ? updatedPost : post));
+
+            // עדכון התגובה בהצלחה
+            console.log('Comment added successfully:', updatedPost);
+        } catch (e) {
+            setError(e.message);
+            console.error('Error updating comments:', e.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }, [setPosts, setError, setIsLoading]);
 
 
     return {
@@ -97,6 +124,7 @@ export default function usePostsActions() {
         handleCancelModal,
         handleMenu,
         hanndleChooseOption,
+        updatePostComments,
     };
 }
 
