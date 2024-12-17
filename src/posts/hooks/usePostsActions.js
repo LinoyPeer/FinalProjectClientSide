@@ -67,18 +67,11 @@ export default function usePostsActions() {
     }, [user, token, setPosts, setError]);
 
     const handleComment = useCallback(async (postId, commentData, token) => {
-        setIsLoading(true);
-        navigate(`${ROUTES.POST_COMMENTS.replace(':postId', postId)}`, { state: { user } });
         try {
-            const data = await commentPostByIdApi(postId, commentData, token);
-            console.log('Comment created successfully:', data);
-            console.log(data);
-            return data;
+            navigate(`${ROUTES.POST_COMMENTS.replace(':postId', postId)}`, { state: { user } });
         } catch (e) {
             setError(e.message);
             console.error('Error commenting:', e.message);
-        } finally {
-            setIsLoading(false);
         }
     }, []);
 
