@@ -6,13 +6,13 @@ import Joi from "joi";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import usePostsActions from "../hooks/usePostsActions";
+
 export default function CommentsOfEachPost() {
     const { userDetails } = useAuth();
     const { postId } = useParams();
-    const { posts, getAllPosts } = usePosts();
+    const { posts, getAllPosts, setPosts } = usePosts();  // הוספנו את setPosts כדי לעדכן את הסטייט של הפוסטים
     const { updatePostComments } = usePostsActions();
-
-    const [selectedPost, setSelectedPost] = useState(null);
+    const [selectedPost, setSelectedPost] = useState();
     const [commentData, setCommentData] = useState({ comment: '' });
     const [errors, setErrors] = useState({});
 
@@ -45,7 +45,7 @@ export default function CommentsOfEachPost() {
                     last: userDetails?.name?.last,
                 },
                 userId: userDetails?.id,
-                userImage: userDetails?.image, // הנחתה כאן שתמונה של המשתמש תישלח אם קיימת
+                userImage: userDetails?.image,  // התמונה של המשתמש תישלח אם קיימת
                 comment: commentData.comment,
                 commentId: new Date().getTime(),
                 createdAt: new Date().toISOString(),
@@ -53,6 +53,13 @@ export default function CommentsOfEachPost() {
 
             // עדכון התגובה והפוסט
             updatePostComments(postId, newComment, userDetails.token);
+
+            setSelectedPost((prevPost) => {
+                return {
+                    ...prevPost,
+                    comments: [...prevPost.comments, newComment],
+                };
+            });
 
             setCommentData({ comment: '' });  // איפוס השדה לאחר שליחה
         }
@@ -96,34 +103,33 @@ export default function CommentsOfEachPost() {
                         <h4 style={styles.commentsTitle}>Comments:</h4>
                         {selectedPost.comments && selectedPost.comments.length > 0 ? (
                             <ul style={styles.commentsContainer}>
-                                {selectedPost.comments
-                                    .map((comment, index) => (
-                                        <li key={index} style={styles.commentItem}>
-                                            <div style={styles.commentHeader}>
-                                                <Avatar
-                                                    alt="User Avatar"
-                                                    style={styles.userAvatar}
-                                                    src={comment?.userImage}
-                                                >
-                                                    {!comment?.userImage && <UserOutlined style={styles.defaultAvatar} />}
-                                                </Avatar>
+                                {selectedPost.comments.map((comment, index) => (
+                                    <li key={comment.commentId || index} style={styles.commentItem}>
+                                        <div style={styles.commentHeader}>
+                                            <Avatar
+                                                alt="User Avatar"
+                                                style={styles.userAvatar}
+                                                src={comment?.userImage}
+                                            >
+                                                {!comment?.userImage && comment?.userImage === undefined && comment?.userImage === null && <UserOutlined style={styles.defaultAvatar} />}
+                                            </Avatar>
 
-                                                <div style={styles.userInfo}>
-                                                    <strong style={styles.userName}>
-                                                        {comment?.userName?.first} {comment?.userName?.middle} {comment?.userName?.last}
-                                                    </strong>
-                                                    <p style={styles.commentDate}>
-                                                        {new Date(comment.createdAt).toLocaleString()}
-                                                    </p>
-                                                </div>
+                                            <div style={styles.userInfo}>
+                                                <strong style={styles.userName}>
+                                                    {comment?.userName?.first} {comment?.userName?.middle} {comment?.userName?.last}
+                                                </strong>
+                                                <p style={styles.commentDate}>
+                                                    {new Date(comment.createdAt).toLocaleString()}
+                                                </p>
                                             </div>
-                                            <p style={styles.commentText}>
-                                                {comment.comment.length > 200
-                                                    ? comment.comment.slice(0, 200) + '...'
-                                                    : comment.comment}
-                                            </p>
-                                        </li>
-                                    ))}
+                                        </div>
+                                        <p style={styles.commentText}>
+                                            {comment.comment.length > 200
+                                                ? comment.comment.slice(0, 200) + '...'
+                                                : comment.comment}
+                                        </p>
+                                    </li>
+                                ))}
                             </ul>
                         ) : (
                             <p>No comments yet.</p>
