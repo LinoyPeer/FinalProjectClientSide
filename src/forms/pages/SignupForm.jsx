@@ -43,6 +43,7 @@ export default function SignupForm() {
                 onLinkClick: () => navigate(ROUTES.LOGIN),
                 submitDisabled: Object.keys(errors).length > 0
             }}
+            moreTypoStyle={{ marginBottom: '2vh', marginTop: '9vh' }}
         >
             <CustomedInput
                 name="first"

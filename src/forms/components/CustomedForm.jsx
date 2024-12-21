@@ -2,7 +2,7 @@ import { Card, Form, Typography } from 'antd';
 import React from 'react';
 import CustomedBottom from './CustomedBottom';
 
-export default function CustomedForm({ onSubmit, onClear, bottomProps, children, ...rest }) {
+export default function CustomedForm({ onSubmit, onClear, bottomProps, children, moreTypoStyle, ...rest }) {
 
     return (
         <Card
@@ -23,7 +23,7 @@ export default function CustomedForm({ onSubmit, onClear, bottomProps, children,
                     marginTop: '-4em'
                 }}
             >
-                <Typography style={{ fontFamily: 'Caveat, cursive', fontSize: '4em', marginBottom: '1em' }}>
+                <Typography style={{ fontFamily: 'Caveat, cursive', fontSize: '4em', marginBottom: '1em', ...moreTypoStyle }}>
                     InstaPost
                 </Typography>
                 {React.Children.map(children, child => {
