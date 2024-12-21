@@ -107,6 +107,7 @@ export default function SignupForm() {
             >
                 Register as Business
             </Checkbox>
+            <div style={{ marginTop: '-6vh' }}></div>
         </CustomedForm>
     );
 }
