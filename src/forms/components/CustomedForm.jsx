@@ -34,13 +34,13 @@ export default function CustomedForm({ onSubmit, onClear, bottomProps, children,
                 })}
 
                 <CustomedBottom
-                    checkboxText={bottomProps?.checkboxText}
-                    linkHrefTextOptinial1={bottomProps?.linkHrefTextOptinial1}
-                    submitText={bottomProps?.submitText}
-                    linkHrefTextOptinial2={bottomProps?.linkHrefTextOptinial2}
-                    onLinkClick={bottomProps?.onLinkClick}
+                    checkboxText={bottomProps.checkboxText}
+                    linkHrefTextOptinial1={bottomProps.linkHrefTextOptinial1}
+                    submitText={bottomProps.submitText}
+                    linkHrefTextOptinial2={bottomProps.linkHrefTextOptinial2}
+                    onLinkClick={bottomProps.onLinkClick}
                     onClear={onClear}
-                    submitDisabled={bottomProps?.submitDisabled}
+                    submitDisabled={bottomProps.submitDisabled}
                 />
             </Form>
         </Card>

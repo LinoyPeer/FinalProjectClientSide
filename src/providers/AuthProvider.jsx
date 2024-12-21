@@ -77,7 +77,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
-import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage } from '../users/services/localStorageService';
+import { getTokenFromLocalStorage, getuserDetailsFromLocalStorage, removeTokenFromLocalStorage } from '../users/services/localStorageService';
 import axios from 'axios';
 
 const AuthContext = createContext();
@@ -140,6 +140,7 @@ export default function AuthProvider({ children }) {
         setUser(null);
         setUserDetails(null);
         navigate(ROUTES.ROOT);
+        removeTokenFromLocalStorage();
     };
 
     return (

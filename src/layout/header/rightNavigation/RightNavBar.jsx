@@ -11,7 +11,7 @@ export default function RightNavBar() {
     const { isModalVisible, handleCancelModal, handleMenu, hanndleChooseOption } = usePostsActions();
     const { isDarkMode, toggleTheme } = useTheme();
     const isDesktop = useMediaQuery({ minWidth: 768 });
-    const { logout, isLoggedIn } = useAuth();
+    const { logout, isLoggedIn, token } = useAuth();
 
     return (
         <>

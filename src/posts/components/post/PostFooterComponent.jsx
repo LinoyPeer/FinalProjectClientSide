@@ -1,17 +1,18 @@
 import { CommentOutlined, LikeFilled, LikeOutlined, SaveOutlined, ShareAltOutlined } from "@ant-design/icons";
-import { Space } from "antd";
+import { Space, Modal } from "antd";
 import { useAuth } from "../../../providers/AuthProvider";
 import usePostsActions from "../../hooks/usePostsActions";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import CommentsOfEachPost from "../CommentsOfEachPost"; // Import the CommentsOfEachPost component
 
 export default function PostFooterComponent({ post, handleLike, handleComment, handleShare }) {
     const { setPosts } = usePostsActions();
     const { user } = useAuth();
     const [isLiked, setIsLiked] = useState(post.likes.includes(user && user._id));
+    const [isModalVisible, setIsModalVisible] = useState(false);  // To control modal visibility
+    const [currentPostId, setCurrentPostId] = useState(null);  // To store the postId for the modal
 
     const handleLikeClick = async () => {
-
         await handleLike(post._id);
 
         setIsLiked((prevIsLiked) => !prevIsLiked);
@@ -25,26 +26,44 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
         });
     };
 
-    useEffect(() => {
-        console.log(isLiked);
-    }, [isLiked]);
+    const handleCommentClick = () => {
+        setCurrentPostId(post._id);  // Set the current postId
+        setIsModalVisible(true);  // Open the modal
+    };
 
     return (
-        <Space size="large" style={{ justifyContent: 'center', display: 'flex', gap: '4em' }}>
-            {isLiked ? (
-                <LikeFilled
-                    style={{ fontSize: '1.3em', color: '#1890ff' }}
-                    onClick={handleLikeClick}
-                />
-            ) : (
-                <LikeOutlined
-                    style={{ fontSize: '1.3em' }}
-                    onClick={handleLikeClick}
-                />
-            )}
-            <CommentOutlined style={{ fontSize: '1.3em' }} onClick={() => handleComment(post._id)} />
-            <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} />
-            <SaveOutlined style={{ fontSize: '1.3em' }} />
-        </Space>
+        <>
+            <Space size="large" style={{ justifyContent: 'center', display: 'flex', gap: '4em' }}>
+                {isLiked ? (
+                    <LikeFilled
+                        style={{ fontSize: '1.3em', color: '#1890ff' }}
+                        onClick={handleLikeClick}
+                    />
+                ) : (
+                    <LikeOutlined
+                        style={{ fontSize: '1.3em' }}
+                        onClick={handleLikeClick}
+                    />
+                )}
+                <CommentOutlined style={{ fontSize: '1.3em' }} onClick={handleCommentClick} />
+                <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} />
+                <SaveOutlined style={{ fontSize: '1.3em' }} />
+            </Space>
+
+            <Modal
+                title="Comments"
+                open={isModalVisible}
+                onCancel={() => setIsModalVisible(false)}
+                footer={null}
+                width={800}
+                style={{
+                    top: 20,
+                    padding: '10px',
+                }}
+
+            >
+                {currentPostId && <CommentsOfEachPost postId={currentPostId} />}
+            </Modal>
+        </>
     );
 }

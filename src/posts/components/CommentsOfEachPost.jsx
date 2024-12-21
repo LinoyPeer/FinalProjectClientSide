@@ -7,9 +7,8 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 import usePostsActions from "../hooks/usePostsActions";
 
-export default function CommentsOfEachPost() {
+export default function CommentsOfEachPost({ postId }) {
     const { userDetails } = useAuth();
-    const { postId } = useParams();
     const { posts, getAllPosts, setPosts } = usePosts();  // הוספנו את setPosts כדי לעדכן את הסטייט של הפוסטים
     const { updatePostComments } = usePostsActions();
     const [selectedPost, setSelectedPost] = useState();
@@ -61,7 +60,7 @@ export default function CommentsOfEachPost() {
                 };
             });
 
-            setCommentData({ comment: '' });  // איפוס השדה לאחר שליחה
+            setCommentData({ comment: '' });
         }
     };
 
@@ -111,7 +110,7 @@ export default function CommentsOfEachPost() {
                                                 style={styles.userAvatar}
                                                 src={comment?.userImage}
                                             >
-                                                {!comment?.userImage && comment?.userImage === undefined && comment?.userImage === null && <UserOutlined style={styles.defaultAvatar} />}
+                                                {!comment?.userImage && <UserOutlined style={styles.defaultAvatar} />}
                                             </Avatar>
 
                                             <div style={styles.userInfo}>
