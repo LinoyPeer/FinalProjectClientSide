@@ -43,6 +43,7 @@ export default function CustomedForm({ onSubmit, onClear, bottomProps, children,
                     submitDisabled={bottomProps.submitDisabled}
                 />
             </Form>
+            <div style={{ marginBottom: '6vh' }}></div>
         </Card>
     );
 }
