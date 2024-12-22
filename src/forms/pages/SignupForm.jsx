@@ -11,7 +11,7 @@ import useUsers from '../../users/hooks/useUsers';
 import { Checkbox } from 'antd';
 
 export default function SignupForm() {
-    const { handleChange, onSubmit, handleReset, data, errors } = useForm(initialSignupForm, signupSchema, (formData) => {
+    const { handleChange, handleBusinessTypeChange, onSubmit, handleReset, data, errors } = useForm(initialSignupForm, signupSchema, (formData) => {
         console.log("Form submitted successfully!", formData);
     });
 
@@ -31,7 +31,7 @@ export default function SignupForm() {
             navigate(ROUTES.LOGIN);
         }
     };
-
+    console.log(data);
     return (
         <CustomedForm
             onSubmit={handleFormSubmit}
@@ -102,7 +102,7 @@ export default function SignupForm() {
             />
             <Checkbox
                 name="isBusiness"
-                onChange={handleChange}
+                onChange={handleBusinessTypeChange}
                 checked={data.isBusiness || false}
             >
                 Register as Business

@@ -35,6 +35,15 @@ export default function useForm(initialData, schema, handleSubmit) {
         console.log(value);
     }, [validateProperty]);
 
+    const handleBusinessTypeChange = useCallback((e) => {
+        const value = e.target.checked;
+        setData((prev) => ({
+            ...prev,
+            isBusiness: value,  // עדכון המאפיין isBusiness במצב
+        }));
+    }, []);
+
+
     const handleReset = useCallback(() => {
         setData(initialData);
         setErrors([]);
@@ -44,6 +53,6 @@ export default function useForm(initialData, schema, handleSubmit) {
         handleSubmit(data)
     }, [data]);
 
-    return { handleChange, handleReset, onSubmit, data, errors, setData, setErrors }
+    return { handleChange, handleBusinessTypeChange, handleReset, onSubmit, data, errors, setData, setErrors }
 }
 

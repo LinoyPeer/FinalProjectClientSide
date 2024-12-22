@@ -5,6 +5,6 @@ const initialSignupForm = {
     email: "",
     phone: "",
     password: "",
-    isBussines: false,
+    isBusiness: false,
 };
 export default initialSignupForm;

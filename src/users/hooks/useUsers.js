@@ -82,7 +82,7 @@ export default function useUsers() {
             formData.append('email', userSignupInfo.email || '');
             formData.append('phone', userSignupInfo.phone || '');
             formData.append('password', userSignupInfo.password || '');
-            formData.append('isBussones', userSignupInfo.isBussones || '');
+            formData.append('isBusiness', userSignupInfo.isBusiness || false);
 
             if (profileImage && profileImage instanceof File) {
                 formData.append('image', profileImage);
