@@ -56,26 +56,35 @@ export default function RightNavBar() {
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
                                                 <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.SAVED)}>Saved</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={logout}>Logout</Typography>
                                             </>
                                         )}
 
                                         {user.isAdmin && (
                                             <>
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.SAVED)}>Saved</Typography>
                                                 <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.CRM_ADMIN)}>CRM</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={logout}>Logout</Typography>
                                             </>
                                         )}
 
                                         {!user.isBusiness && !user.isAdmin && (
                                             <>
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)}>Posts</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={logout}>Logout</Typography>
                                             </>
                                         )}
 
-                                        <Divider style={{ margin: '8px 0' }} />
-                                        <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
-                                        <Divider style={{ margin: '8px 0' }} />
-                                        <Typography onClick={logout}>Logout</Typography>
 
 
                                     </Col>
