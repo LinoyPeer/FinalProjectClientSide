@@ -1,10 +1,10 @@
 import React from 'react'
 import PageHeader from '../components/pageHeader'
 
-export default function ContactPage() {
+export default function CrmAdminPage() {
     return (
         <>
-            <PageHeader title={'Contact Us'} subtitle={'Fil the Form'} />
+            <PageHeader title={'CRM Admin Page'} subtitle={'Fil the Form'} />
         </>
     )
 }

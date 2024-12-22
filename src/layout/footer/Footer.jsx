@@ -9,14 +9,13 @@ import ROUTES from '../../routes/routes';
 import { useAuth } from '../../providers/AuthProvider';
 import { IoDocumentLock, IoDocumentLockOutline, IoLogIn, IoLogInOutline } from "react-icons/io5";
 
-
 export default function Footer() {
     const navigate = useNavigate();
     const { Footer } = Layout;
     const { isDarkMode } = useTheme();
     const theme = isDarkMode ? darkTheme : lightTheme;
     const location = useLocation();
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
 
     const isActive = (route) => location.pathname === route;
 
@@ -35,45 +34,54 @@ export default function Footer() {
             }}
         >
             {isLoggedIn ? (
-                // Footer when the user is logged in
                 <Row
                     style={{ textAlign: 'center', display: 'inline-flex', gap: '3em', fontSize: '19px' }}
                 >
-                    {isActive(ROUTES.POSTS) ? (
-                        <HomeFilled onClick={() => navigate(ROUTES.POSTS)} />
-                    ) : (
-                        <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
-                    )}
+                    {user.isBusiness ? (
+                        <>
+                            {isActive(ROUTES.POSTS) ? (
+                                <HomeFilled onClick={() => navigate(ROUTES.POSTS)} />
+                            ) : (
+                                <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
+                            )}
 
-                    {isActive(ROUTES.CHATS) ? (
-                        <MessageFilled onClick={() => navigate(ROUTES.CHATS)} />
-                    ) : (
-                        <MessageOutlined onClick={() => navigate(ROUTES.CHATS)} />
-                    )}
+                            {isActive(ROUTES.CHATS) ? (
+                                <MessageFilled onClick={() => navigate(ROUTES.CHATS)} />
+                            ) : (
+                                <MessageOutlined onClick={() => navigate(ROUTES.CHATS)} />
+                            )}
 
-                    {isActive(ROUTES.UPLOUD_PAGE) ? (
-                        <FileAddFilled onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
-                    ) : (
-                        <FileAddOutlined onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
-                    )}
+                            {isActive(ROUTES.UPLOUD_PAGE) ? (
+                                <FileAddFilled onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
+                            ) : (
+                                <FileAddOutlined onClick={() => navigate(ROUTES.UPLOUD_PAGE)} />
+                            )}
 
-                    {isActive(ROUTES.FAVORITES) ? (
-                        <HeartFilled onClick={() => navigate(ROUTES.FAVORITES)} />
-                    ) : (
-                        <HeartOutlined onClick={() => navigate(ROUTES.FAVORITES)} />
-                    )}
+                            {isActive(ROUTES.FAVORITES) ? (
+                                <HeartFilled onClick={() => navigate(ROUTES.FAVORITES)} />
+                            ) : (
+                                <HeartOutlined onClick={() => navigate(ROUTES.FAVORITES)} />
+                            )}
 
-                    {isActive(ROUTES.PROFILE) ? (
-                        <FaUser onClick={() => navigate(ROUTES.PROFILE)} />
+                            {isActive(ROUTES.PROFILE) ? (
+                                <FaUser onClick={() => navigate(ROUTES.PROFILE)} />
+                            ) : (
+                                <FaRegUser onClick={() => navigate(ROUTES.PROFILE)} />
+                            )}
+                        </>
                     ) : (
-                        <FaRegUser onClick={() => navigate(ROUTES.PROFILE)} />
+                        isActive(ROUTES.ABOUT) ? (
+                            <HomeFilled onClick={() => navigate(ROUTES.POSTS)} />
+                        ) : (
+                            <InfoCircleFilled onClick={() => navigate(ROUTES.ABOUT)} />
+                        )
                     )}
                 </Row>
             ) : (
+
                 <Row
                     style={{ textAlign: 'center', display: 'inline-flex', gap: '3em', fontSize: '19px' }}
                 >
-
                     {isActive(ROUTES.LOGIN) ? (
                         <IoLogIn onClick={() => navigate(ROUTES.LOGIN)} />
                     ) : (
@@ -89,7 +97,6 @@ export default function Footer() {
                     ) : (
                         <IoDocumentLockOutline onClick={() => navigate(ROUTES.SIGNUP)} />
                     )}
-
                 </Row>
             )}
         </Footer>

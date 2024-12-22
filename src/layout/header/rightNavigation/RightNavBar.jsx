@@ -11,7 +11,8 @@ export default function RightNavBar() {
     const { isModalVisible, handleCancelModal, handleMenu, hanndleChooseOption } = usePostsActions();
     const { isDarkMode, toggleTheme } = useTheme();
     const isDesktop = useMediaQuery({ minWidth: 768 });
-    const { logout, isLoggedIn, token } = useAuth();
+    const { logout, isLoggedIn, token, user } = useAuth();
+
     return (
         <>
             {!isDesktop && (
@@ -47,15 +48,37 @@ export default function RightNavBar() {
                                 >
                                     <Col style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', color: 'black', marginTop: '-1vh' }}>
                                         <Divider style={{ margin: '8px 0', borderWidth: '3px', fontWeight: 'bold', borderColor: 'grey' }} />
-                                        <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)} >About</Typography>
+
+                                        {(user.isBusiness || user.isAdmin) && (
+                                            <>
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.SAVED)}>Saved</Typography>
+                                            </>
+                                        )}
+
+                                        {user.isAdmin && (
+                                            <>
+                                                <Divider style={{ margin: '8px 0' }} />
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.CRM_ADMIN)}>CRM</Typography>
+                                            </>
+                                        )}
+
+                                        {/* אם המשתמש לא עסקי, הצג רק את ה-ABOUT */}
+                                        {!user.isBusiness && !user.isAdmin && (
+                                            <>
+                                                <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)}>Posts</Typography>
+                                            </>
+                                        )}
+
                                         <Divider style={{ margin: '8px 0' }} />
-                                        <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)} >Settings</Typography>
+                                        <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
                                         <Divider style={{ margin: '8px 0' }} />
-                                        <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)} >Saved</Typography>
-                                        <Divider style={{ margin: '8px 0' }} />
-                                        <Typography onClick={() => hanndleChooseOption(ROUTES.CONTACT)} >Contact</Typography>
-                                        <Divider style={{ margin: '8px 0' }} />
-                                        <Typography onClick={logout} >Logout</Typography>
+                                        <Typography onClick={logout}>Logout</Typography>
+
+
                                     </Col>
                                 </Modal>
                             </Col>
@@ -66,6 +89,7 @@ export default function RightNavBar() {
 
             {isDesktop && (
                 <>
+                    {/* כאן תוכל להוסיף את התוכן עבור מצב דסקטופ אם יש צורך */}
                 </>
             )}
         </>

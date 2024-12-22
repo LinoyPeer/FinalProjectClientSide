@@ -39,7 +39,7 @@ export default function useForm(initialData, schema, handleSubmit) {
         const value = e.target.checked;
         setData((prev) => ({
             ...prev,
-            isBusiness: value,  // עדכון המאפיין isBusiness במצב
+            isBusiness: value,
         }));
     }, []);
 

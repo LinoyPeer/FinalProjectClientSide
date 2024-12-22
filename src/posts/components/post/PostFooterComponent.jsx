@@ -9,8 +9,8 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
     const { setPosts } = usePostsActions();
     const { user } = useAuth();
     const [isLiked, setIsLiked] = useState(post.likes.includes(user && user._id));
-    const [isModalVisible, setIsModalVisible] = useState(false);  // To control modal visibility
-    const [currentPostId, setCurrentPostId] = useState(null);  // To store the postId for the modal
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [currentPostId, setCurrentPostId] = useState(null);
 
     const handleLikeClick = async () => {
         await handleLike(post._id);
@@ -34,20 +34,27 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
     return (
         <>
             <Space size="large" style={{ justifyContent: 'center', display: 'flex', gap: '4em' }}>
-                {isLiked ? (
-                    <LikeFilled
-                        style={{ fontSize: '1.3em', color: '#1890ff' }}
-                        onClick={handleLikeClick}
-                    />
+                {user.isBusiness ? (
+                    // Show all icons if the user is a business
+                    <>
+                        {isLiked ? (
+                            <LikeFilled
+                                style={{ fontSize: '1.3em', color: '#1890ff' }}
+                                onClick={handleLikeClick}
+                            />
+                        ) : (
+                            <LikeOutlined
+                                style={{ fontSize: '1.3em' }}
+                                onClick={handleLikeClick}
+                            />
+                        )}
+                        <CommentOutlined style={{ fontSize: '1.3em' }} onClick={handleCommentClick} />
+                        <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} />
+                        <SaveOutlined style={{ fontSize: '1.3em' }} />
+                    </>
                 ) : (
-                    <LikeOutlined
-                        style={{ fontSize: '1.3em' }}
-                        onClick={handleLikeClick}
-                    />
+                    <SaveOutlined style={{ fontSize: '1.3em' }} />
                 )}
-                <CommentOutlined style={{ fontSize: '1.3em' }} onClick={handleCommentClick} />
-                <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} />
-                <SaveOutlined style={{ fontSize: '1.3em' }} />
             </Space>
 
             <Modal
@@ -60,7 +67,6 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
                     top: 20,
                     padding: '10px',
                 }}
-
             >
                 {currentPostId && <CommentsOfEachPost postId={currentPostId} />}
             </Modal>
