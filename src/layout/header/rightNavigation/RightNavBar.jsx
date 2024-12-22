@@ -12,7 +12,6 @@ export default function RightNavBar() {
     const { isDarkMode, toggleTheme } = useTheme();
     const isDesktop = useMediaQuery({ minWidth: 768 });
     const { logout, isLoggedIn, token } = useAuth();
-
     return (
         <>
             {!isDesktop && (
