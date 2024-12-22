@@ -66,7 +66,6 @@ export default function RightNavBar() {
                                             </>
                                         )}
 
-                                        {/* אם המשתמש לא עסקי, הצג רק את ה-ABOUT */}
                                         {!user.isBusiness && !user.isAdmin && (
                                             <>
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)}>Posts</Typography>
