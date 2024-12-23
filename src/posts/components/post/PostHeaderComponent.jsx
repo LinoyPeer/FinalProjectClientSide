@@ -3,7 +3,8 @@ import { Avatar, Card, Col, Divider, Row } from 'antd';
 import React from 'react';
 
 export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
-=
+
+
     return (
         <>
             <Row style={{ display: 'flex', flexDirection: 'row-reverse' }}>
