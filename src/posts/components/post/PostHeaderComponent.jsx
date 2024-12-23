@@ -1,5 +1,5 @@
 import { MoreOutlined } from '@ant-design/icons';
-import { Avatar, Card, Col, Divider, Row } from 'antd';
+import { Card, Col, Divider, Row } from 'antd';
 import React from 'react';
 
 export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
