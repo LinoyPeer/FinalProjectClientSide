@@ -1,14 +1,9 @@
-import { MoreOutlined, UserOutlined } from '@ant-design/icons';
+import { MoreOutlined } from '@ant-design/icons';
 import { Avatar, Card, Col, Divider, Row } from 'antd';
 import React from 'react';
 
 export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
-    // const avatar = avatarPath ? (
-    //     <Avatar src={avatarPath} />
-    // ) : (
-    //     <Avatar icon={<UserOutlined />} />
-    // );
-
+=
     return (
         <>
             <Row style={{ display: 'flex', flexDirection: 'row-reverse' }}>
