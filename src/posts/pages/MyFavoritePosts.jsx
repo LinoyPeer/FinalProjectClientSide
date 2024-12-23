@@ -1,32 +1,66 @@
-import { Col, Row } from 'antd';
-import React, { useEffect } from 'react';
 
-import PostComponent from '../components/post/PostComponent';
+import React, { useEffect, useState } from 'react';
 import usePostsActions from '../hooks/usePostsActions';
+import usePosts from '../hooks/usePosts';
+import { useAuth } from '../../providers/AuthProvider';
+import PostComponent from '../components/post/PostComponent';
+import useUsers from '../../users/hooks/useUsers';
 
 export default function MyFavoritePosts() {
-    const { favoritePosts } = usePostsActions();
+    const { handleLike, handleComment, handleShare } = usePostsActions();
+    const { getAllPosts, posts, setPosts } = usePosts();
+    const { getAllUsers, allUsers } = useUsers();
+    const { user } = useAuth();
+    const [likedPostsState, setLikedPostsState] = useState({});
+
+    useEffect(() => {
+        getAllPosts();
+    }, [getAllPosts]);
+
+    useEffect(() => {
+        getAllUsers();
+    }, []);
+
+    const handleLikeClick = async (postId) => {
+        const post = posts.find(p => p._id === postId);
+        if (!post) return;
+
+        await handleLike(postId);
+
+        setPosts((prevPosts) =>
+            prevPosts.map((p) =>
+                p._id === postId
+                    ? {
+                        ...p,
+                        likes: p.likes.includes(user._id)
+                            ? p.likes.filter((id) => id !== user._id)
+                            : [...p.likes, user._id]
+                    }
+                    : p
+            )
+        );
+    };
+
+
+    const likedPosts = posts.filter((post) => post.likes.includes(user._id));
 
     return (
         <>
-            <Row
-                style={{ marginBottom: '20px', marginTop: '100px', width: '80%', margin: '0 auto' }}
-                gutter={20}
-            >
-                {favoritePosts.map((post) => (
-                    <Col
+            {likedPosts.length > 0 ? (
+                likedPosts.map(post => (
+                    <PostComponent
                         key={post._id}
-                        xs={24} sm={12} md={8} lg={6}
-                        style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}
-                    >
-                        <PostComponent
-                            post={post}
-                            handleLike={handleLike}
-                            handleComment={handleComment}
-                        />
-                    </Col>
-                ))}
-            </Row>
+                        allUsers={allUsers}
+                        post={post}
+                        handleLike={handleLikeClick}
+                        handleComment={handleComment}
+                        handleShare={handleShare}
+                        isLiked={likedPostsState[post._id] || post.likes.includes(user._id)}
+                    />
+                ))
+            ) : (
+                <p>You have no favorite posts.</p>
+            )}
         </>
     );
 }

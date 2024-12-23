@@ -19,7 +19,6 @@ export default function PostsPage() {
         getAllUsers();
     }, []);
 
-    console.log(('userDetails: ', userDetails));
 
     return (
         <>

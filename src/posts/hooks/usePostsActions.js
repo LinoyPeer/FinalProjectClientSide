@@ -66,6 +66,13 @@ export default function usePostsActions() {
         }
     }, [user, token, setPosts, setError]);
 
+    // const favoriteLikes = async (postId) => {
+    //     const response = await likePostByIdApi(postId, token);
+    //     console.log(response);
+    //     const allThePostsUserLikedArray = response.likes
+    //     return allThePostsUserLikedArray;
+    // }
+
     const handleComment = useCallback(async (postId, commentData, token) => {
         try {
             navigate(`${ROUTES.POST_COMMENTS.replace(':postId', postId)}`, { state: { user } });
