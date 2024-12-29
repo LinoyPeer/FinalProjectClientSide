@@ -35,7 +35,6 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
         <>
             <Space size="large" style={{ justifyContent: 'center', display: 'flex', gap: '4em' }}>
                 {user.isBusiness ? (
-                    // Show all icons if the user is a business
                     <>
                         {isLiked ? (
                             <LikeFilled

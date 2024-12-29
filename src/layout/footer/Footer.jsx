@@ -2,7 +2,7 @@ import { Layout, Row } from 'antd';
 import React from 'react';
 import { useTheme } from '../../providers/ThemeProvider';
 import { darkTheme, lightTheme } from '../../themes/accessibilityTheme';
-import { FileAddFilled, FileAddOutlined, HeartFilled, HeartOutlined, HomeFilled, HomeOutlined, InfoCircleFilled, InfoCircleOutlined, MessageFilled, MessageOutlined } from '@ant-design/icons';
+import { FileAddFilled, FileAddOutlined, HeartFilled, HeartOutlined, HomeFilled, HomeOutlined, InfoCircleFilled, InfoCircleOutlined, LikeFilled, LikeOutlined, MessageFilled, MessageOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaRegUser, FaUser } from "react-icons/fa6";
 import ROUTES from '../../routes/routes';
@@ -71,16 +71,16 @@ export default function Footer() {
                         </>
                     ) : (
                         <>
-                            {isActive(ROUTES.POSTS) ? (
-                                <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
+                            {isActive(ROUTES.FAVORITES) ? (
+                                <HeartFilled onClick={() => navigate(ROUTES.FAVORITES)} />
                             ) : (
-                                <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
+                                <HeartOutlined onClick={() => navigate(ROUTES.FAVORITES)} />
                             )}
 
-                            {isActive(ROUTES.ABOUT) ? (
-                                <InfoCircleFilled onClick={() => navigate(ROUTES.ABOUT)} />
+                            {isActive(ROUTES.POSTS) ? (
+                                <HomeFilled onClick={() => navigate(ROUTES.POSTS)} />
                             ) : (
-                                <InfoCircleOutlined onClick={() => navigate(ROUTES.ABOUT)} />
+                                <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
                             )}
 
                             {isActive(ROUTES.CHATS) ? (

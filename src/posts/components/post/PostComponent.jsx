@@ -102,6 +102,7 @@ export default function PostComponent({ allUsers, post, handleLike, handleCommen
     return (
         <Card style={{ width: 300, textAlign: 'center' }}>
             <PostHeaderComponent
+                postId={post._id}
                 userNameOfPost={fullNameOfUser || 'Unknown'}
                 avatarPath={avatar}
             />

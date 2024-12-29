@@ -3,18 +3,17 @@ import { Card, Col, Divider, Modal, Row, Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import usePosts from '../../hooks/usePosts';
 
-export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
+export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId }) {
     const [isModalVisible, setIsModalVisible] = useState(false);  // סטייט לשלוט על הצגת ה-modal
-    const { deletePostById, getAllPosts, posts } = usePosts();
+    const { deletePostById, getAllPosts } = usePosts();
 
     useEffect(() => {
-        getAllPosts();
-    }, [])
-    const postId = posts.map((post) => post._id)
-    const currentPost = postId.find(p => p._id === postId);
+        getAllPosts();  // ודא שאתה מקבל את כל הפוסטים כאשר הרכיב טוען
+    }, [getAllPosts]);
 
+    // כאן אנחנו לא צריכים לחפש את הפוסט, כי כבר קיבלנו אותו כפרופס
+    const currentPostId = postId;
 
-    console.log('postId: ', postId);
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -25,8 +24,11 @@ export default function PostHeaderComponent({ userNameOfPost, avatarPath }) {
 
     const handleDelete = async () => {
         try {
-            await deletePostById(currentPost);
-            setIsModalVisible(false);
+            if (currentPostId) {
+                console.log('Deleting post: ', currentPostId);
+                await deletePostById(currentPostId);  // מחיקת הפוסט לפי ה-ID
+                setIsModalVisible(false);
+            }
         } catch (error) {
             console.error('Failed to delete post:', error);
         }
