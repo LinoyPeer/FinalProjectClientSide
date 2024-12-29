@@ -1,10 +1,10 @@
-
 import React, { useEffect, useState } from 'react';
 import usePostsActions from '../hooks/usePostsActions';
 import usePosts from '../hooks/usePosts';
 import { useAuth } from '../../providers/AuthProvider';
 import PostComponent from '../components/post/PostComponent';
 import useUsers from '../../users/hooks/useUsers';
+import PageHeader from '../../components/PageHeader';
 
 export default function MyFavoritePosts() {
     const { handleLike, handleComment, handleShare } = usePostsActions();
@@ -41,26 +41,29 @@ export default function MyFavoritePosts() {
         );
     };
 
-
     const likedPosts = posts.filter((post) => post.likes.includes(user._id));
 
     return (
         <>
-            {likedPosts.length > 0 ? (
-                likedPosts.map(post => (
-                    <PostComponent
-                        key={post._id}
-                        allUsers={allUsers}
-                        post={post}
-                        handleLike={handleLikeClick}
-                        handleComment={handleComment}
-                        handleShare={handleShare}
-                        isLiked={likedPostsState[post._id] || post.likes.includes(user._id)}
-                    />
-                ))
-            ) : (
-                <p>You have no favorite posts.</p>
-            )}
+            <PageHeader title={'My Favorite Posts'} subtitle={'See my likes on InstaPost'} />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', gap: '2em' }}>
+                {likedPosts.length > 0 ? (
+                    likedPosts.map(post => (
+                        <PostComponent
+                            key={post._id}
+                            allUsers={allUsers}
+                            post={post}
+                            handleLike={handleLikeClick}
+                            handleComment={handleComment}
+                            handleShare={handleShare}
+                            isLiked={likedPostsState[post._id] || post.likes.includes(user._id)}
+                        />
+                    ))
+                ) : (
+                    <p>You have no favorite posts.</p>
+                )}
+                <div style={{ height: '30px' }}></div>
+            </div>
         </>
     );
 }
