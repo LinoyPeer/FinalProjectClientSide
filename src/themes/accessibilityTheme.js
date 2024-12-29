@@ -45,7 +45,7 @@ const darkTheme = {
         colorBgContainer: '#1c1c1c', // צבע רקע עבור קונטיינרים
         colorTextBase: '#ffffff', // צבע טקסט בסיסי
         colorTextSecondary: '#b0b0b0', // צבע טקסט משני
-        colorTextHeading: '#ffffff', // צבע טקסט עבור כותרות
+        colorTextHeading: '#000000', // צבע טקסט עבור כותרות
         colorBorder: '#444444', // צבע גבול
         colorSuccess: '#52c41a', // צבע הצלחה
         colorWarning: '#faad14', // צבע אזהרה
