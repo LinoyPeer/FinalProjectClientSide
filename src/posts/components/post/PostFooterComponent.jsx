@@ -1,4 +1,4 @@
-import { CommentOutlined, LikeFilled, LikeOutlined, SaveOutlined, ShareAltOutlined } from "@ant-design/icons";
+import { CommentOutlined, LikeFilled, LikeOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { Space, Modal } from "antd";
 import { useAuth } from "../../../providers/AuthProvider";
 import usePostsActions from "../../hooks/usePostsActions";
@@ -50,10 +50,21 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
                         )}
                         <CommentOutlined style={{ fontSize: '1.3em' }} onClick={handleCommentClick} />
                         <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} />
-                        <SaveOutlined style={{ fontSize: '1.3em' }} />
                     </>
                 ) : (
-                    <SaveOutlined style={{ fontSize: '1.3em' }} />
+                    <>
+                        {isLiked ? (
+                            <LikeFilled
+                                style={{ fontSize: '1.3em', color: '#1890ff' }}
+                                onClick={handleLikeClick}
+                            />
+                        ) : (
+                            <LikeOutlined
+                                style={{ fontSize: '1.3em' }}
+                                onClick={handleLikeClick}
+                            />
+                        )}
+                    </>
                 )}
             </Space>
 

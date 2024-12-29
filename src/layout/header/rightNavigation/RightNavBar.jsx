@@ -55,8 +55,6 @@ export default function RightNavBar() {
                                                 <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
                                                 <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.SAVED)}>Saved</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={logout}>Logout</Typography>
                                             </>
                                         )}
@@ -66,8 +64,6 @@ export default function RightNavBar() {
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
                                                 <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.SAVED)}>Saved</Typography>
                                                 <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.CRM_ADMIN)}>CRM</Typography>
                                                 <Divider style={{ margin: '8px 0' }} />

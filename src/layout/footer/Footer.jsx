@@ -70,15 +70,28 @@ export default function Footer() {
                             )}
                         </>
                     ) : (
-                        isActive(ROUTES.ABOUT) ? (
-                            <HomeFilled onClick={() => navigate(ROUTES.POSTS)} />
-                        ) : (
-                            <InfoCircleFilled onClick={() => navigate(ROUTES.ABOUT)} />
-                        )
+                        <>
+                            {isActive(ROUTES.POSTS) ? (
+                                <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
+                            ) : (
+                                <HomeOutlined onClick={() => navigate(ROUTES.POSTS)} />
+                            )}
+
+                            {isActive(ROUTES.ABOUT) ? (
+                                <InfoCircleFilled onClick={() => navigate(ROUTES.ABOUT)} />
+                            ) : (
+                                <InfoCircleOutlined onClick={() => navigate(ROUTES.ABOUT)} />
+                            )}
+
+                            {isActive(ROUTES.CHATS) ? (
+                                <MessageFilled onClick={() => navigate(ROUTES.CHATS)} />
+                            ) : (
+                                <MessageOutlined onClick={() => navigate(ROUTES.CHATS)} />
+                            )}
+                        </>
                     )}
                 </Row>
             ) : (
-
                 <Row
                     style={{ textAlign: 'center', display: 'inline-flex', gap: '3em', fontSize: '19px' }}
                 >
@@ -87,11 +100,13 @@ export default function Footer() {
                     ) : (
                         <IoLogInOutline onClick={() => navigate(ROUTES.LOGIN)} />
                     )}
+
                     {isActive(ROUTES.ABOUT) ? (
                         <InfoCircleFilled onClick={() => navigate(ROUTES.ABOUT)} />
                     ) : (
                         <InfoCircleOutlined onClick={() => navigate(ROUTES.ABOUT)} />
                     )}
+
                     {isActive(ROUTES.SIGNUP) ? (
                         <IoDocumentLock onClick={() => navigate(ROUTES.SIGNUP)} />
                     ) : (
