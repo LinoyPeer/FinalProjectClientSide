@@ -65,8 +65,6 @@ export default function RightNavBar() {
                                                 <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
                                                 <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.CRM_ADMIN)}>CRM</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
                                                 <Typography onClick={logout}>Logout</Typography>
                                             </>
                                         )}

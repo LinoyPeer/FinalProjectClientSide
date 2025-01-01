@@ -2,7 +2,6 @@ const ROUTES = {
     ROOT: '/',
     POSTS: '/posts',
     ABOUT: '/about',
-    CRM_ADMIN: '/crm-admin',
     FAVORITES: '/favorites',
     LOGIN: '/login',
     SIGNUP: '/signup',

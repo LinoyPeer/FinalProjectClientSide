@@ -14,7 +14,6 @@ import StartChat from '../sockets/StartChat'
 import UploudPostForm from '../forms/pages/UploudPostForm'
 import ProfileSettings from '../users/components/ProfileSettings'
 import CommentsOfEachPost from '../posts/components/CommentsOfEachPost'
-import CrmAdminPage from '../pages/CrmAdminPage'
 
 
 export default function Router() {
@@ -24,7 +23,6 @@ export default function Router() {
                 <Route path={ROUTES.ROOT} element={<LoginPage />} />
                 <Route path={ROUTES.POSTS} element={<PostsPage />} />
                 <Route path={ROUTES.ABOUT} element={<AboutPage />} />
-                <Route path={ROUTES.CRM_ADMIN} element={<CrmAdminPage />} />
                 <Route path={ROUTES.FAVORITES} element={<MyFavoritePosts />} />
                 <Route path={ROUTES.MY_POSTS} element={<MyPosts />} />
                 <Route path={ROUTES.LOGIN} element={<LoginPage />} />
