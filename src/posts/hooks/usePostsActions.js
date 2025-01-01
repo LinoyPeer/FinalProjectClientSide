@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "../../routes/routes";
 
 export default function usePostsActions() {
-    const { posts, setPosts, setIsLoading, isLoading, error, setError, getAllPosts } = usePosts();
+    const { posts, setPosts, setIsLoading, isLoading, error, setError, getAllPosts, deletePostById } = usePosts();
     const { user, token } = useAuth();
     const [favoritePosts, setFavoritePosts] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -156,6 +156,7 @@ export default function usePostsActions() {
         handleMenu,
         hanndleChooseOption,
         updatePostComments,
+        deletePostById,
     };
 }
 

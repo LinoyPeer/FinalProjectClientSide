@@ -3,9 +3,9 @@ import { Card, Col, Divider, Modal, Row, Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import usePosts from '../../hooks/usePosts';
 
-export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId }) {
+export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId, deletePostById }) {
     const [isModalVisible, setIsModalVisible] = useState(false);  // סטייט לשלוט על הצגת ה-modal
-    const { deletePostById, getAllPosts } = usePosts();
+    const { getAllPosts } = usePosts();
 
     useEffect(() => {
         getAllPosts();  // ודא שאתה מקבל את כל הפוסטים כאשר הרכיב טוען
@@ -26,13 +26,13 @@ export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId
         try {
             if (currentPostId) {
                 console.log('Deleting post: ', currentPostId);
-                await deletePostById(currentPostId);  // מחיקת הפוסט לפי ה-ID
-                setIsModalVisible(false);
+                await deletePostById(currentPostId); // מחיקת הפוסט
             }
         } catch (error) {
             console.error('Failed to delete post:', error);
         }
     };
+
 
     return (
         <>

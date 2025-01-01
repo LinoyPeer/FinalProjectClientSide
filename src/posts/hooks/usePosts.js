@@ -120,5 +120,6 @@ export default function usePosts() {
         editPost,
         deletePostById,
         getMyPosts,
+        deletePostById,
     };
 }

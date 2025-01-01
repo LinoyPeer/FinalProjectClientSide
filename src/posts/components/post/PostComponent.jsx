@@ -73,7 +73,7 @@ import PostFooterComponent from './PostFooterComponent';
 import { UserOutlined } from '@ant-design/icons';
 import { useAuth } from '../../../providers/AuthProvider';
 
-export default function PostComponent({ allUsers, post, handleLike, handleComment, handleShare, isLiked }) {
+export default function PostComponent({ allUsers, post, handleLike, handleComment, handleShare, isLiked, deletePostById }) {
     const { userDetails } = useAuth();
     const [currentUser, setCurrentUser] = useState(null);
 
@@ -105,6 +105,8 @@ export default function PostComponent({ allUsers, post, handleLike, handleCommen
                 postId={post._id}
                 userNameOfPost={fullNameOfUser || 'Unknown'}
                 avatarPath={avatar}
+                deletePostById={deletePostById}
+
             />
             <PostBodyComponent
                 imageSrc={post?.image?.path || 'default_image_path'}
