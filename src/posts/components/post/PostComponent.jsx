@@ -103,6 +103,7 @@ export default function PostComponent({ allUsers, post, handleLike, handleCommen
         <Card style={{ width: 300, textAlign: 'center' }}>
             <PostHeaderComponent
                 postId={post._id}
+                post={post}
                 userNameOfPost={fullNameOfUser || 'Unknown'}
                 avatarPath={avatar}
                 deletePostById={deletePostById}

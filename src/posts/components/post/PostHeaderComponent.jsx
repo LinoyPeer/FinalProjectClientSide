@@ -2,16 +2,17 @@ import { MoreOutlined } from '@ant-design/icons';
 import { Card, Col, Divider, Modal, Row, Button } from 'antd';
 import React, { useEffect, useState } from 'react';
 import usePosts from '../../hooks/usePosts';
+import { useAuth } from '../../../providers/AuthProvider';
 
-export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId, deletePostById }) {
-    const [isModalVisible, setIsModalVisible] = useState(false);  // סטייט לשלוט על הצגת ה-modal
+export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId, deletePostById, post }) {
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const { getAllPosts } = usePosts();
+    const { userDetails } = useAuth();
 
     useEffect(() => {
-        getAllPosts();  // ודא שאתה מקבל את כל הפוסטים כאשר הרכיב טוען
+        getAllPosts();
     }, [getAllPosts]);
 
-    // כאן אנחנו לא צריכים לחפש את הפוסט, כי כבר קיבלנו אותו כפרופס
     const currentPostId = postId;
 
     const showModal = () => {
@@ -33,15 +34,29 @@ export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId
         }
     };
 
+    const shouldShowMoreIcon = () => {
+        if (userDetails) {
+            if (userDetails.isAdmin) {
+                return true;
+            } else if (userDetails.isBusiness && userDetails._id === post.user_id) {
+                return true;
+            } else if (!userDetails.isAdmin && !userDetails.isBusiness) {
+                return false;
+            }
+        }
+        return false;
+    };
 
     return (
         <>
             <Row style={{ display: 'flex', flexDirection: 'row-reverse' }}>
                 <Col>
-                    <MoreOutlined
-                        style={{ fontSize: '20px' }}
-                        onClick={showModal}
-                    />
+                    {shouldShowMoreIcon() && (
+                        <MoreOutlined
+                            style={{ fontSize: '20px' }}
+                            onClick={showModal}
+                        />
+                    )}
                     <Modal
                         title="Post Options"
                         open={isModalVisible}
