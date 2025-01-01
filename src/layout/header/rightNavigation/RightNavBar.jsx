@@ -13,8 +13,49 @@ export default function RightNavBar() {
     const isDesktop = useMediaQuery({ minWidth: 768 });
     const { logout, isLoggedIn, token, user } = useAuth();
 
+    const renderMenuOptions = () => {
+        return (
+            <>
+                <Col style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', color: 'black' }}>
+                    <Divider style={{ margin: '8px 0', borderWidth: '3px', fontWeight: 'bold', borderColor: 'grey' }} />
+                    {/* עבור משתמשים עסקיים ואדמינים */}
+                    {(user.isBusiness || user.isAdmin) && (
+                        <>
+                            <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
+                            <Divider style={{ margin: '8px 0' }} />
+                            <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
+                            <Divider style={{ margin: '8px 0' }} />
+                            <Typography onClick={logout}>Logout</Typography>
+                        </>
+                    )}
+                    {/* עבור אדמינים בלבד */}
+                    {user.isAdmin && (
+                        <>
+                            <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
+                            <Divider style={{ margin: '8px 0' }} />
+                            <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
+                            <Divider style={{ margin: '8px 0' }} />
+                            <Typography onClick={logout}>Logout</Typography>
+                        </>
+                    )}
+                    {/* עבור משתמשים לא עסקיים ולא אדמינים */}
+                    {!user.isBusiness && !user.isAdmin && (
+                        <>
+                            <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)}>Posts</Typography>
+                            <Divider style={{ margin: '8px 0' }} />
+                            <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
+                            <Divider style={{ margin: '8px 0' }} />
+                            <Typography onClick={logout}>Logout</Typography>
+                        </>
+                    )}
+                </Col>
+            </>
+        );
+    };
+
     return (
         <>
+            {/* עבור מצב מובייל */}
             {!isDesktop && (
                 <>
                     <Col>
@@ -46,42 +87,7 @@ export default function RightNavBar() {
                                         position: 'fixed',
                                     }}
                                 >
-                                    <Col style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', color: 'black', marginTop: '-1vh' }}>
-                                        <Divider style={{ margin: '8px 0', borderWidth: '3px', fontWeight: 'bold', borderColor: 'grey' }} />
-
-                                        {(user.isBusiness || user.isAdmin) && (
-                                            <>
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={logout}>Logout</Typography>
-                                            </>
-                                        )}
-
-                                        {user.isAdmin && (
-                                            <>
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.PROFILE_SETTINGS)}>Settings</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={logout}>Logout</Typography>
-                                            </>
-                                        )}
-
-                                        {!user.isBusiness && !user.isAdmin && (
-                                            <>
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)}>Posts</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
-                                                <Divider style={{ margin: '8px 0' }} />
-                                                <Typography onClick={logout}>Logout</Typography>
-                                            </>
-                                        )}
-
-
-
-                                    </Col>
+                                    {renderMenuOptions()}
                                 </Modal>
                             </Col>
                         </>
@@ -89,9 +95,64 @@ export default function RightNavBar() {
                 </>
             )}
 
+            {/* עבור מצב דסקטופ */}
             {isDesktop && (
                 <>
-                    {/* כאן תוכל להוסיף את התוכן עבור מצב דסקטופ אם יש צורך */}
+                    <Col
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: '200px', // מיקום המתג ביחס לאייקונים
+                            transform: 'translateY(-50%)',
+                        }}
+                    >
+                        <Switch
+                            checked={isDarkMode}
+                            onChange={toggleTheme}
+                            checkedChildren={<SunOutlined />}
+                            unCheckedChildren={<MoonOutlined />}
+                        />
+                    </Col>
+                    {isLoggedIn && (
+                        <>
+                            {/* האייקונים בצד ימין */}
+                            <Col
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    right: '100px', // הזזתי שמאלה
+                                    transform: 'translateY(-50%)',
+                                }}
+                                onClick={logout}
+                            >
+                                <LogoutOutlined style={{ fontWeight: 'bold', fontSize: '15px' }} />
+                            </Col>
+                            <Col
+                                style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    right: '140px', // הזזתי שמאלה
+                                    transform: 'translateY(-50%)',
+                                }}
+                            >
+                                <MenuOutlined onClick={handleMenu} />
+                            </Col>
+                            {/* תצוגת התפריט בצד ימין */}
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    top: '60px',
+                                    right: '10px',
+                                    background: '#fff',
+                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                    padding: '10px',
+                                    borderRadius: '8px',
+                                }}
+                            >
+                                {renderMenuOptions()}
+                            </div>
+                        </>
+                    )}
                 </>
             )}
         </>

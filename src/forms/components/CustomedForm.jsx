@@ -3,24 +3,26 @@ import React from 'react';
 import CustomedBottom from './CustomedBottom';
 
 export default function CustomedForm({ onSubmit, onClear, bottomProps, children, moreTypoStyle, ...rest }) {
-
     return (
         <Card
             style={{
                 background: 'linear-gradient(to bottom, #A7C6ED, #E0E7EF, #D9D9D9)',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                display: 'flex',  // כדי למקם את ה-card בצורה גמישה
+                justifyContent: 'center', // מיקום אנכי
+                alignItems: 'center',  // מיקום אופקי
+                minHeight: '100vh', // להבטיח שהקארד תופס את כל הגובה
             }}
         >
             <Form onFinish={onSubmit} {...rest}
                 style={{
                     maxWidth: 360,
                     width: '100%',
-                    height: '100vh',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: '-4em'
+                    padding: '20px',
                 }}
             >
                 <Typography style={{ fontFamily: 'Caveat, cursive', fontSize: '4em', marginBottom: '1em', ...moreTypoStyle }}>
@@ -43,7 +45,6 @@ export default function CustomedForm({ onSubmit, onClear, bottomProps, children,
                     submitDisabled={bottomProps.submitDisabled}
                 />
             </Form>
-            <div style={{ marginBottom: '6vh' }}></div>
         </Card>
     );
 }
