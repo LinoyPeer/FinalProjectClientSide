@@ -36,7 +36,11 @@ export default function UploudPostForm() {
             }
         }
     }, [userDetails, navigate]);
-
+    useEffect(() => {
+        if (!userDetails) {
+            navigate(ROUTES.UNAUTHORIZED); // אם המשתמש לא מאושר, הפנייה לדף לא מורשה
+        }
+    }, [userDetails, navigate]);
     useEffect(() => {
         if (userDetails) {
             console.log("User Details Loaded:", userDetails);
