@@ -5,6 +5,7 @@ import LogoIcon from '../logo/LogoIcon';
 import NavBarItem from '../../../routes/components/NavBarItem';
 import LogoName from '../logo/LogoName';
 import { useMediaQuery } from 'react-responsive';
+import ROUTES from '../../../routes/routes';
 
 export default function LeftNavBar() {
     const isDesktop = useMediaQuery({ minWidth: 768 });
@@ -18,12 +19,45 @@ export default function LeftNavBar() {
                     <NavBarItem
                         to={'/posts'}
                         label={<HomeOutlined />}
-                        specificBtnStyle={{ border: '1.5px solid #343' }}
-                        specificNavStyle={{ marginLeft: '2em' }}
+                        specificBtnStyle={{
+                            border: '1.5px solid #343',
+                            backgroundColor: 'lightBlue', // רקע כהה יותר
+                            color: 'black', // צבע טקסט שחור
+                        }}
+                        specificNavStyle={{
+                            marginLeft: '2em',
+                        }}
                     />
-                    <NavBarItem to={'/favorite'} label={'Favorites'} specificBtnStyle={{ fontFamily: 'Caveat, cursive', fontSize: '1.3em' }} />
-                    <NavBarItem to={'/notification'} label={'Notification'} specificBtnStyle={{ fontFamily: 'Caveat, cursive', fontSize: '1.3em' }} />
-                    <NavBarItem to={'/Communications'} label={'Communications'} specificBtnStyle={{ fontFamily: 'Caveat, cursive', fontSize: '1.3em' }} />
+                    <NavBarItem
+                        to={ROUTES.FAVORITES}
+                        label={'Favorites'}
+                        specificBtnStyle={{
+                            fontFamily: 'Caveat, cursive',
+                            fontSize: '1.3em',
+                            backgroundColor: 'lightBlue', // רקע כהה יותר
+                            color: 'black', // צבע טקסט שחור
+                        }}
+                    />
+                    <NavBarItem
+                        to={ROUTES.CHATS}
+                        label={'Communications'}
+                        specificBtnStyle={{
+                            fontFamily: 'Caveat, cursive',
+                            fontSize: '1.3em',
+                            backgroundColor: 'lightBlue', // רקע כהה יותר
+                            color: 'black', // צבע טקסט שחור
+                        }}
+                    />
+                    <NavBarItem
+                        to={ROUTES.PROFILE}
+                        label={'Profile'}
+                        specificBtnStyle={{
+                            fontFamily: 'Caveat, cursive',
+                            fontSize: '1.3em',
+                            backgroundColor: 'lightBlue', // רקע כהה יותר
+                            color: 'black',
+                        }}
+                    />
                 </Col>
             )}
         </Col>

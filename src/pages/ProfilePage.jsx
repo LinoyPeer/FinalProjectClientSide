@@ -7,6 +7,7 @@ import { useReference } from '../providers/RefProvider';
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
 import { useSpring, animated } from '@react-spring/web';
+import { useMediaQuery } from 'react-responsive';
 
 const { Title } = Typography;
 
@@ -21,6 +22,9 @@ export default function ProfilePage() {
     const [shakingPosts, setShakingPosts] = useState([]);
     const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
+
+    // Media query to detect if it's a mobile or desktop screen
+    const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
 
     useEffect(() => {
         if (userDetails?.bio) {
@@ -81,9 +85,9 @@ export default function ProfilePage() {
 
     return (
         <>
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px', marginTop: '2em', marginBottom: '4em' }}>
-                <Avatar size={40} style={{ marginLeft: '2em', marginBottom: '-1vh' }} src={userDetails?.image?.path} />
-                <Title level={2} style={{ fontSize: '17px', color: '#000', fontFamily: 'Tahoma', fontWeight: '100' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '20px', marginTop: '2em', marginBottom: '4em', marginLeft: !isMobile && '4em' }}>
+                <Avatar size={40} style={{ marginLeft: '2em', marginBottom: '-1vh', width: !isMobile && '60px', height: !isMobile && '60px' }} src={userDetails?.image?.path} />
+                <Title level={2} style={{ fontSize: isMobile ? '17px' : '23px', color: '#000', fontFamily: 'Tahoma', fontWeight: '100' }}>
                     {fullNameOfUser || 'User Name'}
                     <EditOutlined style={{ marginLeft: '20px' }} onClick={toggleEditMode} />
                     <SettingOutlined style={{ marginLeft: '20px' }} onClick={() => navigate(ROUTES.PROFILE_SETTINGS)} />
@@ -91,7 +95,7 @@ export default function ProfilePage() {
             </div>
 
             <div style={{ marginTop: '-2em', marginLeft: '2em', display: 'flex', flexDirection: 'row', marginRight: '1em' }}>
-                <Typography style={{ fontWeight: '600', marginRight: '10px', color: '#3D52A0' }}>
+                <Typography style={{ fontWeight: '600', marginRight: '10px', color: '#3D52A0', marginLeft: !isMobile && '6em' }}>
                     Bio:
                 </Typography>
                 <Typography style={{ fontWeight: 'normal', color: 'black' }}>
@@ -118,7 +122,8 @@ export default function ProfilePage() {
                                     <Card
                                         hoverable
                                         style={{
-                                            width: '100%',
+                                            width: isMobile ? '100%' : '80%', // תמונה קטנה יותר בדסקטופ
+                                            // width: '100%',
                                             borderRadius: '8px',
                                             height: '50%',
                                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -128,7 +133,7 @@ export default function ProfilePage() {
                                                 src={post?.image?.path}
                                                 alt="Post image"
                                                 style={{
-                                                    width: '100%',
+                                                    width: '100%', // תמונה קטנה יותר בדסקטופ
                                                     aspectRatio: '1',
                                                     objectFit: 'cover',
                                                     borderRadius: '8px',

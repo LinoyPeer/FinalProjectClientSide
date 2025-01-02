@@ -131,26 +131,27 @@ export default function RightNavBar() {
                                 style={{
                                     position: 'absolute',
                                     top: '50%',
-                                    right: '140px', // הזזתי שמאלה
+                                    right: '140px',
                                     transform: 'translateY(-50%)',
                                 }}
                             >
                                 <MenuOutlined onClick={handleMenu} />
                             </Col>
-                            {/* תצוגת התפריט בצד ימין */}
-                            <div
+                            <Modal
+                                title="Menu"
+                                open={isModalVisible}
+                                onCancel={handleCancelModal}
+                                onClose={handleCancelModal}
+                                footer={null}
+                                width={300}
                                 style={{
-                                    position: 'absolute',
-                                    top: '60px',
-                                    right: '10px',
-                                    background: '#fff',
-                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                    padding: '10px',
-                                    borderRadius: '8px',
+                                    top: 60,
+                                    right: 15,
+                                    position: 'fixed',
                                 }}
                             >
                                 {renderMenuOptions()}
-                            </div>
+                            </Modal>
                         </>
                     )}
                 </>

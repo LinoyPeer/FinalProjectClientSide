@@ -23,8 +23,10 @@ export default function MyFavoritePosts() {
     }, []);
 
     const handleLikeClick = async (postId) => {
+        if (!posts || !Array.isArray(posts)) return; // הוספת בדיקה אם posts הוא מערך תקני
+
         const post = posts.find(p => p._id === postId);
-        if (!post) return;
+        if (!post) return; // אם הפוסט לא נמצא, אין צורך להמשיך
 
         await handleLike(postId);
 
@@ -44,8 +46,8 @@ export default function MyFavoritePosts() {
 
     // בדיקה אם posts הוא מערך תקני
     const likedPosts = Array.isArray(posts)
-        ? posts.filter((post) => post.likes.includes(user._id))
-        : [];
+        ? posts.filter((post) => post.likes && Array.isArray(post.likes) && post.likes.includes(user._id)) // הוספנו בדיקה אם likes קיים ומערך
+        : []; // אם posts לא מערך, נחזיר מערך ריק
 
     return (
         <>

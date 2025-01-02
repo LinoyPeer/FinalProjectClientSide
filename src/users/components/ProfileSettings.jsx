@@ -79,7 +79,13 @@ export default function ProfileSettings() {
     };
 
     return (
-        <div style={{ padding: '30px' }}>
+        <div style={{
+            padding: '30px',
+            maxWidth: '900px',
+            margin: '0 auto',
+            backgroundColor: '#f9f9f9',
+            borderRadius: '8px',
+        }}>
             <PageHeader title={'Profile Settings'} subtitle={'Edit your profile'} />
 
             <Space direction="vertical" style={{ width: '100%' }}>
@@ -96,82 +102,80 @@ export default function ProfileSettings() {
                 </Button>
 
                 {imagePreview && (
-                    <div style={{ marginTop: '10px' }}>
-                        <img src={imagePreview} alt="Preview" style={{ maxWidth: '200px' }} />
+                    <div style={{
+                        marginTop: '10px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                    }}>
+                        <img src={imagePreview} alt="Preview" style={{ maxWidth: '200px', borderRadius: '8px' }} />
                     </div>
                 )}
             </Space>
 
-            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column' }}>
+            <div style={{
+                marginTop: '30px',
+                display: 'flex',
+                flexDirection: 'column',
+            }}>
                 <Text strong>Edit Username: </Text>
                 <br />
-                <Space>
-                    <Typography style={{ fontWeight: 'normal' }}>First: </Typography>
-                    <TextArea
-                        style={{ width: '130px', height: '10px', fontSize: '14px' }}
-                        name="firstName"
-                        value={data.firstName}
-                        onChange={handleChange}
-                    />
-                    {errors.firstName && <div style={{ color: 'red' }}>{errors.firstName}</div>}
-                </Space>
-                <br />
-                <Space>
-                    <Text style={{ fontWeight: 'normal' }}>Middle: </Text>
-                    <TextArea
-                        style={{ width: '130px', height: '10px', fontSize: '14px' }}
-                        name="middleName"
-                        value={data.middleName}
-                        onChange={handleChange}
-                    />
-                    {errors.middleName && <div style={{ color: 'red' }}>{errors.middleName}</div>}
-                </Space>
-                <br />
-                <Space>
-                    <Text style={{ fontWeight: 'normal' }}>Last: </Text>
-                    <TextArea
-                        style={{ width: '130px', height: '10px', fontSize: '14px' }}
-                        name="lastName"
-                        value={data.lastName}
-                        onChange={handleChange}
-                    />
-                    {errors.lastName && <div style={{ color: 'red' }}>{errors.lastName}</div>}
+                <Space direction="vertical" style={{ width: '100%' }}>
+                    <Space>
+                        <Typography style={{ fontWeight: 'normal' }}>First: </Typography>
+                        <TextArea
+                            style={{ width: '250px', fontSize: '14px' }}
+                            name="firstName"
+                            value={data.firstName}
+                            onChange={handleChange}
+                        />
+                        {errors.firstName && <div style={{ color: 'red' }}>{errors.firstName}</div>}
+                    </Space>
+                    <Space>
+                        <Text style={{ fontWeight: 'normal' }}>Middle: </Text>
+                        <TextArea
+                            style={{ width: '250px', fontSize: '14px' }}
+                            name="middleName"
+                            value={data.middleName}
+                            onChange={handleChange}
+                        />
+                        {errors.middleName && <div style={{ color: 'red' }}>{errors.middleName}</div>}
+                    </Space>
+                    <Space>
+                        <Text style={{ fontWeight: 'normal' }}>Last: </Text>
+                        <TextArea
+                            style={{ width: '250px', fontSize: '14px' }}
+                            name="lastName"
+                            value={data.lastName}
+                            onChange={handleChange}
+                        />
+                        {errors.lastName && <div style={{ color: 'red' }}>{errors.lastName}</div>}
+                    </Space>
                 </Space>
             </div>
 
-            <div style={{ marginTop: '20px' }}>
+            <div style={{ marginTop: '30px' }}>
                 <Text strong>Bio: </Text>
                 <div style={{ marginTop: '10px' }}></div>
                 <TextArea
                     value={data.bio}
                     name='bio'
                     onChange={(e) => handleChange(e)}
-                    maxLength={30}
+                    maxLength={150}
                     showCount
                     rows={4}
                     placeholder="Write something about yourself..."
+                    style={{ width: '100%' }}
                 />
             </div>
 
             <div style={{ marginTop: '30px' }}>
-                <Text strong>Gender: </Text>
-                <Text type="secondary">This will not be part of your public profile.</Text>
-                <Select
-                    style={{ width: '100%', marginTop: '10px' }}
-                    placeholder="Select your gender"
-                    prefix={<UserOutlined />}
-                >
-                    <Select.Option value="Male">Male</Select.Option>
-                    <Select.Option value="Female">Female</Select.Option>
-                </Select>
-            </div>
-
-            <div style={{ marginTop: '20px' }}>
-                <Button type="primary" icon={<EditOutlined />} onClick={onSubmit}>
+                <Button type="primary" icon={<EditOutlined />} onClick={onSubmit} style={{ width: '100%' }}>
                     Save Changes
                 </Button>
             </div>
-            <br />
+            <div>.</div>
+            <div>.</div>
+            <div>.</div>
         </div>
     );
 }
