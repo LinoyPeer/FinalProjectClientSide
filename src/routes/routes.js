@@ -12,7 +12,8 @@ const ROUTES = {
     UPLOUD_PAGE: '/uploud-post',
     PROFILE_SETTINGS: '/profille-settings',
     BIO_EDITING: '/bio-editding',
-    POST_COMMENTS: '/post-comments/:postId'
+    POST_COMMENTS: '/post-comments/:postId',
+    UNAUTHORIZED: '/unauthorized',
 };
 
 export default ROUTES;

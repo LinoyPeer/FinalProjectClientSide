@@ -29,6 +29,13 @@ export default function UploudPostForm() {
     const userFullNameString = userDetails ?
         `${userDetails?.name?.first || ''} ${userDetails?.name?.middle || ''} ${userDetails?.name?.last || ''}`.trim() :
         "Unknown";
+    useEffect(() => {
+        if (userDetails) {
+            if (!userDetails.isBusiness && !userDetails.isAdmin) {
+                navigate(ROUTES.UNAUTHORIZED); // אם המשתמש לא מאושר, הפנייה לדף לא מורשה
+            }
+        }
+    }, [userDetails, navigate]);
 
     useEffect(() => {
         if (userDetails) {
