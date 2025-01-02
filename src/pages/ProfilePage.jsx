@@ -25,6 +25,13 @@ export default function ProfilePage() {
 
     // Media query to detect if it's a mobile or desktop screen
     const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
+    useEffect(() => {
+        if (userDetails) {
+            if (!userDetails.isBusiness && !userDetails.isAdmin) {
+                navigate(ROUTES.UNAUTHORIZED); // אם המשתמש לא מאושר, הפנייה לדף לא מורשה
+            }
+        }
+    }, [userDetails, navigate]);
 
     useEffect(() => {
         if (userDetails?.bio) {
