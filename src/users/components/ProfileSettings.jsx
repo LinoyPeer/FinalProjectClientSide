@@ -173,9 +173,8 @@ export default function ProfileSettings() {
                     Save Changes
                 </Button>
             </div>
-            <div>.</div>
-            <div>.</div>
-            <div>.</div>
+            <br></br><br></br><p></p>
+
         </div>
     );
 }

@@ -4,11 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import useUsers from '../users/hooks/useUsers';
 import { WechatWorkOutlined } from '@ant-design/icons';
 import ROUTES from '../routes/routes';
+import { useMediaQuery } from 'react-responsive';
 
 export default function ChatsViewPage() {
     const { allUsers, getAllUsers } = useUsers();
     const [nameOfUsers, setNameOfUsers] = useState([]);
     const navigate = useNavigate();
+
+    // בדיקה אם אנחנו בדסקטופ
+    const isDesktop = useMediaQuery({ minWidth: 768 });
 
     useEffect(() => {
         getAllUsers();
@@ -32,16 +36,17 @@ export default function ChatsViewPage() {
         setNameOfUsers(nameOfEachUser);
     }, [allUsers]);
 
-
     const startPrivateChat = (user) => {
         const roomId = `${user.userId}`;
         navigate(`${ROUTES.START_CHAT.replace(':roomId', roomId)}`, { state: { user } });
     };
 
-
-
     return (
-        <div style={{ padding: '10px' }}>
+        <div style={{
+            padding: isDesktop ? '10px 50px' : '10px', // אם דסקטופ, קרב את הצדדים עם מרווח של 50px
+            margin: '0 auto',
+            maxWidth: '1200px'
+        }}>
             <h2>Messages</h2>
             <List
                 itemLayout="horizontal"
@@ -61,10 +66,6 @@ export default function ChatsViewPage() {
                     </List.Item>
                 )}
             />
-
         </div>
     );
 }
-
-
-
