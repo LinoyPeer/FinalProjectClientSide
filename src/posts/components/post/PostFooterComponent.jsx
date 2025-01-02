@@ -48,7 +48,7 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
                             />
                         )}
                         <CommentOutlined style={{ fontSize: '1.3em' }} onClick={handleCommentClick} />
-                        <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} />
+                        {/* <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} /> */}
                     </>
                 ) : (
                     <>

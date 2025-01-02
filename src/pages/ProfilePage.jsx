@@ -23,20 +23,15 @@ export default function ProfilePage() {
     const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
     const [postToDelete, setPostToDelete] = useState(null);
 
-    // Media query to detect if it's a mobile or desktop screen
     const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
     useEffect(() => {
         if (userDetails) {
             if (!userDetails.isBusiness && !userDetails.isAdmin) {
-                navigate(ROUTES.UNAUTHORIZED); // אם המשתמש לא מאושר, הפנייה לדף לא מורשה
+                navigate(ROUTES.UNAUTHORIZED);
             }
         }
     }, [userDetails, navigate]);
-    useEffect(() => {
-        if (!userDetails) {
-            navigate(ROUTES.UNAUTHORIZED); // אם המשתמש לא מאושר, הפנייה לדף לא מורשה
-        }
-    }, [userDetails, navigate]);
+
 
     useEffect(() => {
         if (userDetails?.bio) {
