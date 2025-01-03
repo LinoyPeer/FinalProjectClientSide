@@ -44,7 +44,7 @@ export default function CommentsOfEachPost({ postId }) {
                     last: userDetails?.name?.last,
                 },
                 userId: userDetails?.id,
-                userImage: userDetails?.image,  // התמונה של המשתמש תישלח אם קיימת
+                userImage: userDetails?.image.path,
                 comment: commentData.comment,
                 commentId: new Date().getTime(),
                 createdAt: new Date().toISOString(),
