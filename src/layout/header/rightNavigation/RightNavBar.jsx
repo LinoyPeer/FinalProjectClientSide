@@ -102,7 +102,7 @@ export default function RightNavBar() {
                         style={{
                             position: 'absolute',
                             top: '50%',
-                            right: '200px', // מיקום המתג ביחס לאייקונים
+                            right: '200px',
                             transform: 'translateY(-50%)',
                         }}
                     >
@@ -115,12 +115,11 @@ export default function RightNavBar() {
                     </Col>
                     {isLoggedIn && (
                         <>
-                            {/* האייקונים בצד ימין */}
                             <Col
                                 style={{
                                     position: 'absolute',
                                     top: '50%',
-                                    right: '100px', // הזזתי שמאלה
+                                    right: '100px',
                                     transform: 'translateY(-50%)',
                                 }}
                                 onClick={logout}

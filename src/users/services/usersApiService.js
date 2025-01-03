@@ -96,9 +96,9 @@ export const editUserApi = async (userId, token, data) => {
             data: data
         };
         console.log(config.url);
-        const response = await axios.request(config); // כאן אנחנו מחכים לתשובה
+        const response = await axios.request(config);
         console.log("Response data:", JSON.stringify(response.data));
-        return response.data; // מחזירים את התוצאה
+        return response.data;
     } catch (e) {
         console.error('Error fetching all users:', e);
         throw new Error(e.message);

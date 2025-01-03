@@ -3,7 +3,7 @@ import { Space, Modal } from "antd";
 import { useAuth } from "../../../providers/AuthProvider";
 import usePostsActions from "../../hooks/usePostsActions";
 import { useState } from "react";
-import CommentsOfEachPost from "../CommentsOfEachPost"; // Import the CommentsOfEachPost component
+import CommentsOfEachPost from "../CommentsOfEachPost";
 
 export default function PostFooterComponent({ post, handleLike, handleComment, }) {
     const { setPosts } = usePostsActions();
@@ -27,8 +27,8 @@ export default function PostFooterComponent({ post, handleLike, handleComment, }
     };
 
     const handleCommentClick = () => {
-        setCurrentPostId(post._id);  // Set the current postId
-        setIsModalVisible(true);  // Open the modal
+        setCurrentPostId(post._id);
+        setIsModalVisible(true);
     };
 
     return (

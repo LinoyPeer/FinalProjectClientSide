@@ -12,7 +12,6 @@ import {
 
 export default function usePosts() {
     const [posts, setPosts] = useState([]);
-    // const [post, setPost] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const { token } = useAuth();

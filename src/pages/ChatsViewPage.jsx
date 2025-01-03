@@ -11,7 +11,6 @@ export default function ChatsViewPage() {
     const [nameOfUsers, setNameOfUsers] = useState([]);
     const navigate = useNavigate();
 
-    // בדיקה אם אנחנו בדסקטופ
     const isDesktop = useMediaQuery({ minWidth: 768 });
 
     useEffect(() => {
@@ -43,7 +42,7 @@ export default function ChatsViewPage() {
 
     return (
         <div style={{
-            padding: isDesktop ? '10px 50px' : '10px', // אם דסקטופ, קרב את הצדדים עם מרווח של 50px
+            padding: isDesktop ? '10px 50px' : '10px',
             margin: '0 auto',
             maxWidth: '1200px'
         }}>

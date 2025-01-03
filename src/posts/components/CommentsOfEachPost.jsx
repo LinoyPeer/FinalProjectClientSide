@@ -9,7 +9,7 @@ import usePostsActions from "../hooks/usePostsActions";
 
 export default function CommentsOfEachPost({ postId }) {
     const { userDetails } = useAuth();
-    const { posts, getAllPosts, setPosts } = usePosts();  // הוספנו את setPosts כדי לעדכן את הסטייט של הפוסטים
+    const { posts, getAllPosts, setPosts } = usePosts();
     const { updatePostComments } = usePostsActions();
     const [selectedPost, setSelectedPost] = useState();
     const [commentData, setCommentData] = useState({ comment: '' });
@@ -50,7 +50,6 @@ export default function CommentsOfEachPost({ postId }) {
                 createdAt: new Date().toISOString(),
             };
 
-            // עדכון התגובה והפוסט
             updatePostComments(postId, newComment, userDetails.token);
 
             setSelectedPost((prevPost) => {

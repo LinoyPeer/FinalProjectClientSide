@@ -129,8 +129,7 @@ export default function ProfilePage() {
                                     <Card
                                         hoverable
                                         style={{
-                                            width: isMobile ? '100%' : '80%', // תמונה קטנה יותר בדסקטופ
-                                            // width: '100%',
+                                            width: isMobile ? '100%' : '80%',
                                             borderRadius: '8px',
                                             height: '50%',
                                             boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -140,7 +139,7 @@ export default function ProfilePage() {
                                                 src={post?.image?.path}
                                                 alt="Post image"
                                                 style={{
-                                                    width: '100%', // תמונה קטנה יותר בדסקטופ
+                                                    width: '100%',
                                                     aspectRatio: '1',
                                                     objectFit: 'cover',
                                                     borderRadius: '8px',

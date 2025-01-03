@@ -36,17 +36,6 @@ export default function useUsers() {
         }
     }, [login, navigate, setNotification]);
 
-    // const getUserDetails = async (userId) => {
-    //     try {
-    //         const data = await getUserDetailsApi(userId, token);
-    //         setUserCurrentDetails(data);
-    //         console.log(data);
-    //         return data;
-    //     } catch (err) {
-    //         setError(err);
-    //     }
-    // };
-
     const getUserDetails = async () => {
         console.log(userDetails);
         try {
@@ -115,8 +104,7 @@ export default function useUsers() {
                 const response = await editUserApi(userDetails?._id, token, userData);
                 console.log('Edit response:', response);
 
-                // עדכון ה- userDetails ב- AuthContext
-                setUserDetails(response);  // עדכון הנתונים ב- AuthContext, כל רכיב שמאזין לזה יתעדכן מייד
+                setUserDetails(response);
 
                 setNotification('green', 'Profile updated successfully');
             } catch (e) {
@@ -127,7 +115,7 @@ export default function useUsers() {
                 setIsLoading(false);
             }
         },
-        [userDetails, token, setUserDetails] // הוספת setUserDetails כ- dependency
+        [userDetails, token, setUserDetails]
     );
 
     useEffect(() => {

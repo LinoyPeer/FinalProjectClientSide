@@ -19,7 +19,6 @@ export default function Header() {
                 backgroundColor: theme.token.colorHeaderBg,
                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
                 display: 'flex',
-                // width: '100%',
                 overflow: 'hidden'
             }}
         >

@@ -1,12 +1,10 @@
 import React from 'react';
 import PageHeader from '../components/pageHeader';
 import { Typography } from 'antd';
-import { useMediaQuery } from 'react-responsive'; // ייבוא של useMediaQuery מ- react-responsive
-
+import { useMediaQuery } from 'react-responsive';
 const { Title, Text } = Typography;
 
 export default function AboutPage() {
-    // הגדרת תנאים לעבודה עם media query
     const isDesktop = useMediaQuery({ minWidth: 1024 });
 
     return (
@@ -18,11 +16,11 @@ export default function AboutPage() {
                 style={{
                     padding: '20px',
                     marginTop: '-5em',
-                    fontSize: isDesktop ? '1.2rem' : '1rem', // שינוי גודל טקסט לדסקטופ
-                    lineHeight: isDesktop ? '1.6' : '1.4', // שינוי גובה שורה בדסקטופ
-                    marginLeft: isDesktop ? '20%' : '20px', // הזזת התוכן ימינה בדסקטופ
-                    marginRight: isDesktop ? '20%' : 'none', // הוספת רווח בצד ימין בדסקטופ
-                    maxWidth: isDesktop ? '800px' : 'none', // לקבוע רוחב מקסימלי בדסקטופ
+                    fontSize: isDesktop ? '1.2rem' : '1rem',
+                    lineHeight: isDesktop ? '1.6' : '1.4',
+                    marginLeft: isDesktop ? '20%' : '20px',
+                    marginRight: isDesktop ? '20%' : 'none',
+                    maxWidth: isDesktop ? '800px' : 'none',
                 }}
             >
                 <Title level={2}>Welcome to InstaPost</Title>

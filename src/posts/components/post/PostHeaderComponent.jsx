@@ -27,7 +27,7 @@ export default function PostHeaderComponent({ userNameOfPost, avatarPath, postId
         try {
             if (currentPostId) {
                 console.log('Deleting post: ', currentPostId);
-                await deletePostById(currentPostId); // מחיקת הפוסט
+                await deletePostById(currentPostId);
             }
         } catch (error) {
             console.error('Failed to delete post:', error);

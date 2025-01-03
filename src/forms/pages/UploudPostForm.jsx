@@ -32,7 +32,7 @@ export default function UploudPostForm() {
     useEffect(() => {
         if (userDetails) {
             if (!userDetails.isBusiness && !userDetails.isAdmin) {
-                navigate(ROUTES.UNAUTHORIZED); // אם המשתמש לא מאושר, הפנייה לדף לא מורשה
+                navigate(ROUTES.UNAUTHORIZED);
             }
         }
     }, [userDetails, navigate]);
@@ -45,7 +45,7 @@ export default function UploudPostForm() {
     }, [userDetails]);
 
     useEffect(() => {
-        console.log("Updated userFullName:", userFullName);  // הדפסת השם המלא
+        console.log("Updated userFullName:", userFullName);
     }, [userFullName]);
 
     const handleFileChange = (event) => {

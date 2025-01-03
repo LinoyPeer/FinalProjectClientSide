@@ -21,8 +21,8 @@ export default function LeftNavBar() {
                         label={<HomeOutlined />}
                         specificBtnStyle={{
                             border: '1.5px solid #343',
-                            backgroundColor: 'lightBlue', // רקע כהה יותר
-                            color: 'black', // צבע טקסט שחור
+                            backgroundColor: 'lightBlue',
+                            color: 'black',
                         }}
                         specificNavStyle={{
                             marginLeft: '2em',
@@ -34,8 +34,8 @@ export default function LeftNavBar() {
                         specificBtnStyle={{
                             fontFamily: 'Caveat, cursive',
                             fontSize: '1.3em',
-                            backgroundColor: 'lightBlue', // רקע כהה יותר
-                            color: 'black', // צבע טקסט שחור
+                            backgroundColor: 'lightBlue',
+                            color: 'black',
                         }}
                     />
                     <NavBarItem
@@ -44,8 +44,8 @@ export default function LeftNavBar() {
                         specificBtnStyle={{
                             fontFamily: 'Caveat, cursive',
                             fontSize: '1.3em',
-                            backgroundColor: 'lightBlue', // רקע כהה יותר
-                            color: 'black', // צבע טקסט שחור
+                            backgroundColor: 'lightBlue',
+                            color: 'black',
                         }}
                     />
                     <NavBarItem
@@ -54,7 +54,7 @@ export default function LeftNavBar() {
                         specificBtnStyle={{
                             fontFamily: 'Caveat, cursive',
                             fontSize: '1.3em',
-                            backgroundColor: 'lightBlue', // רקע כהה יותר
+                            backgroundColor: 'lightBlue',
                             color: 'black',
                         }}
                     />

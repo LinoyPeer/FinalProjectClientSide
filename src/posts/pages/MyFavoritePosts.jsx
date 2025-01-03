@@ -13,7 +13,6 @@ export default function MyFavoritePosts() {
     const { user } = useAuth();
     const [likedPostsState, setLikedPostsState] = useState({});
 
-    // קריאה להבא לשני ה-hooks, אחד בשביל פוסטים ואחד בשביל משתמשים
     useEffect(() => {
         getAllPosts();
     }, [getAllPosts]);
@@ -23,10 +22,9 @@ export default function MyFavoritePosts() {
     }, []);
 
     const handleLikeClick = async (postId) => {
-        if (!posts || !Array.isArray(posts)) return; // הוספת בדיקה אם posts הוא מערך תקני
-
+        if (!posts || !Array.isArray(posts)) return;
         const post = posts.find(p => p._id === postId);
-        if (!post) return; // אם הפוסט לא נמצא, אין צורך להמשיך
+        if (!post) return;
 
         await handleLike(postId);
 
@@ -44,10 +42,9 @@ export default function MyFavoritePosts() {
         );
     };
 
-    // בדיקה אם posts הוא מערך תקני
     const likedPosts = Array.isArray(posts)
-        ? posts.filter((post) => post.likes && Array.isArray(post.likes) && post.likes.includes(user._id)) // הוספנו בדיקה אם likes קיים ומערך
-        : []; // אם posts לא מערך, נחזיר מערך ריק
+        ? posts.filter((post) => post.likes && Array.isArray(post.likes) && post.likes.includes(user._id))
+        : [];
 
     return (
         <>

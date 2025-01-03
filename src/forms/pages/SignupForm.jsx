@@ -27,7 +27,7 @@ export default function SignupForm() {
     const handleFormSubmit = async (e) => {
         const user = await handleSignup(data, file);
         if (user) {
-            localStorage.setItem('currentUser', JSON.stringify(user)); // 
+            localStorage.setItem('currentUser', JSON.stringify(user));
             navigate(ROUTES.LOGIN);
         }
     };

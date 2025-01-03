@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect } from "react";
-import { Modal } from 'antd'; // יבוא את רכיב המודל מ-antd
 import usePosts from "./usePosts";
 import { useAuth } from "../../providers/AuthProvider";
 import { commentPostByIdApi, likePostByIdApi } from "../services/postsApiService";
@@ -63,13 +62,6 @@ export default function usePostsActions() {
         }
     }, [user, token, setPosts, setError]);
 
-    // const favoriteLikes = async (postId) => {
-    //     const response = await likePostByIdApi(postId, token);
-    //     console.log(response);
-    //     const allThePostsUserLikedArray = response.likes
-    //     return allThePostsUserLikedArray;
-    // }
-
     const handleComment = useCallback(async (postId, commentData, token) => {
         try {
             navigate(`${ROUTES.POST_COMMENTS.replace(':postId', postId)}`, { state: { user } });
@@ -106,28 +98,18 @@ export default function usePostsActions() {
                 return;
             }
 
-            // עדכון ה-userId של הפוסט עם ה-userId של המשתמש המחובר
             if (user && user._id) {
-                postToUpdate.userId = user._id;  // עדכון ה-userId בפוסט
+                postToUpdate.userId = user._id;
                 console.log('Updated userId in post:', postToUpdate.userId);
             } else {
                 console.error('User ID is missing');
                 return;
             }
-
-            // הוספת התגובה החדשה לפוסט
             postToUpdate.comments = [...(postToUpdate.comments || []), newComment];
-
-            // שליחה ל-API כדי לעדכן את הפוסט עם התגובה החדשה
             const updatedPost = await commentPostByIdApi(postId, newComment, token);
-
-            // עדכון המצב של הפוסטים עם הפוסט המעודכן
             setPosts(prevPosts => {
-                // בדיקה אם הפוסט כבר נמצא בסטייט, אחרת הוסף אותו
                 return prevPosts.map(post => post._id === postId ? updatedPost : post);
             });
-
-            // עדכון התגובה בהצלחה
             console.log('Comment added successfully:', updatedPost);
         } catch (e) {
             setError(e.message);
