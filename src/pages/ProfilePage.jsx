@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes/routes';
 import { useSpring, animated } from '@react-spring/web';
 import { useMediaQuery } from 'react-responsive';
+import { FaRegTrashAlt } from 'react-icons/fa';
 
 const { Title } = Typography;
 
@@ -96,7 +97,7 @@ export default function ProfilePage() {
                 <Avatar size={40} style={{ marginLeft: '2em', marginBottom: '-1vh', width: !isMobile && '60px', height: !isMobile && '60px' }} src={userDetails?.image?.path} />
                 <Title level={2} style={{ fontSize: isMobile ? '17px' : '23px', color: '#000', fontFamily: 'Tahoma', fontWeight: '100' }}>
                     {fullNameOfUser || 'User Name'}
-                    <EditOutlined style={{ marginLeft: '20px' }} onClick={toggleEditMode} />
+                    <FaRegTrashAlt style={{ marginLeft: '20px', fontSize: !isMobile ? '22px' : '16px', marginBottom: !isMobile ? '-3px' : '-1px' }} onClick={toggleEditMode} />
                     <SettingOutlined style={{ marginLeft: '20px' }} onClick={() => navigate(ROUTES.PROFILE_SETTINGS)} />
                 </Title>
             </div>
