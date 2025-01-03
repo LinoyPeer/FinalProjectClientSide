@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PageHeader from '../../components/pageHeader';
 import PostFeedback from '../components/PostFeedback';
 import usePosts from '../hooks/usePosts';
 import usePostsAction from '../hooks/usePostsActions';
-import { Modal } from 'antd';
-import ChatsViewPage from '../../pages/ChatsViewPage';
 import useUsers from '../../users/hooks/useUsers';
 import { useAuth } from '../../providers/AuthProvider';
 
