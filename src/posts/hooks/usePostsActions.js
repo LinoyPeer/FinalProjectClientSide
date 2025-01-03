@@ -13,9 +13,6 @@ export default function usePostsActions() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const navigate = useNavigate();
 
-    const handleShare = useCallback(() => {
-        setIsModalVisible(true);
-    }, []);
 
     const handleMenu = useCallback(() => {
         setIsModalVisible(true);
@@ -145,7 +142,6 @@ export default function usePostsActions() {
         handleLike,
         favoritePosts,
         handleComment,
-        handleShare,
         setIsLoading,
         setError,
         isLoading,

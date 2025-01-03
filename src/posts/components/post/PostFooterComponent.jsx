@@ -1,11 +1,11 @@
-import { CommentOutlined, LikeFilled, LikeOutlined, ShareAltOutlined } from "@ant-design/icons";
+import { CommentOutlined, LikeFilled, LikeOutlined } from "@ant-design/icons";
 import { Space, Modal } from "antd";
 import { useAuth } from "../../../providers/AuthProvider";
 import usePostsActions from "../../hooks/usePostsActions";
 import { useState } from "react";
 import CommentsOfEachPost from "../CommentsOfEachPost"; // Import the CommentsOfEachPost component
 
-export default function PostFooterComponent({ post, handleLike, handleComment, handleShare }) {
+export default function PostFooterComponent({ post, handleLike, handleComment, }) {
     const { setPosts } = usePostsActions();
     const { user } = useAuth();
     const [isLiked, setIsLiked] = useState(post.likes.includes(user && user._id));
@@ -48,7 +48,6 @@ export default function PostFooterComponent({ post, handleLike, handleComment, h
                             />
                         )}
                         <CommentOutlined style={{ fontSize: '1.3em' }} onClick={handleCommentClick} />
-                        {/* <ShareAltOutlined style={{ fontSize: '1.3em' }} onClick={() => handleShare()} /> */}
                     </>
                 ) : (
                     <>

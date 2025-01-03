@@ -12,7 +12,7 @@ export default function PostsPage() {
     const { posts, isLoading, error, getAllPosts, setPosts } = usePosts(); // הוספנו את setPosts
     const { allUsers, getAllUsers } = useUsers();
     const { userDetails } = useAuth();
-    const { handleLike, handleComment, handleShare, isModalVisible, handleCancelModal, deletePostById } = usePostsAction();
+    const { handleLike, handleComment, isModalVisible, handleCancelModal, deletePostById } = usePostsAction();
 
     const deletePostAndUpdate = async (postId) => {
         try {
@@ -30,15 +30,6 @@ export default function PostsPage() {
 
     return (
         <>
-            <Modal
-                title="Share Post"
-                open={isModalVisible}
-                onCancel={handleCancelModal}
-                footer={null}
-            >
-                <ChatsViewPage />
-            </Modal>
-
             <PageHeader
                 title="What's new?!"
                 subtitle="Upload your post"
@@ -49,7 +40,6 @@ export default function PostsPage() {
                 userDetails={userDetails}
                 handleLike={handleLike}
                 handleComment={handleComment}
-                handleShare={handleShare}
                 isLoading={isLoading}
                 error={error}
                 deletePostById={deletePostAndUpdate}  // הפונקציה המעודכנת שמעדכנת את הסטייט

@@ -8,10 +8,10 @@ export default function CustomedForm({ onSubmit, onClear, bottomProps, children,
             style={{
                 background: 'linear-gradient(to bottom, #A7C6ED, #E0E7EF, #D9D9D9)',
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                display: 'flex',  // כדי למקם את ה-card בצורה גמישה
-                justifyContent: 'center', // מיקום אנכי
-                alignItems: 'center',  // מיקום אופקי
-                minHeight: '100vh', // להבטיח שהקארד תופס את כל הגובה
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '100vh',
             }}
         >
             <Form onFinish={onSubmit} {...rest}

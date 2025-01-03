@@ -7,7 +7,7 @@ import useUsers from '../../users/hooks/useUsers';
 import PageHeader from '../../components/pageHeader';
 
 export default function MyFavoritePosts() {
-    const { handleLike, handleComment, handleShare } = usePostsActions();
+    const { handleLike, handleComment } = usePostsActions();
     const { getAllPosts, posts, setPosts } = usePosts();
     const { getAllUsers, allUsers } = useUsers();
     const { user } = useAuth();
@@ -61,7 +61,6 @@ export default function MyFavoritePosts() {
                             post={post}
                             handleLike={handleLikeClick}
                             handleComment={handleComment}
-                            handleShare={handleShare}
                             isLiked={likedPostsState[post._id] || post.likes.includes(user._id)}
                         />
                     ))

@@ -4,7 +4,7 @@ import Posts from './Posts';
 import Loading from '../../components/Loading';
 import Error from '../../components/Error';
 
-export default function PostFeedback({ userDetails, allUsers, posts, isLoading, error, handleLike, handleComment, handleShare, deletePostById }) {
+export default function PostFeedback({ userDetails, allUsers, posts, isLoading, error, handleLike, handleComment, deletePostById }) {
 
     if (isLoading) return <Loading />;
     if (error) return <Error errorMeassage={error} />;
@@ -18,8 +18,7 @@ export default function PostFeedback({ userDetails, allUsers, posts, isLoading, 
                 userDetails={userDetails}
                 handleLike={handleLike}
                 handleComment={handleComment}
-                handleShare={handleShare}
-                deletePostById={deletePostById}  // שולח את הפונקציה עם עדכון הסטייט
+                deletePostById={deletePostById}
             />
         );
     }
