@@ -1,4 +1,3 @@
-
 import { Avatar, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
 import PostHeaderComponent from './PostHeaderComponent';
@@ -15,14 +14,12 @@ export default function PostComponent({ allUsers, post, handleLike, handleCommen
         if (post && allUsers.length > 0) {
             const postCreator = post?.user_id;
             const currentUser = allUsers.find((user) => user._id === postCreator);
-
             setCurrentUser(currentUser);
         }
     }, [allUsers, post]);
 
-
     if (!userDetails || !currentUser) {
-        return <div>Loading...</div>;
+        return null;
     }
 
     const avatar = currentUser?.image?.path ? (
@@ -41,7 +38,6 @@ export default function PostComponent({ allUsers, post, handleLike, handleCommen
                 userNameOfPost={fullNameOfUser || 'Unknown'}
                 avatarPath={avatar}
                 deletePostById={deletePostById}
-
             />
             <PostBodyComponent
                 imageSrc={post?.image?.path || 'default_image_path'}
