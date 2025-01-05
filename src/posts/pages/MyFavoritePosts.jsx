@@ -5,6 +5,7 @@ import { useAuth } from '../../providers/AuthProvider';
 import PostComponent from '../components/post/PostComponent';
 import useUsers from '../../users/hooks/useUsers';
 import PageHeader from '../../components/pageHeader';
+import { Row, Col } from 'antd';
 
 export default function MyFavoritePosts() {
     const { handleLike, handleComment } = usePostsActions();
@@ -49,22 +50,28 @@ export default function MyFavoritePosts() {
     return (
         <>
             <PageHeader title={'My Favorite Posts'} subtitle={'See my likes on InstaPost'} />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', gap: '2em' }}>
+            <div style={{ padding: '20px' }}>
                 {likedPosts.length > 0 ? (
-                    likedPosts.map(post => (
-                        <PostComponent
-                            key={post._id}
-                            allUsers={allUsers}
-                            post={post}
-                            handleLike={handleLikeClick}
-                            handleComment={handleComment}
-                            isLiked={likedPostsState[post._id] || post.likes.includes(user._id)}
-                        />
-                    ))
+                    <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
+                        {likedPosts.map(post => (
+                            <Col
+                                key={post._id}
+                                xs={24} sm={12} md={8} lg={6}
+                                style={{ display: 'flex', justifyContent: 'center' }}
+                            >
+                                <PostComponent
+                                    allUsers={allUsers}
+                                    post={post}
+                                    handleLike={handleLikeClick}
+                                    handleComment={handleComment}
+                                    isLiked={likedPostsState[post._id] || post.likes.includes(user._id)}
+                                />
+                            </Col>
+                        ))}
+                    </Row>
                 ) : (
                     <p>You have no favorite posts.</p>
                 )}
-                <div style={{ height: '30px' }}></div>
             </div>
         </>
     );
