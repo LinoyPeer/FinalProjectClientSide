@@ -16,23 +16,23 @@ export default function ChatsViewPage() {
     useEffect(() => {
         getAllUsers();
     }, []);
-    console.log(allUsers);
-    useEffect(() => {
-        const nameOfEachUser = allUsers.map(user => {
-            const fullName = `${user.name?.first || 'Unknown'} ${user.name?.middle || ''} ${user.name?.last || ''}`.trim();
-            const initials = `${user.name?.first?.[0] || 'U'}${user.name?.last?.[0] || 'U'}`.toUpperCase();
-            const avatar = user?.image?.path || null
-            console.log(initials);
 
-            return {
-                fullName,
-                avatar,
-                initials,
-                userId: user._id,
-            };
-        });
-        console.log(nameOfEachUser);
-        setNameOfUsers(nameOfEachUser);
+    useEffect(() => {
+        if (Array.isArray(allUsers)) {
+            const nameOfEachUser = allUsers.map(user => {
+                const fullName = `${user.name?.first || 'Unknown'} ${user.name?.middle || ''} ${user.name?.last || ''}`.trim();
+                const initials = `${user.name?.first?.[0] || 'U'}${user.name?.last?.[0] || 'U'}`.toUpperCase();
+                const avatar = user?.image?.path || null;
+
+                return {
+                    fullName,
+                    avatar,
+                    initials,
+                    userId: user._id,
+                };
+            });
+            setNameOfUsers(nameOfEachUser);
+        }
     }, [allUsers]);
 
     const startPrivateChat = (user) => {

@@ -5,7 +5,7 @@ import CustomedForm from "../components/CustomedForm";
 import CustomedInput from "../components/CustomedInput";
 import initialUploudForm from "../helpers/initialUploudForm";
 import uploudSchema from "../models/uploudSchema";
-import { BorderlessTableOutlined, SignatureOutlined, UploadOutlined } from "@ant-design/icons";
+import { BorderlessTableOutlined } from "@ant-design/icons";
 import { createPostApi } from "../../posts/services/postsApiService";
 import { useAuth } from "../../providers/AuthProvider";
 import Typography from "antd/es/typography/Typography";
