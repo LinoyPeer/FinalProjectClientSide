@@ -23,6 +23,7 @@ export default function AboutPage() {
                     maxWidth: isDesktop ? '800px' : 'none',
                 }}
             >
+                <br></br>
                 <Title level={2}>Welcome to InstaPost</Title>
                 <Text>InstaPost is a social platform designed to connect users in real time, allowing you to share, explore, and interact with content effortlessly.</Text>
                 <Title level={3}>Key Features:</Title>
@@ -35,6 +36,7 @@ export default function AboutPage() {
                     <li><Text strong>Effortless Sharing:</Text> Easily share posts and connect with others.</li>
                     <li><Text strong>Mobile-Friendly:</Text> Optimized for a seamless experience across devices.</li>
                 </ul>
+                <Typography>© 2025 Linoy Pe'er</Typography>
                 <br /><br />
             </Typography>
         </>
