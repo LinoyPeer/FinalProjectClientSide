@@ -1,7 +1,7 @@
 import React from 'react';
-import PageHeader from '../components/pageHeader';
 import { Typography } from 'antd';
 import { useMediaQuery } from 'react-responsive';
+import PageHeader from '../components/PageHeader';
 const { Title, Text } = Typography;
 
 export default function AboutPage() {

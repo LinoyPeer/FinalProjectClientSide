@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Typography, Space, Select } from 'antd';
-import { UploadOutlined, EditOutlined, UserOutlined } from '@ant-design/icons';
-import PageHeader from '../../components/pageHeader';
+import { Button, Typography, Space } from 'antd';
+import { UploadOutlined, EditOutlined } from '@ant-design/icons';
 import { useAuth } from '../../providers/AuthProvider';
 import TextArea from 'antd/es/input/TextArea';
 import useUsers from '../hooks/useUsers';
@@ -11,6 +10,7 @@ import initialEditProfileForm from '../helpers/initialForms/initialEditProfileFo
 import editProfileSchema from '../models/editProfileSchema';
 import ROUTES from '../../routes/routes';
 import { useNavigate } from 'react-router-dom';
+import PageHeader from '../../components/PageHeader';
 
 const { Text } = Typography;
 

@@ -4,8 +4,8 @@ import usePosts from '../hooks/usePosts';
 import { useAuth } from '../../providers/AuthProvider';
 import PostComponent from '../components/post/PostComponent';
 import useUsers from '../../users/hooks/useUsers';
-import PageHeader from '../../components/pageHeader';
 import { Row, Col } from 'antd';
+import PageHeader from '../../components/PageHeader';
 
 export default function MyFavoritePosts() {
     const { handleLike, handleComment } = usePostsActions();
