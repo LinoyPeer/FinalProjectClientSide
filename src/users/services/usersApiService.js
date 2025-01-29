@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = `http://localhost:8181/users`;
+const apiUrl = `https://finalprojectserverside-ufwg.onrender.com/users`;
 
 export const loginUserApi = async (data, token) => {
     try {

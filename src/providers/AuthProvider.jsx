@@ -18,7 +18,7 @@ export default function AuthProvider({ children }) {
         if (user && token) {
             const config = {
                 method: 'get',
-                url: `http://localhost:8181/users/${user._id}`,
+                url: `https://finalprojectserverside-ufwg.onrender.com/users/${user._id}`,
                 headers: {
                     'x-auth-token': token,
                 },

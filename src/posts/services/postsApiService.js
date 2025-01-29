@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "http://localhost:8181/posts";
+const apiUrl = "https://finalprojectserverside-ufwg.onrender.com/posts";
 
 export const getAllPostsApi = async () => {
     try {
