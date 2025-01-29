@@ -2,8 +2,7 @@ import { Divider, Typography } from 'antd'
 import { Content } from 'antd/es/layout/layout'
 import React from 'react'
 
-export default function PageHeader({ title, subtitle }) {
-
+export default function PageHeader() {
     return (
         <>
             <Content style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -11,6 +10,5 @@ export default function PageHeader({ title, subtitle }) {
                 <Typography variant='h5' component='h3'>{subtitle}</Typography>
                 <Divider sx={{ my: 2 }} />
             </Content>
-        </>
-    )
+        </>)
 }

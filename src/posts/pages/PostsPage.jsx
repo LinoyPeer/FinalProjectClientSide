@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import PageHeader from '../../components/pageHeader';
 import PostFeedback from '../components/PostFeedback';
 import usePosts from '../hooks/usePosts';
 import usePostsAction from '../hooks/usePostsActions';
 import useUsers from '../../users/hooks/useUsers';
 import { useAuth } from '../../providers/AuthProvider';
+import PageHeader from '../../components/PageHeader';
+
+
 
 export default function PostsPage() {
     const { posts, isLoading, error, getAllPosts, setPosts } = usePosts();
