@@ -6,9 +6,15 @@ import NavBarItem from '../../../routes/components/NavBarItem';
 import LogoName from '../logo/LogoName';
 import { useMediaQuery } from 'react-responsive';
 import ROUTES from '../../../routes/routes';
+import { useAuth } from '../../../providers/AuthProvider';
 
 export default function LeftNavBar() {
     const isDesktop = useMediaQuery({ minWidth: 768 });
+    const { user } = useAuth();
+    console.log(user);
+
+    const isBusiness = user?.isBusiness;
+    const isAdmin = user?.isAdmin;
 
     return (
         <Col style={{ display: 'flex', alignItems: 'center' }}>
@@ -48,16 +54,18 @@ export default function LeftNavBar() {
                             color: 'black',
                         }}
                     />
-                    <NavBarItem
-                        to={ROUTES.PROFILE}
-                        label={'Profile'}
-                        specificBtnStyle={{
-                            fontFamily: 'Caveat, cursive',
-                            fontSize: '1.3em',
-                            backgroundColor: 'lightBlue',
-                            color: 'black',
-                        }}
-                    />
+                    {!isBusiness || isAdmin && (
+                        <NavBarItem
+                            to={ROUTES.PROFILE}
+                            label={'Profile'}
+                            specificBtnStyle={{
+                                fontFamily: 'Caveat, cursive',
+                                fontSize: '1.3em',
+                                backgroundColor: 'lightBlue',
+                                color: 'black',
+                            }}
+                        />
+                    )}
                 </Col>
             )}
         </Col>

@@ -11,14 +11,13 @@ export default function RightNavBar() {
     const { isModalVisible, handleCancelModal, handleMenu, hanndleChooseOption } = usePostsActions();
     const { isDarkMode, toggleTheme } = useTheme();
     const isDesktop = useMediaQuery({ minWidth: 768 });
-    const { logout, isLoggedIn, token, user } = useAuth();
+    const { logout, isLoggedIn, user } = useAuth();
 
     const renderMenuOptions = () => {
         return (
             <>
                 <Col style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', color: 'black' }}>
                     <Divider style={{ margin: '8px 0', borderWidth: '3px', fontWeight: 'bold', borderColor: 'grey' }} />
-                    {/* עבור משתמשים עסקיים ואדמינים */}
                     {(user.isBusiness || user.isAdmin) && (
                         <>
                             <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
@@ -28,7 +27,6 @@ export default function RightNavBar() {
                             <Typography onClick={logout}>Logout</Typography>
                         </>
                     )}
-                    {/* עבור אדמינים בלבד */}
                     {user.isAdmin && (
                         <>
                             <Typography onClick={() => hanndleChooseOption(ROUTES.ABOUT)}>About</Typography>
@@ -38,7 +36,6 @@ export default function RightNavBar() {
                             <Typography onClick={logout}>Logout</Typography>
                         </>
                     )}
-                    {/* עבור משתמשים לא עסקיים ולא אדמינים */}
                     {!user.isBusiness && !user.isAdmin && (
                         <>
                             <Typography onClick={() => hanndleChooseOption(ROUTES.POSTS)}>Posts</Typography>
@@ -55,7 +52,6 @@ export default function RightNavBar() {
 
     return (
         <>
-            {/* עבור מצב מובייל */}
             {!isDesktop && (
                 <>
                     <Col>
