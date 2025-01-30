@@ -39,7 +39,7 @@ export default function StartChat() {
     };
 
     useEffect(() => {
-        socketRef.current = io('https://finalprojectserverside-6qz1.onrender.com/chat', {
+        socketRef.current = io('https://finalprojectserverside-t8nq.onrender.com/chat', {
             query: { roomId },
             reconnection: true,
             reconnectionAttempts: 5,
