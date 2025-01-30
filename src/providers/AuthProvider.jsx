@@ -18,7 +18,7 @@ export default function AuthProvider({ children }) {
         if (user && token) {
             const config = {
                 method: 'get',
-                url: `https://finalprojectserverside-t8nq.onrender.com/users/${user._id}`,
+                url: `https://finalprojectserverside-1mnj.onrender.com/users/${user._id}`,
                 headers: {
                     'x-auth-token': token,
                 },

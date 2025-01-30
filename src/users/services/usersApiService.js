@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = `https://finalprojectserverside-t8nq.onrender.com/users`;
+const apiUrl = `https://finalprojectserverside-1mnj.onrender.com/users`;
 
 export const loginUserApi = async (data, token) => {
     try {

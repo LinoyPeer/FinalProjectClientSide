@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "https://finalprojectserverside-t8nq.onrender.com/posts";
+const apiUrl = "https://finalprojectserverside-1mnj.onrender.com/posts";
 
 export const getAllPostsApi = async () => {
     try {
