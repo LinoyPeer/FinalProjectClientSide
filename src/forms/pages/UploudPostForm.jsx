@@ -68,60 +68,27 @@ export default function UploudPostForm() {
         }
     };
 
-    // const handleSubmit = async () => {
-    //     try {
-    //         const formData = new FormData();
-    //         formData.append('postStatus', data.postStatus);
-    //         console.log('data: ', data);
-    //         console.log('data.image: ', data.image);
-    //         console.log('data.image.file: ', data.image.file);
-    //         if (data.image?.file) {
-    //             formData.append('image', data.image.file);
-    //         } else {
-    //             return alert('Image is required');
-    //         }
-    //         formData.append('imageAlt', data.image?.alt || '');
-    //         for (let [key, value] of formData.entries()) {
-    //             console.log(key, value);
-    //         }
-    //         const response = await createPostApi(formData, token);
-    //         console.log('Post created:', response);
-    //         navigate(ROUTES.PROFILE);
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //     }
-    // };
     const handleSubmit = async () => {
         try {
             const formData = new FormData();
             formData.append('postStatus', data.postStatus);
-
+            console.log(data);
             if (data.image?.file) {
                 formData.append('image', data.image.file);
             } else {
                 return alert('Image is required');
             }
-
             formData.append('imageAlt', data.image?.alt || '');
-
-            // שלח את המידע לשרת
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
             const response = await createPostApi(formData, token);
-
             console.log('Post created:', response);
-
-            // אחרי שהשרת מחזיר את התמונה, הוסף את ה-URL לתוך הנתונים
-            const imageUrl = response.image.path; // ה-URL של התמונה שהשרת החזיר
-            console.log('Image URL from server:', imageUrl);
-
-            // אם הלקוח רוצה לשמור את הנתונים או להציג את התמונה
-            // ניתן להוסיף את ה-URL לשדות אחרים או לעדכן את הממשק
-
-            navigate(ROUTES.PROFILE); // נווט לעמוד הרצוי
+            navigate(ROUTES.PROFILE);
         } catch (error) {
             console.error('Error:', error);
         }
     };
-
 
     return (
         <CustomedForm
