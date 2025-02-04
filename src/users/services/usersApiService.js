@@ -22,9 +22,39 @@ export const loginUserApi = async (data, token) => {
         throw new Error(e.message);
     }
 };
-export const signupUserApi = async (normalizedUser) => {
+// export const signupUserApi = async (normalizedUser) => {
+//     try {
+//         const { data } = await axios.post(apiUrl, normalizedUser);
+//         console.log('data: ', data);
+//         return data;
+//     } catch (e) {
+//         console.error('Error during signup:', e);
+
+//         let errorMessage = 'An error occurred during signup.';
+
+//         if (e.response) {
+//             if (e.response.status === 400) {
+//                 errorMessage = 'Email or Number is already exits.';
+//             } else if (e.response.status === 500) {
+//                 errorMessage = 'Server Error: Please try again later.';
+//             } else {
+//                 errorMessage = `Unexpected error: ${e.response.status}`;
+//             }
+//         } else {
+//             errorMessage = `Error: ${e.message}`;
+//         }
+//         throw new Error(errorMessage);
+//     }
+// };
+export const signupUserApi = async (formData) => {
     try {
-        const { data } = await axios.post(apiUrl, normalizedUser);
+        // הוספת כותרת ה-Content-Type עבור FormData
+        const config = {
+            headers: {
+                ...formData.getHeaders(),
+            },
+        };
+        const { data } = await axios.post(apiUrl, formData, config);
         console.log('data: ', data);
         return data;
     } catch (e) {
@@ -34,7 +64,7 @@ export const signupUserApi = async (normalizedUser) => {
 
         if (e.response) {
             if (e.response.status === 400) {
-                errorMessage = 'Email or Number is already exits.';
+                errorMessage = 'Email or Number is already exists.';
             } else if (e.response.status === 500) {
                 errorMessage = 'Server Error: Please try again later.';
             } else {
@@ -46,6 +76,7 @@ export const signupUserApi = async (normalizedUser) => {
         throw new Error(errorMessage);
     }
 };
+
 
 
 

@@ -59,6 +59,35 @@ export default function useUsers() {
         }
     };
 
+    // const handleSignup = useCallback(async (userSignupInfo, profileImage) => {
+    //     setIsLoading(true);
+    //     try {
+    //         const formData = new FormData();
+    //         console.log('userSignupInfo: ', userSignupInfo);
+
+    //         formData.append('name.first', userSignupInfo.first || '');
+    //         formData.append('name.middle', userSignupInfo.middle || '');
+    //         formData.append('name.last', userSignupInfo.last || '');
+    //         formData.append('email', userSignupInfo.email || '');
+    //         formData.append('phone', userSignupInfo.phone || '');
+    //         formData.append('password', userSignupInfo.password || '');
+    //         formData.append('isBusiness', userSignupInfo.isBusiness || false);
+
+    //         if (profileImage && profileImage instanceof File) {
+    //             formData.append('image', profileImage);
+    //         }
+    //         const userResponse = await signupUserApi(formData);
+    //         console.log("User registered successfully:", userResponse);
+    //         navigate(ROUTES.LOGIN);
+    //         setNotification('green', 'Registration successful. Please log in.');
+    //     } catch (e) {
+    //         console.error('Error during registration:', e);
+    //         setError(e.message);
+    //         setNotification('red', `Error during registration: ${e.message || 'Unknown error'}`);
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // }, [navigate]);
     const handleSignup = useCallback(async (userSignupInfo, profileImage) => {
         setIsLoading(true);
         try {
@@ -76,6 +105,8 @@ export default function useUsers() {
             if (profileImage && profileImage instanceof File) {
                 formData.append('image', profileImage);
             }
+
+            // שלח את ה-formData ל-API עם הכותרות המתאימות
             const userResponse = await signupUserApi(formData);
             console.log("User registered successfully:", userResponse);
             navigate(ROUTES.LOGIN);
@@ -88,6 +119,7 @@ export default function useUsers() {
             setIsLoading(false);
         }
     }, [navigate]);
+
 
     const handleEditUser = useCallback(
         async (userData) => {
