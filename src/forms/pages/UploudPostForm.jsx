@@ -71,37 +71,26 @@ export default function UploudPostForm() {
     const handleSubmit = async () => {
         try {
             const formData = new FormData();
-            console.log('Form Data:', formData); // הצג את כל ה-FormData
-            console.log('data:', data); // הצג את כל ה-FormData
-
-            formData.append('postStatus', data.postStatus);  // סטטוס הפוסט
-            console.log('Data:', data);
-
+            formData.append('postStatus', data.postStatus);
+            console.log('data: ', data);
+            console.log('data.image: ', data.image);
+            console.log('data.image.file: ', data.image.file);
             if (data.image?.file) {
-                formData.append('image', data.image.file);  // הוספת הקובץ כ-FormData
-                console.log('Image:', data.image.file);  // הצגת פרטי הקובץ
+                formData.append('image', data.image.file);
             } else {
-                return alert('Image is required');  // אם אין קובץ, הצג הודעה
+                return alert('Image is required');
             }
-
-            formData.append('imageAlt', data.image?.alt || '');  // הוספת תיאור לתמונה
-
+            formData.append('imageAlt', data.image?.alt || '');
             for (let [key, value] of formData.entries()) {
-                console.log(key, value);  // הצג את כל הערכים ב-FormData
+                console.log(key, value);
             }
-
-            // שליחה ל-API
             const response = await createPostApi(formData, token);
             console.log('Post created:', response);
-
-            // ניווט לעמוד לאחר ההצלחה
             navigate(ROUTES.PROFILE);
-
         } catch (error) {
-            console.error('Error:', error);  // הדפסת שגיאה אם יש
+            console.error('Error:', error);
         }
     };
-
 
     return (
         <CustomedForm
