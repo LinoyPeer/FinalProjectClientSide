@@ -48,13 +48,11 @@ export const loginUserApi = async (data, token) => {
 // };
 export const signupUserApi = async (formData) => {
     try {
-        // הוספת כותרת ה-Content-Type עבור FormData
-        const config = {
+        const { data } = await axios.post(apiUrl, formData, {
             headers: {
-                ...formData.getHeaders(),
+                'Content-Type': 'multipart/form-data',  // שליחה ידנית של סוג התוכן
             },
-        };
-        const { data } = await axios.post(apiUrl, formData, config);
+        });
         console.log('data: ', data);
         return data;
     } catch (e) {
@@ -76,8 +74,6 @@ export const signupUserApi = async (formData) => {
         throw new Error(errorMessage);
     }
 };
-
-
 
 
 

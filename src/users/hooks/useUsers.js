@@ -102,6 +102,7 @@ export default function useUsers() {
             formData.append('password', userSignupInfo.password || '');
             formData.append('isBusiness', userSignupInfo.isBusiness || false);
 
+            // אם profileImage הוא אובייקט File, נשלח אותו ב-FormData
             if (profileImage && profileImage instanceof File) {
                 formData.append('image', profileImage);
             }
@@ -119,6 +120,7 @@ export default function useUsers() {
             setIsLoading(false);
         }
     }, [navigate]);
+
 
 
     const handleEditUser = useCallback(
