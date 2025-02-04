@@ -72,6 +72,7 @@ export default function UploudPostForm() {
         try {
             const formData = new FormData();
             console.log('Form Data:', formData); // הצג את כל ה-FormData
+            console.log('data:', data); // הצג את כל ה-FormData
 
             formData.append('postStatus', data.postStatus);  // סטטוס הפוסט
             console.log('Data:', data);
