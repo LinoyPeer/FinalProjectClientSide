@@ -71,10 +71,12 @@ export default function UploudPostForm() {
     const handleSubmit = async () => {
         try {
             const formData = new FormData();
+            console.log(formData);
             formData.append('postStatus', data.postStatus);
             console.log(data);
             if (data.image?.file) {
                 formData.append('image', data.image.file);
+                console.log('image: ', data.image.file);
             } else {
                 return alert('Image is required');
             }
